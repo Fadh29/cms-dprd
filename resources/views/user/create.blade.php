@@ -12,6 +12,17 @@
         <div class="max-w-7xl mx-auto sm:px-6 lg:px-8">
             <div class="bg-white dark:bg-gray-800 overflow-hidden shadow-sm sm:rounded-lg">
                 <div class="p-6 text-gray-900 dark:text-gray-100">
+                    @if ($errors->any())
+                        <div class="bg-red-100 border border-red-400 text-red-700 px-4 py-3 rounded relative my-3"
+                            role="alert">
+                            <strong class="font-bold">Terjadi kesalahan!</strong>
+                            <ul class="mt-2">
+                                @foreach ($errors->all() as $error)
+                                    <li>- {{ $error }}</li>
+                                @endforeach
+                            </ul>
+                        </div>
+                    @endif
                     <form action="{{ route('users.store') }}" method="post">
                         @csrf
 
@@ -20,34 +31,34 @@
                             <div class="my-3">
                                 <input value="{{ old('name') }}" name="name" placeholder="Masukkan Nama"
                                     type="text" class="border-gray-300 shadow-sm w-1/2 rounded-lg">
-                                @error('name')
+                                {{-- @error('name')
                                     <p class="text-red-400 font-medium">{{ $message }}</p>
-                                @enderror
+                                @enderror --}}
                             </div>
                             <label for="" class="text-lg font-medium">Email</label>
                             <div class="my-3">
                                 <input value="{{ old('email') }}" name="email" placeholder="Masukkan Email"
                                     type="text" class="border-gray-300 shadow-sm w-1/2 rounded-lg">
-                                @error('email')
+                                {{-- @error('email')
                                     <p class="text-red-400 font-medium">{{ $message }}</p>
-                                @enderror
+                                @enderror --}}
                             </div>
                             <label for="" class="text-lg font-medium">Password</label>
                             <div class="my-3">
                                 <input value="{{ old('password') }}" name="password" placeholder="Masukkan Password"
                                     type="password" class="border-gray-300 shadow-sm w-1/2 rounded-lg">
-                                @error('password')
+                                {{-- @error('password')
                                     <p class="text-red-400 font-medium">{{ $message }}</p>
-                                @enderror
+                                @enderror --}}
                             </div>
                             <label for="" class="text-lg font-medium">Masukkan Kembali Password</label>
                             <div class="my-3">
                                 <input value="{{ old('confirm_password') }}" name="confirm_password"
                                     placeholder="Masukkan Kembali Password" type="password"
                                     class="border-gray-300 shadow-sm w-1/2 rounded-lg">
-                                @error('confirm_password')
+                                {{-- @error('confirm_password')
                                     <p class="text-red-400 font-medium">{{ $message }}</p>
-                                @enderror
+                                @enderror --}}
                             </div>
 
                             <div class="grid grid-cols-4 mb-3">

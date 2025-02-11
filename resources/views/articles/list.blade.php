@@ -17,11 +17,12 @@
             <table class="w-full">
                 <thead class="bg-gray-500 text-white">
                     <tr class="border-b">
-                        <th class="px-6 py-4 text-left">No</th>
-                        <th class="px-6 py-4 text-left">Judul</th>
-                        <th class="px-6 py-4 text-left">Deskripsi</th>
-                        <th class="px-6 py-4 text-left">Author</th>
-                        <th class="px-6 py-4 text-left">Created</th>
+                        <th class="px-6 py-4 text-center">No</th>
+                        <th class="px-6 py-4 text-center">Judul</th>
+                        <th class="px-6 py-4 text-center">Deskripsi</th>
+                        <th class="px-6 py-4 text-center">Status</th>
+                        <th class="px-6 py-4 text-center">Author</th>
+                        <th class="px-6 py-4 text-center">Created</th>
                         <th class="px-6 py-4 text-center">Action</th>
                     </tr>
                 </thead>
@@ -36,7 +37,17 @@
                                     {{ $article->title }}
                                 </td>
                                 <td class="px-6 py-4 text-left">
-                                    {{ $article->text }}
+                                    {{ Str::limit($article->text, 150, '...') }}
+                                </td>
+                                <td class="px-6 py-4 text-left">
+                                    <span class="inline-flex items-center px-3 py-1 rounded-full text-sm font-medium"
+                                        @if ($article->status_articles == 'publish') style="background-color: #ecfdf5; color: #16a34a;"
+                                          @elseif ($article->status_articles == 'draft')
+                                              style="background-color: #fefcbf; color: #d97706;"
+                                          @elseif ($article->status_articles == 'validasi')
+                                              style="background-color: #fef2f2; color: #dc2626;" @endif>
+                                        {{ $article->status_articles }}
+                                    </span>
                                 </td>
                                 <td class="px-6 py-4 text-left">
                                     {{ $article->author }}

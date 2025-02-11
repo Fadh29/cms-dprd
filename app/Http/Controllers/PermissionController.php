@@ -38,16 +38,38 @@ class PermissionController extends Controller implements HasMiddleware
     public function store(Request $request)
     {
         $validator = Validator::make($request->all(), [
-            'name' => 'required|unique:permissions|min:3',
+            'name' => 'required|min:3|unique:permissions,name',
+            'permissions' => 'required|array|min:1',
+        ], [
+            'name.required' => 'Nama permission harus diisi.',
+            'name.min' => 'Nama permission minimal 3 karakter.',
+            'name.unique' => 'Nama permission ini sudah ada.',
+
+            'permissions.required' => 'Anda harus memilih setidaknya satu permission.',
+            'permissions.array' => 'Format permissions tidak valid.',
         ]);
 
-        if ($validator->passes()) {
-            Permission::create(['name' => $request->name]);
-            return redirect()->route('permissions.index')->with('success', 'Permissions Berhasil Ditambahkan.');
-        } else {
+        if ($validator->fails()) {
             return redirect()->back()->withErrors($validator)->withInput();
         }
+
+        // Periksa apakah kombinasi permission sudah ada sebelum menyimpan
+        foreach ($request->permissions as $perm) {
+            $fullPermissionName = "{$perm} {$request->name}";
+
+            if (Permission::where('name', $fullPermissionName)->exists()) {
+                return redirect()->back()->withErrors([
+                    'name' => "Permission '{$fullPermissionName}' sudah ada."
+                ])->withInput();
+            }
+
+            // Simpan permission jika belum ada
+            Permission::create(['name' => $fullPermissionName]);
+        }
+
+        return redirect()->route('permissions.index')->with('success', 'Permissions berhasil ditambahkan.');
     }
+
 
     public function edit($id)
     {

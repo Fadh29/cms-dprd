@@ -9,6 +9,7 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Validator;
 use Illuminate\Routing\Controllers\HasMiddleware;
 use Illuminate\Routing\Controllers\Middleware;
+use Spatie\MediaLibrary\MediaCollections\Models\Media;
 
 class ArticleController extends Controller implements HasMiddleware
 {
@@ -52,16 +53,25 @@ class ArticleController extends Controller implements HasMiddleware
         // Validasi input
         $validator = Validator::make($request->all(), [
             'title' => 'required|min:3',
-            'text' => 'required',
+            'text' => 'required|min:20',
             'author' => 'required|min:3',
             'file.*' => 'nullable|file|mimes:jpg,jpeg,png,pdf|max:2048',
+            'summary' => 'required',
+            'caption' => 'required',
+            'fotografer' => 'required',
+            'status_articles' => 'required',
         ], [
             'title.required' => 'Judul harus diisi.',
             'title.min' => 'Judul minimal 3 karakter.',
             'text.required' => 'Deskripsi harus diisi.',
+            'text.min' => 'Deskripsi minimal 20 karakter.',
             'author.required' => 'Nama penulis harus diisi.',
             'file.*.mimes' => 'File harus berupa gambar (jpg, jpeg, png) atau PDF.',
             'file.*.max' => 'Ukuran file maksimal 2MB.',
+            'summary.required' => 'Summary harus diisi.',
+            'caption.required' => 'Caption harus diisi.',
+            'fotografer.required' => 'Fotografer harus diisi.',
+            'status_articles.required' => 'Pilih Status Artikel.',
         ]);
 
         if ($validator->passes()) {
@@ -69,6 +79,10 @@ class ArticleController extends Controller implements HasMiddleware
             $article->title = $request->title;
             $article->text = $request->text;
             $article->author = $request->author;
+            $article->summary = $request->summary;
+            $article->caption = $request->caption;
+            $article->fotografer = $request->fotografer;
+            $article->status_articles = $request->status_articles;
             $article->save();
 
             if ($request->has('tags_id')) {
@@ -77,11 +91,8 @@ class ArticleController extends Controller implements HasMiddleware
 
             if ($request->hasFile('file')) {
                 foreach ($request->file('file') as $file) {
-                    $fileName = time() . '_' . $file->getClientOriginalName();
-                    $file->storeAs('uploads', $fileName);
-                    $article->file = isset($article->file) ? $article->file . ',' . $fileName : $fileName;
+                    $article->addMedia($file)->toMediaCollection('images');
                 }
-                $article->save();
             }
 
             return redirect()->route('articles.list')->with('success', 'Artikel berhasil disimpan.');
@@ -89,6 +100,7 @@ class ArticleController extends Controller implements HasMiddleware
             return redirect()->back()->withErrors($validator)->withInput();
         }
     }
+
 
     /**
      * Display the specified resource.
@@ -107,11 +119,15 @@ class ArticleController extends Controller implements HasMiddleware
         $article = Articles::findOrFail($id);
         $articleTags = $article->tags->pluck('id')->toArray();
         $tags = ModelsTags::orderBy('name', 'ASC')->get();
+        $mediaItems = $article->getMedia('images');
+
+        // dd($mediaItems);
 
         return view('articles.edit', [
             'article' => $article,
             'articleTags' => $articleTags,
             'tags' => $tags,
+            'mediaItems' => $mediaItems,
         ]);
     }
 
@@ -119,52 +135,51 @@ class ArticleController extends Controller implements HasMiddleware
     /**
      * Update the specified resource in storage.
      */
-    public function update($id, Request $request)
+    public function update(Request $request, string $id)
     {
-        // Temukan artikel berdasarkan ID
-        $article = Articles::findOrFail($id);
-
         // Validasi input
         $validator = Validator::make($request->all(), [
             'title' => 'required|min:3',
-            'text' => 'required',
+            'text' => 'required|min:20',
             'author' => 'required|min:3',
-            'file.*' => 'nullable|file|mimes:jpg,jpeg,png,pdf|max:2048', // Validasi untuk array file
+            'file.*' => 'nullable|file|mimes:jpg,jpeg,png,pdf|max:2048',
+            'summary' => 'required',
+            'caption' => 'required',
+            'fotografer' => 'required',
+            'status_articles' => 'required',
         ], [
             'title.required' => 'Judul harus diisi.',
             'title.min' => 'Judul minimal 3 karakter.',
             'text.required' => 'Deskripsi harus diisi.',
+            'text.min' => 'Deskripsi minimal 20 karakter.',
             'author.required' => 'Nama penulis harus diisi.',
             'file.*.mimes' => 'File harus berupa gambar (jpg, jpeg, png) atau PDF.',
             'file.*.max' => 'Ukuran file maksimal 2MB.',
+            'summary.required' => 'Summary harus diisi.',
+            'caption.required' => 'Caption harus diisi.',
+            'fotografer.required' => 'Fotografer harus diisi.',
+            'status_articles.required' => 'Pilih Status Artikel.',
         ]);
 
         if ($validator->passes()) {
-            // Memperbarui data artikel
+            $article = Articles::findOrFail($id);
             $article->title = $request->title;
             $article->text = $request->text;
             $article->author = $request->author;
-
-            // Menyimpan file jika ada
-            if ($request->hasFile('file')) {
-                $fileNames = []; // Array untuk menyimpan nama file
-
-                foreach ($request->file('file') as $file) {
-                    $fileName = time() . '_' . $file->getClientOriginalName();
-                    $file->storeAs('uploads', $fileName);
-                    $fileNames[] = $fileName; // Menambahkan nama file ke array
-                }
-
-                // Menggabungkan nama file menjadi string yang dipisahkan koma
-                $article->file = implode(',', $fileNames);
-            }
-
-            // Simpan perubahan artikel
+            $article->summary = $request->summary;
+            $article->caption = $request->caption;
+            $article->fotografer = $request->fotografer;
+            $article->status_articles = $request->status_articles;
             $article->save();
 
-            // Mengaitkan tag menggunakan tabel pivot
             if ($request->has('tags_id')) {
-                $article->tags()->sync($request->tags_id); // Mengaitkan tag yang dipilih
+                $article->tags()->sync($request->tags_id);
+            }
+
+            if ($request->hasFile('file')) {
+                foreach ($request->file('file') as $file) {
+                    $article->addMedia($file)->toMediaCollection('images');
+                }
             }
 
             return redirect()->route('articles.list')->with('success', 'Artikel berhasil diperbarui.');
@@ -172,6 +187,7 @@ class ArticleController extends Controller implements HasMiddleware
             return redirect()->back()->withErrors($validator)->withInput();
         }
     }
+
 
     /**
      * Remove the specified resource from storage.

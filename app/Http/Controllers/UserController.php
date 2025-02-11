@@ -55,11 +55,25 @@ class UserController extends Controller implements HasMiddleware
             'email' => 'required|email|unique:users,email',
             'password' => 'required|min:5|same:confirm_password',
             'confirm_password' => 'required',
+        ], [
+            'name.required' => 'Nama pengguna harus diisi.',
+            'name.min' => 'Nama pengguna harus memiliki minimal 3 karakter.',
+
+            'email.required' => 'Email pengguna harus diisi.',
+            'email.email' => 'Format email tidak valid.',
+            'email.unique' => 'Email ini sudah terdaftar.',
+
+            'password.required' => 'Password harus diisi.',
+            'password.min' => 'Password harus memiliki minimal 5 karakter.',
+            'password.same' => 'Password dan Konfirmasi Password harus sama.',
+
+            'confirm_password.required' => 'Konfirmasi Password harus diisi.',
         ]);
 
         if ($validator->fails()) {
             return redirect()->route('users.create')->withInput()->withErrors($validator);
         }
+
         $user = new User();
         $user->name = $request->name;
         $user->email = $request->email;
@@ -68,7 +82,7 @@ class UserController extends Controller implements HasMiddleware
 
         $user->syncRoles($request->role);
 
-        return redirect()->route('users.list')->with('success', 'User berhasil di tambahkan');
+        return redirect()->route('users.list')->with('success', 'User berhasil ditambahkan.');
     }
 
     /**
@@ -99,26 +113,66 @@ class UserController extends Controller implements HasMiddleware
     /**
      * Update the specified resource in storage.
      */
-    public function update(Request $request, string $id)
+    public function update($id, Request $request)
     {
         $user = User::findOrFail($id);
+
+        // Cek apakah email berubah
+        $emailRule = ($request->email === $user->email)
+            ? 'required|email'
+            : 'required|email|unique:users,email';
+
         $validator = Validator::make($request->all(), [
             'name' => 'required|min:3',
-            'email' => 'required|email|unique:users,email,' . $id . ',id'
+            'email' => $emailRule,
+            'password' => 'nullable|same:confirm_password', // Password bisa kosong jika tidak diubah
+            'confirm_password' => 'nullable|required_with:password', // Konfirmasi hanya wajib jika password diisi
+        ], [
+            'name.required' => 'Nama pengguna harus diisi.',
+            'name.min' => 'Nama pengguna harus memiliki minimal 3 karakter.',
+
+            'email.required' => 'Email pengguna harus diisi.',
+            'email.email' => 'Format email tidak valid.',
+            'email.unique' => 'Email ini sudah terdaftar.',
+
+            'password.same' => 'Password dan Konfirmasi Password harus sama.',
+            'confirm_password.required_with' => 'Konfirmasi Password harus diisi jika ingin mengubah password.',
         ]);
 
         if ($validator->fails()) {
-            return redirect()->route('user.edit', $id)->withInput()->withErrors($validator);
+            return redirect()->route('users.edit', $id)->withInput()->withErrors($validator);
         }
 
-        $user->name = $request->name;
-        $user->email = $request->email;
-        $user->save();
+        // Cek apakah ada perubahan sebelum menyimpan
+        $hasChanges = false;
 
-        $user->syncRoles($request->role);
+        if ($user->name !== $request->name) {
+            $user->name = $request->name;
+            $hasChanges = true;
+        }
 
-        return redirect()->route('users.list')->with('success', 'User berhasil di update');
+        if ($user->email !== $request->email) {
+            $user->email = $request->email;
+            $hasChanges = true;
+        }
+
+        if ($request->filled('password')) {
+            $user->password = Hash::make($request->password);
+            $hasChanges = true;
+        }
+
+        if ($hasChanges) {
+            $user->save();
+        }
+
+        // Perbarui roles jika ada perubahan
+        if ($request->has('role')) {
+            $user->syncRoles($request->role);
+        }
+
+        return redirect()->route('users.list')->with('success', 'User berhasil diperbarui.');
     }
+
 
     /**
      * Remove the specified resource from storage.

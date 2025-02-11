@@ -53,6 +53,9 @@ class RoleController extends Controller implements HasMiddleware
     {
         $validator = Validator::make($request->all(), [
             'name' => 'required|unique:roles|min:3',
+        ], [
+            'name.required' => 'Nama roles harus diisi.',
+            'name.min' => 'Nama roles minimal 3 karakter.',
         ]);
 
         if ($validator->passes()) {
@@ -68,18 +71,26 @@ class RoleController extends Controller implements HasMiddleware
         }
     }
 
-    function edit($id)
+    public function edit($id)
     {
         $role = Role::findOrFail($id);
         $hasPermissions = $role->permissions->pluck('name');
+
+        // Mengambil semua permissions dan mengelompokkannya berdasarkan kata kedua
         $permissions = Permission::orderBy('name', 'ASC')->get();
-        // dd($hasPermissions);
+        $groupedPermissions = $permissions->groupBy(function ($item) {
+            // Mengambil kata kedua dari nama permission
+            $words = explode(' ', $item->name);
+            return implode(' ', array_slice($words, 1)); // Menggunakan kata kedua sebagai grup
+        });
+
         return view('roles.edit', [
-            'permissions' => $permissions,
+            'groupedPermissions' => $groupedPermissions,
             'hasPermissions' => $hasPermissions,
             'role' => $role
         ]);
     }
+
 
     // public function update($id, Request $request)
     // {

@@ -4,9 +4,12 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
+use Spatie\MediaLibrary\HasMedia;
+use Spatie\MediaLibrary\InteractsWithMedia;
 
-class Articles extends Model
+class Articles extends Model implements HasMedia
 {
+    use InteractsWithMedia;
     use HasFactory;
 
     // Nama tabel jika berbeda dari konvensi (opsional)
@@ -27,7 +30,11 @@ class Articles extends Model
         'content',
         'author',
         // 'tags_id',
-        'file',
+        // 'file',
+        'summary',
+        'caption',
+        'fotografer',
+        'status_articles',
     ];
 
     // public function tags()
