@@ -35,6 +35,7 @@ class Articles extends Model implements HasMedia
         'caption',
         'fotografer',
         'status_articles',
+        'tags',
     ];
 
     // public function tags()

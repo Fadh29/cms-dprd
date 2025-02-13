@@ -51,6 +51,68 @@
                         </x-nav-link>
                     </div>
                 @endcan
+                @can('read agenda')
+                    <div class="hidden space-x-8 sm:-my-px sm:ms-10 sm:flex">
+                        <x-nav-link :href="route('agenda.list')" :active="request()->routeIs('agenda.list')">
+                            {{ __('Agenda') }}
+                        </x-nav-link>
+                    </div>
+                @endcan
+                @can('read profil')
+                    <div x-data="{ open: false }" class="relative hidden space-x-8 sm:-my-px sm:ms-10 sm:flex">
+                        <!-- Button untuk menu utama -->
+                        <button @click="open = !open"
+                            class="inline-flex items-center px-3 py-2 border border-transparent text-sm leading-4 font-medium rounded-md text-gray-500 dark:text-gray-400 dark:bg-gray-800 hover:text-gray-700 dark:hover:text-gray-300 focus:outline-none transition ease-in-out duration-150">
+                            {{ __('Profil') }}
+                            <svg class="ml-2 w-4 h-4" fill="none" stroke="currentColor" stroke-width="2"
+                                viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" d="M19 9l-7 7-7-7"></path>
+                            </svg>
+                        </button>
+
+                        <!-- Submenu -->
+                        <div x-show="open" @click.away="open = false"
+                            class="absolute left-0 mt-2 w-48 bg-white dark:bg-gray-800 shadow-lg rounded-md z-50 border border-gray-300 dark:border-gray-600">
+                            <ul class="flex flex-col py-2">
+                                <li>
+                                    <x-nav-link :href="route('apa_siapa.list')" :active="request()->routeIs('apa-siapa.list')"
+                                        class="block px-4 py-2 text-gray-700 dark:text-gray-300 hover:bg-gray-200 dark:hover:bg-gray-700">
+                                        {{ __('Apa & Siapa') }}
+                                    </x-nav-link>
+                                    <x-nav-link :href="route('tupoksi.create')" :active="request()->routeIs('tupoksi.create')"
+                                        class="block px-4 py-2 text-gray-700 dark:text-gray-300 hover:bg-gray-200 dark:hover:bg-gray-700">
+                                        {{ __('Tupoksi') }}
+                                    </x-nav-link>
+                                </li>
+                                {{-- <li>
+                                    <x-nav-link :href="route('apa-siapa.list')" :active="request()->routeIs('apa-siapa.list')"
+                                        class="block px-4 py-2 text-gray-700 dark:text-gray-300 hover:bg-gray-200 dark:hover:bg-gray-700">
+                                        {{ __('Apa & Siapa') }}
+                                    </x-nav-link>
+                                </li> --}}
+                                {{-- <li>
+                                <x-nav-link :href="route('monografi-hukum.list')" :active="request()->routeIs('monografi-hukum.list')"
+                                    class="block px-4 py-2 text-gray-700 dark:text-gray-300 hover:bg-gray-200 dark:hover:bg-gray-700">
+                                    {{ __('Monografi Hukum') }}
+                                </x-nav-link>
+                            </li>
+                            <li>
+                                <x-nav-link :href="route('artikel.list')" :active="request()->routeIs('artikel.list')"
+                                    class="block px-4 py-2 text-gray-700 dark:text-gray-300 hover:bg-gray-200 dark:hover:bg-gray-700">
+                                    {{ __('Artikel') }}
+                                </x-nav-link>
+                            </li>
+                            <li>
+                                <x-nav-link :href="route('yurisprudensi.list')" :active="request()->routeIs('yurisprudensi.list')"
+                                    class="block px-4 py-2 text-gray-700 dark:text-gray-300 hover:bg-gray-200 dark:hover:bg-gray-700">
+                                    {{ __('Yurisprudensi') }}
+                                </x-nav-link>
+                            </li> --}}
+                            </ul>
+                        </div>
+                    </div>
+                @endcan
+
             </div>
 
             <!-- Settings Dropdown -->

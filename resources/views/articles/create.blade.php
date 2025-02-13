@@ -23,104 +23,45 @@
                             </ul>
                         </div>
                     @endif
-                    {{-- <form action="{{ route('articles.store') }}" method="post">
-                        @csrf
-                        <div>
-                            <label for="title" class="text-lg font-medium">Judul</label>
-                            <div class="my-3">
-                                <input value="{{ old('title') }}" name="title" placeholder="Masukkan Judul Artikel"
-                                    type="text" class="border-gray-300 shadow-sm w-1/2 rounded-lg">
-                                @error('title')
-                                    <p class="text-red-400 font-medium">{{ $message }}</p>
-                                @enderror
-                            </div>
-                            <label for="title" class="text-lg font-medium">Deskripsi</label>
-                            <div class="my-3">
-                                <textarea name="text" placeholder="Masukkan Deskripsi Artikel" class="border-gray-300 shadow-sm w-1/2 rounded-lg"
-                                    id="text" cols="30" rows="10">{{ old('text') }}</textarea>
-                                @error('text')
-                                    <p class="text-red-400 font-medium">{{ $message }}</p>
-                                @enderror
-                            </div>
-                            <label for="title" class="text-lg font-medium">Author</label>
-                            <div class="my-3">
-                                <input value="{{ old('author') }}" name="author" placeholder="Masukkan Pembuat Artikel"
-                                    type="text" class="border-gray-300 shadow-sm w-1/2 rounded-lg">
-                                @error('author')
-                                    <p class="text-red-400 font-medium">{{ $message }}</p>
-                                @enderror
-                            </div>
-                        </div>
-                        <label for="title" class="text-lg font-medium">Tag Warta</label>
-                        <div class="grid grid-cols-4 mb-3">
-                            <div class="mt-3">
-                                @if ($tags->isNotEmpty())
-                                    @foreach ($tags as $tag)
-                                        <div class="mt-3">
-                                            <input type="checkbox" id="tag-{{ $tag->id }}" class="rounded"
-                                                name="tags_id[]" value="{{ $tag->id }}">
-                                            <label for="tag-{{ $tag->id }}">{{ $tag->name }}</label>
-                                        </div>
-                                    @endforeach
-                                @endif
-                            </div>
-                        </div>
-                        <button class="bg-slate-700 text-sm rounded-md text-white px-5 py-3">Submit</button>
-                    </form> --}}
                     <form action="{{ route('articles.store') }}" method="post" enctype="multipart/form-data">
                         @csrf
-                        <div class="flex flex-col space-y-4">
-                            <div class="flex justify-between items-center">
+                        <div class="grid grid-cols-2 gap-6">
+                            <div>
                                 <label for="title" class="text-lg font-medium">Judul</label>
                                 <input value="{{ old('title') }}" name="title" placeholder="Masukkan Judul Artikel"
-                                    type="text" class="border-gray-300 shadow-sm w-1/2 rounded-lg">
+                                    type="text" class="border-gray-300 shadow-sm w-full rounded-lg p-2">
                             </div>
 
-                            <div class="flex justify-between items-center">
-                                <label for="text" class="text-lg font-medium">Deskripsi</label>
-                                <textarea name="text" placeholder="Masukkan Deskripsi Artikel" class="border-gray-300 shadow-sm w-1/2 rounded-lg">{{ old('text') }}</textarea>
-                            </div>
-
-                            <div class="flex justify-between items-center">
+                            <div>
                                 <label for="author" class="text-lg font-medium">Penulis</label>
                                 <input value="{{ old('author') }}" name="author" placeholder="Masukkan Nama Penulis"
-                                    type="text" class="border-gray-300 shadow-sm w-1/2 rounded-lg">
+                                    type="text" class="border-gray-300 shadow-sm w-full rounded-lg p-2">
                             </div>
 
-                            <div class="flex justify-between items-center">
-                                <label for="summary" class="text-lg font-medium">Summary</label>
-                                <div class="relative w-1/2">
-                                    <textarea name="summary" id="summary" placeholder="Masukkan Summary Artikel"
-                                        class="border-gray-300 shadow-sm w-full rounded-lg pr-12 pb-6" maxlength="250"
-                                        oninput="updateCounter('summary', 'summaryCounter', 250)">{{ old('summary') }}</textarea>
-                                    <span id="summaryCounter"
-                                        class="absolute bottom-2 right-3 text-gray-400 text-sm">0/250</span>
-                                </div>
-                            </div>
-
-                            <div class="flex justify-between items-center">
-                                <label for="caption" class="text-lg font-medium">Caption</label>
-                                <div class="relative w-1/2">
-                                    <textarea name="caption" id="caption" placeholder="Masukkan Caption Artikel"
-                                        class="border-gray-300 shadow-sm w-full rounded-lg pr-12 pb-6" maxlength="200"
-                                        oninput="updateCounter('caption', 'captionCounter', 200)">{{ old('caption') }}</textarea>
-                                    <span id="captionCounter"
-                                        class="absolute bottom-2 right-3 text-gray-400 text-sm">0/200</span>
-                                </div>
-                            </div>
-
-                            <div class="flex justify-between items-center">
-                                <label for="fotografer" class="text-lg font-medium">Fotografer</label>
+                            <div>
+                                <label for="caption_image" class="text-lg font-medium">Caption Gambar</label>
                                 <input value="{{ old('fotografer') }}" name="fotografer"
                                     placeholder="Masukkan Nama Fotografer" type="text"
-                                    class="border-gray-300 shadow-sm w-1/2 rounded-lg">
+                                    class="border-gray-300 shadow-sm w-full rounded-lg p-2">
                             </div>
-
-                            <div class="flex justify-between items-center">
-                                <label for="status_articles" class="text-lg font-medium">Status Artikel</label>
+                            <div>
+                                <label for="tags" class="text-lg font-medium">Tags/Kata Kunci</label>
+                                <input id="tags" name="tags" placeholder="Tags" type="text"
+                                    class="border-gray-300 shadow-sm w-full rounded-lg advance-options"
+                                    value="{{ old('tags') }}">
+                            </div>
+                            <div>
+                                <label for="tgl_publish" class="text-lg font-medium">Tanggal Publish</label>
+                                <input value="{{ old('tgl_publish') }}" name="tgl_publish" placeholder="Tanggal Publish"
+                                    type="date" class="border-gray-300 shadow-sm w-full rounded-lg p-2">
+                                {{-- @error('tgl_publish')
+                                    <p class="text-red-400 font-medium">{{ $message }}</p>
+                                @enderror --}}
+                            </div>
+                            <div>
+                                <label for="status_articles" class="text-lg font-medium">Status Publish</label>
                                 <select name="status_articles" id="status_articles"
-                                    class="border-gray-300 shadow-sm w-1/2 rounded-lg bg-white focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
-                                    onchange="updateStatusColor()">
+                                    class="border-gray-300 shadow-sm w-full rounded-lg p-2">
                                     <option value="">Pilih Status</option>
                                     <option value="publish" {{ old('status_articles') == 'publish' ? 'selected' : '' }}>
                                         Publish</option>
@@ -132,35 +73,48 @@
                                 </select>
                             </div>
 
-                            <div class="flex justify-between items-center">
-                                <label for="tags" class="text-lg font-medium">Tag</label>
-                                <div class="w-1/2">
-                                    @if ($tags->isNotEmpty())
-                                        @foreach ($tags as $tag)
-                                            <div class="mt-1">
-                                                <input type="checkbox" id="tag-{{ $tag->id }}" name="tags_id[]"
-                                                    value="{{ $tag->id }}">
-                                                <label for="tag-{{ $tag->id }}">{{ $tag->name }}</label>
-                                            </div>
-                                        @endforeach
-                                    @endif
+                            <div class="col-span-2">
+                                <label for="text" class="text-lg font-medium">Isi Konten</label>
+                                <textarea name="text" placeholder="Masukkan Deskripsi Artikel" id="text-editor"
+                                    class="border-gray-300 shadow-sm w-full rounded-lg p-2">{{ old('text') }}</textarea>
+                            </div>
+
+                            <div class="col-span-2 relative">
+                                <label for="summary" class="text-lg font-medium">Ringkasan/Summary</label>
+                                <div class="relative">
+                                    <textarea name="summary" id="summary" placeholder="Masukkan Summary Artikel"
+                                        class="border-gray-300 shadow-sm w-full rounded-lg p-2 resize-y min-h-[100px]" maxlength="250"
+                                        oninput="updateCounter('summary', 'summaryCounter', 250)">{{ old('summary') }}</textarea>
+                                    <span id="summaryCounter"
+                                        class="absolute bottom-2 right-3 text-gray-400 text-sm bg-white px-1">0/250</span>
                                 </div>
                             </div>
 
-                            <div class="flex justify-between items-center">
-                                <label for="file" class="text-lg font-medium">Unggah Foto Warta</label>
+                            <div class="col-span-2 relative">
+                                <label for="caption" class="text-lg font-medium">Caption</label>
+                                <div class="relative">
+                                    <textarea name="caption" id="caption" placeholder="Masukkan Caption Artikel"
+                                        class="border-gray-300 shadow-sm w-full rounded-lg p-2 resize-y min-h-[100px]" maxlength="200"
+                                        oninput="updateCounter('caption', 'captionCounter', 200)">{{ old('caption') }}</textarea>
+                                    <span id="captionCounter"
+                                        class="absolute bottom-2 right-3 text-gray-400 text-sm bg-white px-1">0/200</span>
+                                </div>
+                            </div>
+
+
+                            <div>
+                                <label for="file" class="text-lg font-medium">Upload Image</label>
                                 <input type="file" name="file[]" id="file"
-                                    class="border-gray-300 shadow-sm w-1/2 rounded-lg" multiple>
+                                    class="border-gray-300 shadow-sm w-full rounded-lg p-2" multiple>
+                                {{-- <img id="imagePreview" class="hidden w-40 h-40 object-cover rounded-md shadow-md mt-3"> --}}
                             </div>
 
                             <div id="preview" class="mt-4">
                                 <!-- Preview gambar akan ditampilkan di sini -->
                             </div>
-
-                            <div class="flex justify-end">
-                                <button type="submit" class="bg-blue-500 text-white rounded-lg px-4 py-2">Simpan
-                                    Artikel</button>
-                            </div>
+                        </div>
+                        <div class="mt-6 text-right">
+                            <button class="bg-slate-700 text-sm rounded-md text-white px-5 py-3">Submit</button>
                         </div>
                     </form>
                 </div>
@@ -169,13 +123,6 @@
     </div>
 </x-app-layout>
 <script>
-    function updateCounter(textareaId, counterId, maxLength) {
-        const textarea = document.getElementById(textareaId);
-        const counter = document.getElementById(counterId);
-        const currentLength = textarea.value.length;
-        counter.textContent = `${currentLength}/${maxLength} karakter`;
-    }
-
     function updateStatusColor() {
         const selectElement = document.getElementById('status_articles');
         const selectedValue = selectElement.value;
@@ -221,4 +168,137 @@
             }
         }
     });
+
+
+    // var input = document.querySelector('input.advance-options'),
+    //     tagify = new Tagify(input, {
+    //         pattern: /^.{0,20}$/, // Validate typed tag(s) by Regex. Here maximum chars length is defined as "20"
+    //         delimiters: ",| ", // add new tags when a comma or a space character is entered
+    //         trim: false, // if "delimiters" setting is using space as a delimeter, then "trim" should be set to "false"
+    //         keepInvalidTags: true, // do not remove invalid tags (but keep them marked as invalid)
+    //         // createInvalidTags: false,
+    //         editTags: {
+    //             clicks: 2, // single click to edit a tag
+    //             keepInvalid: false // if after editing, tag is invalid, auto-revert
+    //         },
+    //         maxTags: 6,
+    //         blacklist: ["foo", "bar", "baz"],
+    //         whitelist: ["temple", "stun", "detective", "sign", "passion", "routine", "deck", "discriminate",
+    //             "relaxation", "fraud", "attractive", "soft", "forecast", "point", "thank", "stage", "eliminate",
+    //             "effective", "flood", "passive", "skilled", "separation", "contact", "compromise", "reality",
+    //             "district", "nationalist", "leg", "porter", "conviction", "worker", "vegetable", "commerce",
+    //             "conception", "particle", "honor", "stick", "tail", "pumpkin", "core", "mouse", "egg",
+    //             "population", "unique", "behavior", "onion", "disaster", "cute", "pipe", "sock", "dialect",
+    //             "horse", "swear", "owner", "cope", "global", "improvement", "artist", "shed", "constant",
+    //             "bond", "brink", "shower", "spot", "inject", "bowel", "homosexual", "trust", "exclude", "tough",
+    //             "sickness", "prevalence", "sister", "resolution", "cattle", "cultural", "innocent", "burial",
+    //             "bundle", "thaw", "respectable", "thirsty", "exposure", "team", "creed", "facade", "calendar",
+    //             "filter", "utter", "dominate", "predator", "discover", "theorist", "hospitality", "damage",
+    //             "woman", "rub", "crop", "unpleasant", "halt", "inch", "birthday", "lack", "throne", "maximum",
+    //             "pause", "digress", "fossil", "policy", "instrument", "trunk", "frame", "measure", "hall",
+    //             "support", "convenience", "house", "partnership", "inspector", "looting", "ranch", "asset",
+    //             "rally", "explicit", "leak", "monarch", "ethics", "applied", "aviation", "dentist", "great",
+    //             "ethnic", "sodium", "truth", "constellation", "lease", "guide", "break", "conclusion", "button",
+    //             "recording", "horizon", "council", "paradox", "bride", "weigh", "like", "noble", "transition",
+    //             "accumulation", "arrow", "stitch", "academy", "glimpse", "case", "researcher", "constitutional",
+    //             "notion", "bathroom", "revolutionary", "soldier", "vehicle", "betray", "gear", "pan", "quarter",
+    //             "embarrassment", "golf", "shark", "constitution", "club", "college", "duty", "eaux", "know",
+    //             "collection", "burst", "fun", "animal", "expectation", "persist", "insure", "tick", "account",
+    //             "initiative", "tourist", "member", "example", "plant", "river", "ratio", "view", "coast",
+    //             "latest", "invite", "help", "falsify", "allocation", "degree", "feel", "resort", "means",
+    //             "excuse", "injury", "pupil", "shaft", "allow", "ton", "tube", "dress", "speaker", "double",
+    //             "theater", "opposed", "holiday", "screw", "cutting", "picture", "laborer", "conservation",
+    //             "kneel", "miracle", "brand", "nomination", "characteristic", "referral", "carbon", "valley",
+    //             "hot", "climb", "wrestle", "motorist", "update", "loot", "mosquito", "delivery", "eagle",
+    //             "guideline", "hurt", "feedback", "finish", "traffic", "competence", "serve", "archive",
+    //             "feeling", "hope", "seal", "ear", "oven", "vote", "ballot", "study", "negative", "declaration",
+    //             "particular", "pattern", "suburb", "intervention", "brake", "frequency", "drink", "affair",
+    //             "contemporary", "prince", "dry", "mole", "lazy", "undermine", "radio", "legislation",
+    //             "circumstance", "bear", "left", "pony", "industry", "mastermind", "criticism", "sheep",
+    //             "failure", "chain", "depressed", "launch", "script", "green", "weave", "please", "surprise",
+    //             "doctor", "revive", "banquet", "belong", "correction", "door", "image", "integrity",
+    //             "intermediate", "sense", "formal", "cane", "gloom", "toast", "pension", "exception", "prey",
+    //             "random", "nose", "predict", "needle", "satisfaction", "establish", "fit", "vigorous",
+    //             "urgency", "X-ray", "equinox", "variety", "proclaim", "conceive", "bulb", "vegetarian",
+    //             "available", "stake", "publicity", "strikebreaker", "portrait", "sink", "frog", "ruin",
+    //             "studio", "match", "electron", "captain", "channel", "navy", "set", "recommend", "appoint",
+    //             "liberal", "missile", "sample", "result", "poor", "efflux", "glance", "timetable", "advertise",
+    //             "personality", "aunt", "dog"
+    //         ],
+    //         transformTag: transformTag,
+    //         backspace: "edit",
+    //         placeholder: "Type something",
+    //         dropdown: {
+    //             enabled: 1, // show suggestion after 1 typed character
+    //             fuzzySearch: false, // match only suggestions that starts with the typed characters
+    //             position: 'text', // position suggestions list next to typed text
+    //             caseSensitive: true, // allow adding duplicate items if their case is different
+    //         },
+    //         templates: {
+    //             dropdownItemNoMatch: function(data) {
+    //                 return `No suggestion found for: ${data.value}`
+    //             }
+    //         }
+    //     })
+
+    // tagify.on('change', updatePlaceholderByTagsCount);
+
+    // function updatePlaceholderByTagsCount() {
+    //     tagify.setPlaceholder(`${tagify.value.length || 'no'} tags added`)
+    // }
+
+    // updatePlaceholderByTagsCount()
+
+    // // generate a random color (in HSL format, which I like to use)
+    // function getRandomColor() {
+    //     function rand(min, max) {
+    //         return min + Math.random() * (max - min);
+    //     }
+
+    //     var h = rand(1, 360) | 0,
+    //         s = rand(40, 70) | 0,
+    //         l = rand(65, 72) | 0;
+
+    //     return 'hsl(' + h + ',' + s + '%,' + l + '%)';
+    // }
+
+    // function transformTag(tagData) {
+    //     tagData.color = getRandomColor();
+    //     tagData.style = "--tag-bg:" + tagData.color;
+
+    //     if (tagData.value.toLowerCase() == 'shit')
+    //         tagData.value = 's✲✲t'
+    // }
+
+    // tagify.on('add', function(e) {
+    //     console.log(e.detail)
+    // })
+
+    // tagify.on('invalid', function(e) {
+    //     console.log(e, e.detail);
+    // })
+
+    // var clickDebounce;
+
+    // tagify.on('click', function(e) {
+    //     const {
+    //         tag: tagElm,
+    //         data: tagData
+    //     } = e.detail;
+
+    //     // a delay is needed to distinguish between regular click and double-click.
+    //     // this allows enough time for a possible double-click, and noly fires if such
+    //     // did not occur.
+    //     clearTimeout(clickDebounce);
+    //     clickDebounce = setTimeout(() => {
+    //         tagData.color = getRandomColor();
+    //         tagData.style = "--tag-bg:" + tagData.color;
+    //         tagify.replaceTag(tagElm, tagData);
+    //     }, 200);
+    // })
+
+    // tagify.on('dblclick', function(e) {
+    //     // when souble clicking, do not change the color of the tag
+    //     clearTimeout(clickDebounce);
+    // })
 </script>

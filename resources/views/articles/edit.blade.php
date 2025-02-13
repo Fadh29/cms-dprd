@@ -12,64 +12,47 @@
         <div class="max-w-7xl mx-auto sm:px-6 lg:px-8">
             <div class="bg-white dark:bg-gray-800 overflow-hidden shadow-sm sm:rounded-lg">
                 <div class="p-6 text-gray-900 dark:text-gray-100">
-                    <form action="{{ route('articles.update', $article->id) }}" method="post"
-                        enctype="multipart/form-data">
+                    <form action="{{ route('articles.update', $article->id) }}" method="post">
                         @csrf
-                        @method('PUT')
-
-                        <div class="flex flex-col space-y-4">
-                            <div class="flex justify-between items-center">
+                        <div class="grid grid-cols-2 gap-6">
+                            <div>
                                 <label for="title" class="text-lg font-medium">Judul</label>
                                 <input value="{{ old('title', $article->title) }}" name="title"
                                     placeholder="Masukkan Judul Artikel" type="text"
-                                    class="border-gray-300 shadow-sm w-1/2 rounded-lg">
+                                    class="border-gray-300 shadow-sm w-full rounded-lg p-2">
                             </div>
 
-                            <div class="flex justify-between items-center">
-                                <label for="text" class="text-lg font-medium">Deskripsi</label>
-                                <textarea name="text" placeholder="Masukkan Deskripsi Artikel" class="border-gray-300 shadow-sm w-1/2 rounded-lg">{{ old('text', $article->text) }}</textarea>
-                            </div>
-
-                            <div class="flex justify-between items-center">
+                            <div>
                                 <label for="author" class="text-lg font-medium">Penulis</label>
                                 <input value="{{ old('author', $article->author) }}" name="author"
                                     placeholder="Masukkan Nama Penulis" type="text"
-                                    class="border-gray-300 shadow-sm w-1/2 rounded-lg">
+                                    class="border-gray-300 shadow-sm w-full rounded-lg p-2">
                             </div>
 
-                            <div class="flex justify-between items-center">
-                                <label for="summary" class="text-lg font-medium">Summary</label>
-                                <div class="relative w-1/2">
-                                    <textarea name="summary" id="summary" placeholder="Masukkan Summary Artikel"
-                                        class="border-gray-300 shadow-sm w-full rounded-lg pr-12 pb-6" maxlength="250"
-                                        oninput="updateCounter('summary', 'summaryCounter', 250)">{{ old('summary', $article->summary) }}</textarea>
-                                    <span id="summaryCounter"
-                                        class="absolute bottom-2 right-3 text-gray-400 text-sm">0/250</span>
-                                </div>
-                            </div>
-
-                            <div class="flex justify-between items-center">
-                                <label for="caption" class="text-lg font-medium">Caption</label>
-                                <div class="relative w-1/2">
-                                    <textarea name="caption" id="caption" placeholder="Masukkan Caption Artikel"
-                                        class="border-gray-300 shadow-sm w-full rounded-lg pr-12 pb-6" maxlength="200"
-                                        oninput="updateCounter('caption', 'captionCounter', 200)">{{ old('caption', $article->caption) }}</textarea>
-                                    <span id="captionCounter"
-                                        class="absolute bottom-2 right-3 text-gray-400 text-sm">0/200</span>
-                                </div>
-                            </div>
-
-                            <div class="flex justify-between items-center">
-                                <label for="fotografer" class="text-lg font-medium">Fotografer</label>
+                            <div>
+                                <label for="caption_image" class="text-lg font-medium">Caption Gambar</label>
                                 <input value="{{ old('fotografer', $article->fotografer) }}" name="fotografer"
                                     placeholder="Masukkan Nama Fotografer" type="text"
-                                    class="border-gray-300 shadow-sm w-1/2 rounded-lg">
+                                    class="border-gray-300 shadow-sm w-full rounded-lg p-2">
                             </div>
-
-                            <div class="flex justify-between items-center">
-                                <label for="status_articles" class="text-lg font-medium">Status Artikel</label>
+                            <div>
+                                <label for="tags" class="text-lg font-medium">Tags/Kata Kunci</label>
+                                <input id="tags" name="tags" placeholder="Tags" type="text"
+                                    class="border-gray-300 shadow-sm w-full rounded-lg advance-options"
+                                    value="{{ old('tags', implode(',', json_decode($article->tags))) }}">
+                            </div>
+                            <div>
+                                <label for="tgl_publish" class="text-lg font-medium">Tanggal Publish</label>
+                                <input value="{{ old('tgl_publish') }}" name="tgl_publish" placeholder="Tanggal Publish"
+                                    type="date" class="border-gray-300 shadow-sm w-full rounded-lg p-2">
+                                @error('tgl_publish')
+                                    <p class="text-red-400 font-medium">{{ $message }}</p>
+                                @enderror
+                            </div>
+                            <div>
+                                <label for="status_articles" class="text-lg font-medium">Status Publish</label>
                                 <select name="status_articles" id="status_articles"
-                                    class="border-gray-300 shadow-sm w-1/2 rounded-lg bg-white focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
+                                    class="border-gray-300 shadow-sm w-full rounded-lg p-2">
                                     onchange="updateStatusColor()">
                                     <option value="">Pilih Status</option>
                                     <option value="publish"
@@ -83,57 +66,54 @@
                                         perlu validasi</option>
                                 </select>
                             </div>
-                            <div class="flex justify-between items-center">
-                                <label for="tags" class="text-lg font-medium">Tag</label>
-                                <div class="w-1/2">
-                                    @if ($tags->isNotEmpty())
-                                        @foreach ($tags as $tag)
-                                            <div class="mt-3">
-                                                <input type="checkbox" id="tag-{{ $tag->id }}" class="rounded"
-                                                    name="tags_id[]" value="{{ $tag->id }}"
-                                                    {{ in_array($tag->id, $articleTags) ? 'checked' : '' }}>
-                                                <label for="tag-{{ $tag->id }}">{{ $tag->name }}</label>
-                                            </div>
-                                        @endforeach
-                                    @endif
+
+                            <div class="col-span-2">
+                                <label for="text" class="text-lg font-medium">Isi Konten</label>
+                                <textarea name="text" placeholder="Masukkan Deskripsi Artikel" id="text-editor"
+                                    class="border-gray-300 shadow-sm w-full rounded-lg p-2">{{ old('text', $article->text) }}</textarea>
+                            </div>
+
+                            <div class="col-span-2 relative">
+                                <label for="summary" class="text-lg font-medium">Ringkasan/Summary</label>
+                                <div class="relative">
+                                    <textarea name="summary" id="summary" placeholder="Masukkan Summary Artikel"
+                                        class="border-gray-300 shadow-sm w-full rounded-lg p-2 resize-y min-h-[100px]" maxlength="250"
+                                        oninput="updateCounter('summary', 'summaryCounter', 250)">{{ old('summary', $article->summary) }}</textarea>
+                                    <span id="summaryCounter"
+                                        class="absolute bottom-2 right-3 text-gray-400 text-sm bg-white px-1">0/250</span>
                                 </div>
                             </div>
-                            <div class="flex justify-between items-center">
-                                <label for="file" class="text-lg font-medium">Unggah Foto Warta</label>
+
+                            <div class="col-span-2 relative">
+                                <label for="caption" class="text-lg font-medium">Caption</label>
+                                <div class="relative">
+                                    <textarea name="caption" id="caption" placeholder="Masukkan Caption Artikel"
+                                        class="border-gray-300 shadow-sm w-full rounded-lg p-2 resize-y min-h-[100px]" maxlength="200"
+                                        oninput="updateCounter('caption', 'captionCounter', 200)">{{ old('caption', $article->caption) }}</textarea>
+                                    <span id="captionCounter"
+                                        class="absolute bottom-2 right-3 text-gray-400 text-sm bg-white px-1">0/200</span>
+                                </div>
+                            </div>
+
+
+                            <div>
+                                <label for="file" class="text-lg font-medium">Upload Image</label>
                                 <input type="file" name="file[]" id="file"
-                                    class="border-gray-300 shadow-sm w-1/2 rounded-lg" multiple>
+                                    class="border-gray-300 shadow-sm w-full rounded-lg p-2" multiple>
+                                {{-- <img id="imagePreview" class="hidden w-40 h-40 object-cover rounded-md shadow-md mt-3"> --}}
                             </div>
 
                             <div id="preview" class="mt-4">
-                                <!-- Preview gambar yang sudah diunggah -->
-                                @if ($mediaItems->count() > 0)
-                                    @foreach ($mediaItems as $media)
-                                        <div class="w-full h-auto block mx-auto mb-4 relative">
-                                            <img src="{{ $media->getUrl() }}" alt="Preview"
-                                                class="w-full h-auto block mx-auto">
-                                            <button type="button"
-                                                class="absolute top-2 right-2 bg-red-500 text-white px-2 py-1 rounded-full"
-                                                onclick="removeMedia('{{ $media->id }}')">X</button>
-                                        </div>
-                                    @endforeach
-                                @endif
-                            </div>
-
-                            <!-- Preview gambar baru yang diunggah -->
-                            <div id="new-preview" class="mt-4">
-                                <!-- Preview gambar baru akan ditampilkan di sini -->
+                                <!-- Preview gambar akan ditampilkan di sini -->
                             </div>
                         </div>
-
-                        <div class="flex justify-end">
-                            <button type="submit" class="bg-blue-500 text-white px-4 py-2 rounded-lg">Perbarui
-                                Artikel</button>
+                        <div class="mt-6 text-right">
+                            <button class="bg-slate-700 text-sm rounded-md text-white px-5 py-3">Submit</button>
                         </div>
+                    </form>
                 </div>
-                </form>
             </div>
         </div>
-    </div>
     </div>
 </x-app-layout>
 <script>

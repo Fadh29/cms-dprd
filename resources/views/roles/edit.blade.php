@@ -25,29 +25,31 @@
                                 @enderror
                             </div>
 
-                            <div class="grid grid-cols-4 mb-3">
-                                <div class="mt-3">
-                                    @if ($groupedPermissions->isNotEmpty())
-                                        @foreach ($groupedPermissions as $group => $perms)
-                                            <h3 class="font-bold inline-block">{{ $group }}</h3>
-                                            <input type="checkbox" class="ml-2 check-all-group"
-                                                data-group="{{ Str::slug($group) }}">
-                                            <label for="" class="ml-1 text-sm">Check All</label>
-                                            <ul class="mt-2">
-                                                @foreach ($perms as $perm)
-                                                    <li>
-                                                        <input type="checkbox" name="permission[]"
-                                                            class="rounded group-{{ Str::slug($group) }}"
-                                                            value="{{ old('name', $perm->name) }}"
-                                                            id="permission-{{ $perm->id }}"
-                                                            {{ $hasPermissions->contains($perm->name) ? 'checked' : '' }}>
-                                                        {{ $perm->name }}
-                                                    </li>
-                                                @endforeach
-                                            </ul>
-                                        @endforeach
-                                    @endif
-                                </div>
+                            <div class="grid grid-cols-4 gap-4 mt-6 mb-6">
+                                @foreach ($groupedPermissions as $group => $perms)
+                                    <div class="bg-gray-100 dark:bg-gray-700 p-4 rounded-lg shadow-lg">
+                                        <div class="flex justify-between items-center">
+                                            <h3 class="font-bold text-md ">{{ $group }}</h3>
+                                            <div>
+                                                <input type="checkbox" class="ml-2 check-all-group"
+                                                    data-group="{{ Str::slug($group) }}">
+                                                <label class="ml-1 text-sm">Check All</label>
+                                            </div>
+                                        </div>
+                                        <ul class="mt-2">
+                                            @foreach ($perms as $perm)
+                                                <li>
+                                                    <input type="checkbox" name="permission[]"
+                                                        class="rounded group-{{ Str::slug($group) }}"
+                                                        value="{{ old('name', $perm->name) }}"
+                                                        id="permission-{{ $perm->id }}"
+                                                        {{ $hasPermissions->contains($perm->name) ? 'checked' : '' }}>
+                                                    {{ $perm->name }}
+                                                </li>
+                                            @endforeach
+                                        </ul>
+                                    </div>
+                                @endforeach
                             </div>
 
                             <script>
