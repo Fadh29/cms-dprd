@@ -37,7 +37,7 @@
                                     {{ $item->title }}
                                 </td>
                                 <td class="px-6 py-4 text-left">
-                                    {{ Str::limit($item->text, 150, '...') }}
+                                    {{ Str::limit(strip_tags(html_entity_decode($item->text)), 150, '...') }}
                                 </td>
                                 <td class="px-6 py-4 text-left">
                                     <span class="inline-flex items-center px-3 py-1 rounded-full text-sm font-medium"

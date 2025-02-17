@@ -43,8 +43,9 @@
                             </div>
                             <div>
                                 <label for="tgl_publish" class="text-lg font-medium">Tanggal Publish</label>
-                                <input value="{{ old('tgl_publish') }}" name="tgl_publish" placeholder="Tanggal Publish"
-                                    type="date" class="border-gray-300 shadow-sm w-full rounded-lg p-2">
+                                <input value="{{ old('tgl_publish', $article->tgl_publish) }}" name="tgl_publish"
+                                    placeholder="Tanggal Publish" type="date"
+                                    class="border-gray-300 shadow-sm w-full rounded-lg p-2">
                                 @error('tgl_publish')
                                     <p class="text-red-400 font-medium">{{ $message }}</p>
                                 @enderror
@@ -69,8 +70,8 @@
 
                             <div class="col-span-2">
                                 <label for="text" class="text-lg font-medium">Isi Konten</label>
-                                <textarea name="text" placeholder="Masukkan Deskripsi Artikel" id="text-editor"
-                                    class="border-gray-300 shadow-sm w-full rounded-lg p-2">{{ old('text', $article->text) }}</textarea>
+                                <textarea name="text" placeholder="Masukkan Deskripsi Artikel" id="summernoteWarta"
+                                    class="border-gray-300 shadow-sm w-full rounded-lg p-2" rows="10">{{ old('text', $article->text) }}</textarea>
                             </div>
 
                             <div class="col-span-2 relative">
@@ -96,15 +97,24 @@
                             </div>
 
 
+                            <!-- Input File -->
                             <div>
                                 <label for="file" class="text-lg font-medium">Upload Image</label>
                                 <input type="file" name="file[]" id="file"
                                     class="border-gray-300 shadow-sm w-full rounded-lg p-2" multiple>
-                                {{-- <img id="imagePreview" class="hidden w-40 h-40 object-cover rounded-md shadow-md mt-3"> --}}
                             </div>
 
+                            <!-- Preview Gambar Lama -->
+                            <!-- Tampilkan Gambar yang Sudah Diupload -->
                             <div id="preview" class="mt-4">
-                                <!-- Preview gambar akan ditampilkan di sini -->
+                                @if ($article->getMedia('images')->isNotEmpty())
+                                    @foreach ($article->getMedia('images') as $image)
+                                        <img src="{{ $image->getFullUrl() }}"
+                                            class="preview-image w-40 h-40 object-cover rounded-md shadow-md mt-3">
+                                    @endforeach
+                                @else
+                                    <p class="text-gray-500">Belum ada gambar yang diunggah.</p>
+                                @endif
                             </div>
                         </div>
                         <div class="mt-6 text-right">
@@ -150,35 +160,55 @@
     // Perbarui warna saat pilihan berubah
     document.getElementById('status_articles').addEventListener('change', updateStatusColor);
 
-    document.getElementById('file').addEventListener('change', function(event) {
-        const files = event.target.files;
-        const previewContainer = document.getElementById('new-preview');
-        previewContainer.innerHTML = ''; // Kosongkan kontainer preview sebelumnya
+    document.addEventListener('DOMContentLoaded', function() {
+        const fileInput = document.getElementById('file');
+        const previewContainer = document.getElementById('preview');
 
-        for (let i = 0; i < files.length; i++) {
-            const file = files[i];
-            const reader = new FileReader();
+        fileInput.addEventListener('change', function(event) {
+            const files = event.target.files;
+            previewContainer.innerHTML = ''; // Hapus preview lama saat memilih gambar baru
 
-            reader.onload = function(e) {
-                const img = document.createElement('img');
-                img.src = e.target.result;
-                img.classList.add('w-full', 'h-auto', 'block', 'mx-auto', 'mb-4');
-                previewContainer.appendChild(img);
-            };
-
-            reader.readAsDataURL(file);
-        }
+            for (let i = 0; i < files.length; i++) {
+                const file = files[i];
+                if (file.type.startsWith('image/')) {
+                    const reader = new FileReader();
+                    reader.onload = function(e) {
+                        const img = document.createElement('img');
+                        img.src = e.target.result;
+                        img.classList.add('w-40', 'h-40', 'object-cover', 'rounded-md', 'shadow-md',
+                            'mt-3');
+                        previewContainer.appendChild(img);
+                    };
+                    reader.readAsDataURL(file);
+                }
+            }
+        });
     });
 
-    document.querySelectorAll('.delete-media').forEach(button => {
-        button.addEventListener('click', function() {
-            const mediaId = this.getAttribute('data-media-id');
-            const mediaToDeleteInput = document.getElementById('media-to-delete');
-            const currentValues = mediaToDeleteInput.value.split(',').filter(id => id !== '');
-            currentValues.push(mediaId);
-            mediaToDeleteInput.value = currentValues.join(',');
-
-            this.parentElement.remove();
+    $(document).ready(function() {
+        // Inisialisasi Summernote
+        $('#summernoteWarta').summernote({
+            height: 300,
+            placeholder: 'Masukkan deskripsi tupoksi...',
+            toolbar: [
+                ['style', ['bold', 'italic', 'underline', 'clear']],
+                ['font', ['strikethrough', 'superscript', 'subscript']],
+                ['fontsize', ['fontsize']],
+                ['color', ['color']],
+                ['para', ['ul', 'ol', 'paragraph']],
+                ['height', ['height']],
+                ['insert', ['link', 'picture', 'video']],
+                ['view', ['fullscreen', 'codeview', 'help']]
+            ]
         });
+
+        // Update preview saat Summernote berubah
+        // $('#summernoteWarta').on('summernote.change', function(_, contents) {
+        //     $('#preview').html(contents);
+        // });
+
+        // Saat halaman dimuat, isi preview dengan teks lama
+        let initialContent = $('#summernoteWarta').summernote('code');
+        // $('#preview').html(initialContent);
     });
 </script>

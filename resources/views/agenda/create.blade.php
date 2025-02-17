@@ -31,7 +31,7 @@
                             <input type="date" name="tanggal_kegiatan" id="tanggal_kegiatan"
                                 class="border-gray-300 shadow-sm w-1/2 rounded-lg">
                         </div>
-                        <hr>
+                        <hr class="mb-4 border-slate-900">
 
                         <div id="kegiatan-container">
                             <div class="kegiatan-item mb-4">

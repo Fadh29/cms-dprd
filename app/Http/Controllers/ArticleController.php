@@ -133,7 +133,7 @@ class ArticleController extends Controller implements HasMiddleware
             'text.min' => 'Deskripsi minimal 20 karakter.',
             'author.required' => 'Penulis harus diisi.',
             'author.min' => 'Penulis minimal 3 karakter.',
-            'file.*.mimes' => 'File harus berupa gambar (jpg, jpeg, png).',
+            'file.*.mimes' => 'File harus berupa gambar (jpg, jpeg, png, pdf).',
             'file.*.max' => 'Ukuran file maksimal 2MB.',
             'summary.required' => 'Summary harus diisi.',
             'caption.required' => 'Caption harus diisi.',
@@ -143,6 +143,7 @@ class ArticleController extends Controller implements HasMiddleware
         ]);
 
         if ($validator->passes()) {
+            // dd($request);
             $article = new Articles();
             $article->title = $request->title;
             $article->text = $request->text;
@@ -167,10 +168,10 @@ class ArticleController extends Controller implements HasMiddleware
             // Proses file
             if ($request->hasFile('file')) {
                 foreach ($request->file('file') as $file) {
-                    $article->addMedia($file)->toMediaCollection('images');
+                    $article->addMedia($file)
+                        ->toMediaCollection('images', 'public'); // Simpan langsung ke 'public' disk
                 }
             }
-
             return redirect()->route('articles.list')->with('success', 'Artikel berhasil disimpan.');
         } else {
             return redirect()->back()->withErrors($validator)->withInput();
@@ -212,11 +213,14 @@ class ArticleController extends Controller implements HasMiddleware
      */
     public function update(Request $request, string $id)
     {
+        $article = Articles::findOrFail($id);
+
         // Validasi input
         $validator = Validator::make($request->all(), [
             'title' => 'required|min:3',
             'text' => 'required|min:20',
             'author' => 'required|min:3',
+            'file' => 'nullable|array', // Pastikan `file` berupa array jika lebih dari satu
             'file.*' => 'nullable|file|mimes:jpg,jpeg,png,pdf|max:2048',
             'summary' => 'required',
             'caption' => 'required',
@@ -238,40 +242,48 @@ class ArticleController extends Controller implements HasMiddleware
             'status_articles.required' => 'Pilih Status Artikel.',
             'tgl_publish.required' => 'Tanggal Publish Harus Diisi.',
         ]);
+        // dd($article->getMedia('images')->first()->getPath());
 
-        if ($validator->passes()) {
-            $article = Articles::findOrFail($id);
-            $article->title = $request->title;
-            $article->text = $request->text;
-            $article->author = $request->author;
-            $article->summary = $request->summary;
-            $article->caption = $request->caption;
-            $article->fotografer = $request->fotografer;
-            $article->status_articles = $request->status_articles;
-            $article->tags = json_encode($request->tags);
-            $article->tgl_publish = $request->tgl_publish;
-
-            if ($request->has('tags')) {
-                $tags = json_decode($request->tags, true); // Decode JSON dari Tagify
-                $article->tags = json_encode(array_column($tags, 'value')); // Encode ke JSON sebelum disimpan
-            } else {
-                $article->tags = json_encode([]); // Pastikan tetap dalam format JSON
-            }
-            $article->save();
-
-
-            if ($request->hasFile('file')) {
-                foreach ($request->file('file') as $file) {
-                    $article->addMedia($file)->toMediaCollection('images');
-                }
-            }
-
-            return redirect()->route('articles.list')->with('success', 'Artikel berhasil diperbarui.');
-        } else {
+        if ($validator->fails()) {
             return redirect()->back()->withErrors($validator)->withInput();
         }
-    }
 
+        // Update data artikel
+        $article->update([
+            'title' => $request->title,
+            'text' => $request->text,
+            'author' => $request->author,
+            'summary' => $request->summary,
+            'caption' => $request->caption,
+            'fotografer' => $request->fotografer,
+            'status_articles' => $request->status_articles,
+            'tgl_publish' => $request->tgl_publish,
+            'tags' => $request->has('tags') ? json_encode(array_column(json_decode($request->tags, true), 'value')) : json_encode([]),
+        ]);
+
+        // **Cek apakah ada file baru yang diunggah**
+        if ($request->hasFile('file')) {
+            $article->clearMediaCollection('images');
+            foreach ($request->file('file') as $file) {
+                $article->addMedia($file)
+                    ->preservingOriginal()
+                    ->toMediaCollection('images', 'public'); // Disimpan langsung ke public/images
+            }
+        }
+
+        // if ($request->hasFile('file')) {
+        //     // Hapus file lama hanya jika ada file baru
+        //     $article->clearMediaCollection('images');
+
+        //     // **Upload file baru**
+        //     foreach ((array) $request->file('file') as $file) {
+        //         $article->addMedia($file)->toMediaCollection('images');
+        //     }
+        // }
+
+
+        return redirect()->route('articles.list')->with('success', 'Artikel berhasil diperbarui.');
+    }
 
     /**
      * Remove the specified resource from storage.

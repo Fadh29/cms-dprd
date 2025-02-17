@@ -7,6 +7,7 @@ use App\Http\Controllers\PermissionController;
 use App\Http\Controllers\ProfileController;
 use App\Http\Controllers\RoleController;
 use App\Http\Controllers\TagsController;
+use App\Http\Controllers\TataTertibController;
 use App\Http\Controllers\TupoksiController;
 use App\Http\Controllers\UserController;
 use Illuminate\Support\Facades\Route;
@@ -77,6 +78,9 @@ Route::middleware('auth')->group(function () {
 
     Route::get('/tupoksi/create', [TupoksiController::class, 'create'])->name('tupoksi.create');
     Route::post('/tupoksi', [TupoksiController::class, 'store'])->name('tupoksi.store');
+
+    Route::get('/tata-tertib/create', [TataTertibController::class, 'create'])->name('tata_tertib.create');
+    Route::post('/tata-tertib', [TataTertibController::class, 'store'])->name('tata_tertib.store');
 });
 
 require __DIR__ . '/auth.php';

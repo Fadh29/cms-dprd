@@ -36,47 +36,63 @@
                         <div id="tamu-container">
                             <div class="tamu-item mb-4">
                                 <h3 class="text-lg font-medium">Data Tamu</h3>
+
                                 <div class="flex justify-between items-center mt-2">
                                     <label for="badan_0" class="text-lg font-medium">Badan</label>
                                     <input type="text" name="tamu[0][badan]" id="badan_0"
-                                        class="border-gray-300 shadow-sm w-1/2 rounded-lg">
+                                        class="border-gray-300 shadow-sm w-1/2 rounded-lg"
+                                        value="{{ old('tamu.0.badan') }}">
                                 </div>
+
                                 <div class="flex justify-between items-center mt-2">
                                     <label for="agenda_0" class="text-lg font-medium">Agenda</label>
                                     <input type="text" name="tamu[0][agenda]" id="agenda_0"
-                                        class="border-gray-300 shadow-sm w-1/2 rounded-lg">
+                                        class="border-gray-300 shadow-sm w-1/2 rounded-lg"
+                                        value="{{ old('tamu.0.agenda') }}">
                                 </div>
+
                                 <div class="flex justify-between items-center mt-2">
                                     <label for="akd_terkait_0" class="text-lg font-medium">AKD Terkait</label>
                                     <input type="text" name="tamu[0][akd_terkait]" id="akd_terkait_0"
-                                        class="border-gray-300 shadow-sm w-1/2 rounded-lg">
+                                        class="border-gray-300 shadow-sm w-1/2 rounded-lg"
+                                        value="{{ old('tamu.0.akd_terkait') }}">
                                 </div>
+
                                 <div class="flex justify-between items-center mt-2">
                                     <label for="bagian_terkait_0" class="text-lg font-medium">Bagian Terkait</label>
                                     <input type="text" name="tamu[0][bagian_terkait]" id="bagian_terkait_0"
-                                        class="border-gray-300 shadow-sm w-1/2 rounded-lg">
+                                        class="border-gray-300 shadow-sm w-1/2 rounded-lg"
+                                        value="{{ old('tamu.0.bagian_terkait') }}">
                                 </div>
+
                                 <div class="flex justify-between items-center mt-2">
                                     <label for="jam_mulai_0" class="text-lg font-medium">Jam Mulai</label>
                                     <input type="time" name="tamu[0][jam_mulai]" id="jam_mulai_0"
-                                        class="border-gray-300 shadow-sm w-1/2 rounded-lg">
+                                        class="border-gray-300 shadow-sm w-1/2 rounded-lg"
+                                        value="{{ old('tamu.0.jam_mulai') }}">
                                 </div>
+
                                 <div class="flex justify-between items-center mt-2">
                                     <label for="jam_selesai_0" class="text-lg font-medium">Jam Selesai</label>
                                     <input type="time" name="tamu[0][jam_selesai]" id="jam_selesai_0"
-                                        class="border-gray-300 shadow-sm w-1/2 rounded-lg">
+                                        class="border-gray-300 shadow-sm w-1/2 rounded-lg"
+                                        value="{{ old('tamu.0.jam_selesai') }}">
                                 </div>
+
                                 <div class="flex justify-between items-center mt-2">
-                                    <label for="tanggal_tamu_mulai_0" class="text-lg font-medium">Tanggal kedatangan
-                                        tamu</label>
+                                    <label for="tanggal_tamu_mulai_0" class="text-lg font-medium">Tanggal Kedatangan
+                                        Tamu</label>
                                     <input type="date" name="tamu[0][tanggal_tamu_mulai]" id="tanggal_tamu_mulai_0"
-                                        class="border-gray-300 shadow-sm w-1/2 rounded-lg">
+                                        class="border-gray-300 shadow-sm w-1/2 rounded-lg"
+                                        value="{{ old('tamu.0.tanggal_tamu_mulai') }}">
                                 </div>
+
                                 <div class="flex justify-between items-center mt-2">
-                                    <label for="tanggal_tamu_selesai_0" class="text-lg font-medium">Tanggal kepulangan
-                                        tamu</label>
+                                    <label for="tanggal_tamu_selesai_0" class="text-lg font-medium">Tanggal Kepulangan
+                                        Tamu</label>
                                     <input type="date" name="tamu[0][tanggal_tamu_selesai]"
-                                        id="tanggal_tamu_selesai_0" class="border-gray-300 shadow-sm w-1/2 rounded-lg">
+                                        id="tanggal_tamu_selesai_0" class="border-gray-300 shadow-sm w-1/2 rounded-lg"
+                                        value="{{ old('tamu.0.tanggal_tamu_selesai') }}">
                                 </div>
                             </div>
                         </div>

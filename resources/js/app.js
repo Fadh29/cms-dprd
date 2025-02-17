@@ -224,3 +224,36 @@ readMoreBtn.addEventListener('click', () => {
   }
 });
 
+$(document).ready(function() {
+    // Inisialisasi Summernote
+    $('#summernote').summernote({
+        height: 300,
+        placeholder: 'Masukkan deskripsi tupoksi...',
+        toolbar: [
+            ['style', ['bold', 'italic', 'underline', 'clear']],
+            ['font', ['strikethrough', 'superscript', 'subscript']],
+            ['fontsize', ['fontsize']],
+            ['color', ['color']],
+            ['para', ['ul', 'ol', 'paragraph']],
+            ['height', ['height']],
+            ['insert', ['link', 'picture', 'video']],
+            ['view', ['fullscreen', 'codeview', 'help']]
+        ],
+        popover: {
+            image: [
+                ['image', ['resizeFull', 'resizeHalf', 'resizeQuarter', 'resizeNone']],
+                ['float', ['floatLeft', 'floatRight', 'floatNone']],
+                ['remove', ['removeMedia']]
+            ]
+        }
+    });
+
+    // Update preview saat Summernote berubah
+    $('#summernote').on('summernote.change', function(_, contents) {
+        $('#preview').html(contents);
+    });
+
+    // Saat halaman dimuat, isi preview dengan teks lama
+    let initialContent = $('#summernote').summernote('code');
+    $('#preview').html(initialContent);
+});

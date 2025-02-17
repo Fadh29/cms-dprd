@@ -43,8 +43,7 @@ class ApaSiapaController extends Controller implements HasMiddleware
             'tamu.*.agenda' => 'required|string',
             'tamu.*.akd_terkait' => 'string',
             'tamu.*.bagian_terkait' => 'string',
-            'tamu.*.jam_mulai' => 'date_format:H:i:s',
-            'tamu.*.jam_selesai' => 'date_format:H:i:s',
+            'tamu.*.jam_mulai' => 'required',
             'tanggal_tamu_mulai' => 'date',
             'tanggal_tamu_selesai' => 'date',
         ], [
@@ -64,8 +63,7 @@ class ApaSiapaController extends Controller implements HasMiddleware
             'tamu.*.bagian_terkait.required' => 'Bagian terkait harus diisi.',
             'tamu.*.bagian_terkait.string' => 'Bagian terkait harus berupa teks.',
 
-            'tamu.*.jam_mulai.date_format' => 'Jam mulai harus dalam format HH:MM.',
-            'tamu.*.jam_selesai.date_format' => 'Jam selesai harus dalam format HH:MM.',
+            'tamu.*.jam_mulai.required' => 'Jam mulai harus diisi.',
 
             'tamu.*.tanggal_tamu_mulai.date_format' => 'Tanggal mulai harus dalam format',
             'tamu.*.tanggal_tamu_selesai.date_format' => 'Tanggal selesai harus dalam format',
@@ -77,6 +75,12 @@ class ApaSiapaController extends Controller implements HasMiddleware
 
         // dd($request);
 
+        // Cek apakah tanggal_kegiatan_mulai sudah ada di database
+        $exists = ApaSiapa::whereDate('tanggal_kegiatan_mulai', $request->tanggal_kegiatan_mulai)->exists();
+
+        if ($exists) {
+            return redirect()->back()->withErrors(['tanggal_kegiatan_mulai' => 'Tanggal sudah ada, tidak dapat menambahkan data. Silakan edit tanggal tersebut.'])->withInput();
+        }
         $apaSiapa = ApaSiapa::create([
             'tanggal_kegiatan_mulai' => $request->tanggal_kegiatan_mulai,
         ]);
@@ -87,12 +91,12 @@ class ApaSiapaController extends Controller implements HasMiddleware
                     'apa_siapa_id' => $apaSiapa->id,
                     'badan' => $tamu['badan'],
                     'agenda' => $tamu['agenda'],
-                    'akd_terkait' => $tamu['akd_terkait'],
-                    'bagian_terkait' => $tamu['bagian_terkait'],
+                    'akd_terkait' => $tamu['akd_terkait'] ?? null,
+                    'bagian_terkait' => $tamu['bagian_terkait'] ?? null,
                     'jam_mulai' => $tamu['jam_mulai'],
-                    'jam_selesai' => $tamu['jam_selesai'],
-                    'tanggal_tamu_mulai' => $tamu['tanggal_tamu_mulai'],
-                    'tanggal_tamu_selesai' => $tamu['tanggal_tamu_selesai'],
+                    'jam_selesai' => $tamu['jam_selesai'] ?? null,
+                    'tanggal_tamu_mulai' => $tamu['tanggal_tamu_mulai'] ?? null,
+                    'tanggal_tamu_selesai' => $tamu['tanggal_tamu_selesai'] ?? null,
                 ]);
             }
         }
