@@ -1,7 +1,24 @@
+// import './bootstrap';
+// import Tagify from '@yaireo/tagify';
+// import '@yaireo/tagify/dist/tagify.css';
+// import Alpine from 'alpinejs';
+// import $ from 'jquery';
+// import 'datatables.net';
+// import 'datatables.net-bs5/css/dataTables.bootstrap5.min.css';
+
+// window.$ = window.jQuery = $;
+
 import './bootstrap';
 import Tagify from '@yaireo/tagify';
 import '@yaireo/tagify/dist/tagify.css';
 import Alpine from 'alpinejs';
+import 'datatables.net-bs5';
+import 'datatables.net-buttons-bs5';
+import 'datatables.net-responsive-bs5';
+import 'datatables.net-bs5/css/dataTables.bootstrap5.min.css';
+import $ from 'jquery';
+window.$ = window.jQuery = $;
+
 
 window.Alpine = Alpine;
 

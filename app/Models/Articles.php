@@ -27,6 +27,7 @@ class Articles extends Model implements HasMedia
     // Kolom yang dapat diisi (fillable)
     protected $fillable = [
         'title',
+        'text',
         'content',
         'author',
         // 'tags_id',

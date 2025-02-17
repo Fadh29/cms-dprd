@@ -6,9 +6,11 @@ use App\Models\Article;
 use App\Models\Tags as ModelsTags;
 use App\Models\Articles;
 use Illuminate\Http\Request;
+use Illuminate\Support\Str;
 use Illuminate\Support\Facades\Validator;
 use Illuminate\Routing\Controllers\HasMiddleware;
 use Illuminate\Routing\Controllers\Middleware;
+use Yajra\DataTables\Facades\DataTables;
 use Spatie\MediaLibrary\MediaCollections\Models\Media;
 
 use function Pest\Laravel\json;
@@ -28,12 +30,35 @@ class ArticleController extends Controller implements HasMiddleware
     /**
      * Display a listing of the resource.
      */
-    public function index()
+    public function index(Request $request)
     {
-        $articles = Articles::latest()->paginate(10);
-        return view('articles.list', [
-            'articles' => $articles,
-        ]);
+        if ($request->ajax()) {
+            $articles = Articles::latest()->select('id', 'title', 'text', 'status_articles', 'author', 'created_at');
+
+            return DataTables::of($articles)
+                ->addIndexColumn()
+                ->editColumn('text', function ($article) {
+                    return \Str::limit(strip_tags(html_entity_decode($article->text)), 150, '...');
+                })
+                ->editColumn('status_articles', function ($article) {
+                    $status = [
+                        'publish' => ['bg' => '#ecfdf5', 'text' => '#16a34a'],
+                        'draft' => ['bg' => '#fefcbf', 'text' => '#d97706'],
+                        'validasi' => ['bg' => '#fef2f2', 'text' => '#dc2626'],
+                    ];
+                    return '<span class="px-3 py-1 rounded-full text-sm font-medium" style="background-color: ' . $status[$article->status_articles]['bg'] . '; color: ' . $status[$article->status_articles]['text'] . ';">' . $article->status_articles . '</span>';
+                })
+                ->editColumn('created_at', function ($article) {
+                    return \Carbon\Carbon::parse($article->created_at)->format('d M, Y');
+                })
+                ->addColumn('action', function ($article) {
+                    return view('articles.partials.actions', compact('article'))->render();
+                })
+                ->rawColumns(['status_articles', 'action'])
+                ->make(true);
+        }
+
+        return view('articles.list');
     }
 
     /**
@@ -243,6 +268,7 @@ class ArticleController extends Controller implements HasMiddleware
             'tgl_publish.required' => 'Tanggal Publish Harus Diisi.',
         ]);
         // dd($article->getMedia('images')->first()->getPath());
+        // dd($request->text, $article->text);
 
         if ($validator->fails()) {
             return redirect()->back()->withErrors($validator)->withInput();

@@ -69,9 +69,14 @@
                             </div>
 
                             <div class="col-span-2">
-                                <label for="text" class="text-lg font-medium">Isi Konten</label>
-                                <textarea name="text" placeholder="Masukkan Deskripsi Artikel" id="summernoteWarta"
-                                    class="border-gray-300 shadow-sm w-full rounded-lg p-2" rows="10">{{ old('text', $article->text) }}</textarea>
+                                <label for="editor" class="text-lg font-medium">Isi Konten</label>
+                                <div class="toolbar-container"></div>
+                                <div id="editor" class="border-gray-300 shadow-sm w-full rounded-lg p-2"
+                                    contenteditable="true">
+                                    {!! old('text', $article->text ?? '') !!}
+                                </div>
+                                <input type="hidden" name="text" id="editor-content"
+                                    value="{{ old('text', $article->text ?? '') }}">
                             </div>
 
                             <div class="col-span-2 relative">
@@ -185,30 +190,53 @@
         });
     });
 
-    $(document).ready(function() {
-        // Inisialisasi Summernote
-        $('#summernoteWarta').summernote({
-            height: 300,
-            placeholder: 'Masukkan deskripsi tupoksi...',
-            toolbar: [
-                ['style', ['bold', 'italic', 'underline', 'clear']],
-                ['font', ['strikethrough', 'superscript', 'subscript']],
-                ['fontsize', ['fontsize']],
-                ['color', ['color']],
-                ['para', ['ul', 'ol', 'paragraph']],
-                ['height', ['height']],
-                ['insert', ['link', 'picture', 'video']],
-                ['view', ['fullscreen', 'codeview', 'help']]
-            ]
+    document.addEventListener("DOMContentLoaded", function() {
+        updateCounter("summary", "summaryCounter", 250);
+        updateCounter("caption", "captionCounter", 200);
+
+        // Tambahkan event listener ke textarea agar langsung update saat diketik
+        document.getElementById("summary").addEventListener("input", function() {
+            updateCounter("summary", "summaryCounter", 250);
         });
 
-        // Update preview saat Summernote berubah
-        // $('#summernoteWarta').on('summernote.change', function(_, contents) {
-        //     $('#preview').html(contents);
-        // });
+        document.getElementById("caption").addEventListener("input", function() {
+            updateCounter("caption", "captionCounter", 200);
+        });
+    });
+
+    document.addEventListener("DOMContentLoaded", function() {
+        DecoupledEditor.create(document.querySelector('#editor'))
+            .then(editor => {
+                const toolbarContainer = document.querySelector('.toolbar-container');
+                toolbarContainer.appendChild(editor.ui.view.toolbar.element);
+
+                // Simpan isi editor ke input hidden sebelum submit form
+                editor.model.document.on('change:data', () => {
+                    document.querySelector("#editor-content").value = editor.getData();
+                });
+
+                window.editor = editor;
+            })
+            .catch(error => {
+                console.error('Error initializing CKEditor:', error);
+            });
+
+        $('#editor').on('editor.change', function(_, contents) {
+            $('#preview').html(contents);
+        });
 
         // Saat halaman dimuat, isi preview dengan teks lama
-        let initialContent = $('#summernoteWarta').summernote('code');
-        // $('#preview').html(initialContent);
+        let initialContent = $('#editor').ckeditor('code');
+        $('#preview').html(initialContent);
+    });
+
+    document.addEventListener("DOMContentLoaded", function() {
+        let editor = document.getElementById("editor");
+        let hiddenInput = document.getElementById("editor-content");
+
+        // Simpan isi editor ke input hidden sebelum form dikirim
+        document.querySelector("form").addEventListener("submit", function() {
+            hiddenInput.value = editor.innerHTML;
+        });
     });
 </script>

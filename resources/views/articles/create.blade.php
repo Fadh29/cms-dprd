@@ -63,16 +63,29 @@
                                 <select name="status_articles" id="status_articles"
                                     class="border-gray-300 shadow-sm w-full rounded-lg p-2">
                                     <option value="validasi"
-                                        {{ old('status_articles') == 'validasi' ? 'selected' : '' }} selected @readonly(true)>
+                                        {{ old('status_articles') == 'validasi' ? 'selected' : '' }} selected
+                                        @readonly(true)>
                                         perlu validasi</option>
                                 </select>
                             </div>
 
                             <div class="col-span-2">
+                                <label for="editor" class="text-lg font-medium">Isi Konten</label>
+                                <div class="toolbar-container"></div>
+                                <div id="editor" class="border-gray-300 shadow-sm w-full rounded-lg p-2">
+                                    {!! old('text') !!}
+                                </div>
+                                <input type="hidden" name="text" id="editor-content" value="{{ old('text') }}">
+                                @error('text')
+                                    <p class="text-red-400 font-medium">{{ $message }}</p>
+                                @enderror
+                            </div>
+
+                            {{-- <div class="col-span-2">
                                 <label for="text" class="text-lg font-medium">Isi Konten</label>
                                 <textarea id="summernoteWarta" name="text" placeholder="Masukkan Deskripsi Artikel"
                                     class="border-gray-300 shadow-sm w-full rounded-lg p-2" rows="10">{{ old('text') }}</textarea>
-                            </div>
+                            </div> --}}
 
                             <div class="col-span-2 relative">
                                 <label for="summary" class="text-lg font-medium">Ringkasan/Summary</label>
@@ -164,30 +177,70 @@
         }
     });
 
-    $(document).ready(function() {
-    // Inisialisasi Summernote
-    $('#summernoteWarta').summernote({
-        height: 300,
-        placeholder: 'Masukkan deskripsi tupoksi...',
-        toolbar: [
-            ['style', ['bold', 'italic', 'underline', 'clear']],
-            ['font', ['strikethrough', 'superscript', 'subscript']],
-            ['fontsize', ['fontsize']],
-            ['color', ['color']],
-            ['para', ['ul', 'ol', 'paragraph']],
-            ['height', ['height']],
-            ['insert', ['link', 'picture', 'video']],
-            ['view', ['fullscreen', 'codeview', 'help']]
-        ]
+    function updateCounter(textareaId, counterId, maxLength) {
+        let textarea = document.getElementById(textareaId);
+        let counter = document.getElementById(counterId);
+        let currentLength = textarea.value.length;
+
+        // Menampilkan jumlah karakter saat ini dibandingkan batas maksimum
+        counter.textContent = `${currentLength}/${maxLength}`;
+
+        // Jika mencapai batas, ubah warna teks menjadi merah
+        if (currentLength >= maxLength) {
+            counter.classList.add("text-red-500");
+        } else {
+            counter.classList.remove("text-red-500");
+        }
+    }
+
+    // Inisialisasi counter saat halaman dimuat
+    document.addEventListener("DOMContentLoaded", function() {
+        updateCounter("summary", "summaryCounter", 250);
+        updateCounter("caption", "captionCounter", 200);
+
+        // Tambahkan event listener ke textarea agar langsung update saat diketik
+        document.getElementById("summary").addEventListener("input", function() {
+            updateCounter("summary", "summaryCounter", 250);
+        });
+
+        document.getElementById("caption").addEventListener("input", function() {
+            updateCounter("caption", "captionCounter", 200);
+        });
     });
 
-    // Update preview saat Summernote berubah
-    // $('#summernoteWarta').on('summernote.change', function(_, contents) {
-    //     $('#preview').html(contents);
-    // });
+    document.addEventListener("DOMContentLoaded", function() {
+        DecoupledEditor.create(document.querySelector('#editor'))
+            .then(editor => {
+                const toolbarContainer = document.querySelector('.toolbar-container');
+                toolbarContainer.appendChild(editor.ui.view.toolbar.element);
 
-    // Saat halaman dimuat, isi preview dengan teks lama
-    let initialContent = $('#summernoteWarta').summernote('code');
-    // $('#preview').html(initialContent);
-});
+                // Simpan isi editor ke input hidden sebelum submit form
+                editor.model.document.on('change:data', () => {
+                    document.querySelector("#editor-content").value = editor.getData();
+                });
+
+                window.editor = editor;
+            })
+            .catch(error => {
+                console.error('Error initializing CKEditor:', error);
+            });
+
+        // $('#editor').on('editor.change', function(_, contents) {
+        //     $('#preview').html(contents);
+        // });
+
+        // // Saat halaman dimuat, isi preview dengan teks lama
+        // let initialContent = $('#editor').ckeditor('code');
+        // $('#preview').html(initialContent);
+    });
+
+    document.addEventListener("DOMContentLoaded", function() {
+        let editor = document.getElementById("editor");
+        let hiddenInput = document.getElementById("editor-content");
+
+        // Simpan isi editor ke input hidden sebelum form dikirim
+        document.querySelector("form").addEventListener("submit", function() {
+            hiddenInput.value = editor.innerHTML;
+        });
+    });
 </script>
