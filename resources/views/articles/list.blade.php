@@ -14,20 +14,20 @@
     <div class="py-12">
         <div class="max-w-7xl mx-auto sm:px-6 lg:px-8">
             <x-message></x-message>
-            <table id="articles-table" class="min-w-full bg-white border border-gray-200">
+            <table id="articles-table" class="w-full table-auto">
                 <thead class="bg-gray-500 text-white">
-                    <tr>
-                        <th class="px-6 py-4 text-center">No</th>
-                        <th class="px-6 py-4 text-center">Judul</th>
-                        <th class="px-6 py-4 text-center">Deskripsi</th>
+                    <tr class="border-b">
+                        <th class="px-6 py-4 text-left">No</th>
+                        <th class="px-6 py-4 text-left">Judul</th>
+                        <th class="px-6 py-4 text-left">Deskripsi</th>
                         <th class="px-6 py-4 text-center">Status</th>
-                        <th class="px-6 py-4 text-center">Author</th>
+                        <th class="px-6 py-4 text-left">Author</th>
                         <th class="px-6 py-4 text-center">Hari/ Tanggal Unggahan</th>
                         <th class="px-6 py-4 text-center">Action</th>
                     </tr>
                 </thead>
-                <tbody class="text-gray-700">
-                    <!-- Data akan diisi oleh DataTables -->
+                <tbody>
+                    <!-- Data akan diambil melalui AJAX -->
                 </tbody>
             </table>
         </div>
@@ -39,23 +39,23 @@
                 $('#articles-table').DataTable({
                     processing: true,
                     serverSide: true,
-                    ajax: "{{ route('articles.list') }}",
+                    ajax: "{{ route('articles.list') }}", // Pastikan rutenya sesuai
                     columns: [{
                             data: 'DT_RowIndex',
                             name: 'DT_RowIndex',
                             orderable: false,
                             searchable: false,
-                            className: "text-center"
+                            className: "text-right"
                         },
                         {
                             data: 'title',
                             name: 'title',
-                            className: "text-left"
+                            className: "text-center"
                         },
                         {
                             data: 'text',
                             name: 'text',
-                            className: "text-left truncate max-w-sm"
+                            className: "text-left"
                         },
                         {
                             data: 'status_articles',
@@ -91,34 +91,9 @@
                             previous: "Sebelumnya"
                         },
                         processing: "Memproses..."
-                    },
-                    pageLength: 10,
-                    order: [
-                        [5, 'desc']
-                    ]
+                    }
                 });
             });
-
-            function openDeleteModal(id) {
-                if (confirm('Apakah Anda yakin ingin menghapus artikel ini?')) {
-                    fetch('{{ route('articles.destroy', ':id') }}'.replace(':id', id), {
-                            method: "DELETE",
-                            headers: {
-                                "Content-Type": "application/json",
-                                "X-CSRF-TOKEN": '{{ csrf_token() }}'
-                            }
-                        })
-                        .then(response => response.json())
-                        .then(data => {
-                            if (data.status) {
-                                $('#articles-table').DataTable().ajax.reload();
-                            } else {
-                                alert("Gagal menghapus artikel.");
-                            }
-                        })
-                        .catch(error => console.error("Error:", error));
-                }
-            }
         </script>
     </x-slot>
 </x-app-layout>

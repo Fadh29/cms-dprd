@@ -37,6 +37,9 @@ class ArticleController extends Controller implements HasMiddleware
 
             return DataTables::of($articles)
                 ->addIndexColumn()
+                ->editColumn('title', function ($article) {
+                    return \Str::words($article->title, 10, '...');
+                })
                 ->editColumn('text', function ($article) {
                     return \Str::limit(strip_tags(html_entity_decode($article->text)), 150, '...');
                 })
@@ -45,6 +48,7 @@ class ArticleController extends Controller implements HasMiddleware
                         'publish' => ['bg' => '#ecfdf5', 'text' => '#16a34a'],
                         'draft' => ['bg' => '#fefcbf', 'text' => '#d97706'],
                         'validasi' => ['bg' => '#fef2f2', 'text' => '#dc2626'],
+                        'spesial' => ['bg' => '#fef9c3', 'text' => '#b7791f'],
                     ];
                     return '<span class="px-3 py-1 rounded-full text-sm font-medium" style="background-color: ' . $status[$article->status_articles]['bg'] . '; color: ' . $status[$article->status_articles]['text'] . ';">' . $article->status_articles . '</span>';
                 })
@@ -60,6 +64,15 @@ class ArticleController extends Controller implements HasMiddleware
 
         return view('articles.list');
     }
+
+
+    // public function index(Request $request)
+    // {
+    //     $articles = Articles::latest()->select('id', 'title', 'text', 'status_articles', 'author', 'created_at')->get();
+
+    //     return view('articles.list', compact('articles'));
+    // }
+
 
     /**
      * Show the form for creating a new resource.
@@ -144,27 +157,32 @@ class ArticleController extends Controller implements HasMiddleware
             'title' => 'required|min:3',
             'text' => 'required|min:20',
             'author' => 'required|min:3',
-            'file.*' => 'nullable|file|mimes:jpg,jpeg,png,pdf|max:2048',
+            'file.*' => 'nullable|file|mimes:jpg,jpeg,png|max:2048',
             'summary' => 'required',
             'caption' => 'required',
             'fotografer' => 'required',
             'status_articles' => 'required',
             'tags' => 'nullable|json',
             'tgl_publish' => 'required',
+            'kategori' => 'required',
+            'super_article' => 'nullable',
+            'spesial_kategori' => 'required',
         ], [
-            'title.required' => 'Judul roles harus diisi.',
+            'title.required' => 'Judul Konten harus diisi.',
             'title.min' => 'Judul minimal 3 karakter.',
-            'text.required' => 'Deskripsi harus diisi.',
-            'text.min' => 'Deskripsi minimal 20 karakter.',
-            'author.required' => 'Penulis harus diisi.',
-            'author.min' => 'Penulis minimal 3 karakter.',
-            'file.*.mimes' => 'File harus berupa gambar (jpg, jpeg, png, pdf).',
-            'file.*.max' => 'Ukuran file maksimal 2MB.',
-            'summary.required' => 'Summary harus diisi.',
-            'caption.required' => 'Caption harus diisi.',
-            'fotografer.required' => 'Fotografer harus diisi.',
-            'status_articles.required' => 'Pilih Status Artikel.',
+            'author.required' => 'Penulis Konten  harus diisi.',
+            'author.min' => 'Penulis Konten minimal 3 karakter.',
+            'fotografer.required' => 'Caption Gambar/Fotografer Konten harus diisi.',
             'tgl_publish.required' => 'Tanggal Publish Harus Diisi.',
+            'kategori.required' => 'Pilih Kategori Konten.',
+            'spesial_kategori.required' => 'Pilih Status Konten.',
+            'status_articles.required' => 'Pilih Status Publish Konten.',
+            'text.required' => 'Isi Konten harus diisi.',
+            'text.min' => 'Isi Konten minimal 20 karakter.',
+            'summary.required' => 'Ringakasan Konten harus diisi.',
+            'caption.required' => 'Caption Konten harus diisi.',
+            'file.*.mimes' => 'File harus berupa gambar (jpg, jpeg, png).',
+            'file.*.max' => 'Ukuran file maksimal 2MB.',
         ]);
 
         if ($validator->passes()) {
@@ -179,6 +197,10 @@ class ArticleController extends Controller implements HasMiddleware
             $article->status_articles = $request->status_articles;
             $article->tags = json_encode($request->tags);
             $article->tgl_publish = $request->tgl_publish;
+            $article->kategori = $request->kategori;
+            $article->spesial_kategori = $request->spesial_kategori;
+
+            $article->super_article = $request->kategori === "khusus" ? $request->text : null;
 
             // Proses tags
             if ($request->has('tags')) {
@@ -253,19 +275,25 @@ class ArticleController extends Controller implements HasMiddleware
             'status_articles' => 'required',
             'tags' => 'nullable|json',
             'tgl_publish' => 'required',
+            'kategori' => 'required',
+            'super_article' => 'nullable',
+            'spesial_kategori' => 'required',
         ], [
-            'title.required' => 'Judul harus diisi.',
+            'title.required' => 'Judul Konten harus diisi.',
             'title.min' => 'Judul minimal 3 karakter.',
-            'text.required' => 'Deskripsi harus diisi.',
-            'text.min' => 'Deskripsi minimal 20 karakter.',
-            'author.required' => 'Nama penulis harus diisi.',
-            'file.*.mimes' => 'File harus berupa gambar (jpg, jpeg, png) atau PDF.',
-            'file.*.max' => 'Ukuran file maksimal 2MB.',
-            'summary.required' => 'Summary harus diisi.',
-            'caption.required' => 'Caption harus diisi.',
-            'fotografer.required' => 'Fotografer harus diisi.',
-            'status_articles.required' => 'Pilih Status Artikel.',
+            'author.required' => 'Penulis Konten  harus diisi.',
+            'author.min' => 'Penulis Konten minimal 3 karakter.',
+            'fotografer.required' => 'Caption Gambar/Fotografer Konten harus diisi.',
             'tgl_publish.required' => 'Tanggal Publish Harus Diisi.',
+            'kategori.required' => 'Pilih Kategori Konten.',
+            'spesial_kategori.required' => 'Pilih Status Konten.',
+            'status_articles.required' => 'Pilih Status Publish Konten.',
+            'text.required' => 'Isi Konten harus diisi.',
+            'text.min' => 'Isi Konten minimal 20 karakter.',
+            'summary.required' => 'Ringakasan Konten harus diisi.',
+            'caption.required' => 'Caption Konten harus diisi.',
+            'file.*.mimes' => 'File harus berupa gambar (jpg, jpeg, png).',
+            'file.*.max' => 'Ukuran file maksimal 2MB.',
         ]);
         // dd($article->getMedia('images')->first()->getPath());
         // dd($request->text, $article->text);
@@ -284,7 +312,10 @@ class ArticleController extends Controller implements HasMiddleware
             'fotografer' => $request->fotografer,
             'status_articles' => $request->status_articles,
             'tgl_publish' => $request->tgl_publish,
+            'kategori' => $request->kategori,
+            'spesial_kategori' => $request->spesial_kategori,
             'tags' => $request->has('tags') ? json_encode(array_column(json_decode($request->tags, true), 'value')) : json_encode([]),
+            'super_article' => $request->kategori === "khusus" ? $request->text : null,
         ]);
 
         // **Cek apakah ada file baru yang diunggah**

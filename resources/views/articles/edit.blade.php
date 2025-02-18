@@ -51,11 +51,46 @@
                                 @enderror
                             </div>
                             <div>
+                                <label for="kategori" class="text-lg font-medium">Kategori Konten</label>
+                                <select name="kategori" id="kategori"
+                                    class="border-gray-300 shadow-sm w-full rounded-lg p-2" onchange="toggleReadonly()">
+                                    <option value=""
+                                        {{ old('kategori', $article->kategori) == '' ? 'selected' : '' }}>Pilih Kategori
+                                    </option>
+                                    <option value="warta"
+                                        {{ old('kategori', $article->kategori) == 'warta' ? 'selected' : '' }}>Warta
+                                    </option>
+                                    <option value="khusus"
+                                        {{ old('kategori', $article->kategori) == 'khusus' ? 'selected' : '' }}>
+                                        Kategori
+                                        Khusus</option>
+                                </select>
+                            </div>
+
+                            <div>
+                                <label for="spesial_kategori" class="text-lg font-medium">Status Konten</label>
+                                <select id="spesial_kategori" class="border-gray-300 shadow-sm w-full rounded-lg p-2">
+                                    <option value="" {{ old('spesial_kategori') == '' ? 'selected' : '' }}>Pilih
+                                        Status Konten</option>
+                                    <option value="terkini"
+                                        {{ old('spesial_kategori', $article->spesial_kategori) == 'terkini' ? 'selected' : '' }}>
+                                        Terkini</option>
+                                    <option value="terpopuler"
+                                        {{ old('spesial_kategori', $article->spesial_kategori) == 'terpopuler' ? 'selected' : '' }}>
+                                        Terpopuler
+                                    </option>
+                                    <option value="spesial"
+                                        {{ old('spesial_kategori', $article->spesial_kategori) == 'spesial' ? 'selected' : '' }}>
+                                        Spesial</option>
+                                </select>
+                                <input type="hidden" name="spesial_kategori" id="spesial_kategori_hidden"
+                                    value="{{ old('spesial_kategori', $article->spesial_kategori) }}">
+                            </div>
+                            <div>
                                 <label for="status_articles" class="text-lg font-medium">Status Publish</label>
-                                <select name="status_articles" id="status_articles"
-                                    class="border-gray-300 shadow-sm w-full rounded-lg p-2">
-                                    onchange="updateStatusColor()">
-                                    <option value="">Pilih Status</option>
+                                <select id="status_articles" class="border-gray-300 shadow-sm w-full rounded-lg p-2">
+                                    <option value="" {{ old('status_articles') == '' ? 'selected' : '' }}>Pilih
+                                        Status Publish</option>
                                     <option value="publish"
                                         {{ old('status_articles', $article->status_articles) == 'publish' ? 'selected' : '' }}>
                                         Publish</option>
@@ -65,7 +100,12 @@
                                     <option value="validasi"
                                         {{ old('status_articles', $article->status_articles) == 'validasi' ? 'selected' : '' }}>
                                         perlu validasi</option>
+                                    <option value="spesial"
+                                        {{ old('status_articles', $article->status_articles) == 'spesial' ? 'selected' : '' }}>
+                                        Spesial</option>
                                 </select>
+                                <input type="hidden" name="status_articles" id="status_articles_hidden"
+                                    value="{{ old('status_articles', $article->status_articles) }}">
                             </div>
 
                             <div class="col-span-2">
@@ -160,6 +200,11 @@
     // Inisialisasi warna saat halaman dimuat
     document.addEventListener('DOMContentLoaded', function() {
         updateStatusColor();
+        handleKategoriEdit(); // Jalankan saat halaman dimuat
+
+        document.getElementById("kategori").addEventListener("change", function() {
+            handleKategoriEdit();
+        });
     });
 
     // Perbarui warna saat pilihan berubah
@@ -194,7 +239,6 @@
         updateCounter("summary", "summaryCounter", 250);
         updateCounter("caption", "captionCounter", 200);
 
-        // Tambahkan event listener ke textarea agar langsung update saat diketik
         document.getElementById("summary").addEventListener("input", function() {
             updateCounter("summary", "summaryCounter", 250);
         });
@@ -203,6 +247,23 @@
             updateCounter("caption", "captionCounter", 200);
         });
     });
+
+    function updateCounter(textareaId, counterId, maxLength) {
+        let textarea = document.getElementById(textareaId);
+        let counter = document.getElementById(counterId);
+
+        if (textarea && counter) {
+            let currentLength = textarea.value.length;
+            counter.textContent = `${currentLength}/${maxLength}`;
+
+            // Tambah warna merah jika mencapai batas karakter
+            if (currentLength >= maxLength) {
+                counter.classList.add("text-red-500");
+            } else {
+                counter.classList.remove("text-red-500");
+            }
+        }
+    }
 
     document.addEventListener("DOMContentLoaded", function() {
         DecoupledEditor.create(document.querySelector('#editor'))
@@ -239,4 +300,92 @@
             hiddenInput.value = editor.innerHTML;
         });
     });
+
+    document.addEventListener("DOMContentLoaded", function() {
+        handleKategoriEdit(); // Jalankan saat halaman dimuat
+
+        document.getElementById("kategori")?.addEventListener("change", function() {
+            handleKategoriEdit();
+        });
+
+        document.getElementById("spesial_kategori")?.addEventListener("change", function() {
+            document.getElementById("spesial_kategori_hidden").value = this.value;
+        });
+
+        document.getElementById("status_articles")?.addEventListener("change", function() {
+            document.getElementById("status_articles_hidden").value = this.value;
+        });
+    });
+
+    function handleKategoriEdit() {
+        let kategori = document.getElementById("kategori");
+        let isKhusus = kategori?.value === "khusus";
+        let spesialKategori = document.getElementById("spesial_kategori");
+        let statusArticles = document.getElementById("status_articles");
+        let summary = document.getElementById("summary");
+        let caption = document.getElementById("caption");
+        let hiddenSpesialKategori = document.getElementById("spesial_kategori_hidden");
+        let hiddenStatusArticles = document.getElementById("status_articles_hidden");
+
+        // Jika kategori "khusus", disable dropdown kategori dan set nilai lainnya
+        if (isKhusus) {
+            kategori.setAttribute("disabled", "true"); // Disable dropdown kategori
+            kategori.insertAdjacentHTML("afterend", `<input type="hidden" name="kategori" value="khusus">`);
+
+            spesialKategori.value = "spesial";
+            statusArticles.value = "spesial";
+            summary.value = "Konten ini termasuk kategori khusus.";
+            caption.value = "Konten ini termasuk kategori khusus.";
+
+            spesialKategori.setAttribute("disabled", "true");
+            statusArticles.setAttribute("disabled", "true");
+            summary.setAttribute("readonly", "true");
+            caption.setAttribute("readonly", "true");
+
+            // Simpan nilai agar tetap dikirim ke backend
+            hiddenSpesialKategori.value = "spesial";
+            hiddenStatusArticles.value = "spesial";
+        } else {
+            kategori.removeAttribute("disabled"); // Enable kembali dropdown kategori
+
+            spesialKategori.removeAttribute("disabled");
+            statusArticles.removeAttribute("disabled");
+            summary.removeAttribute("readonly");
+            caption.removeAttribute("readonly");
+
+            // Isi value summary dan caption dengan data lama jika bukan kategori "khusus"
+            summary.value = summary.value || "{{ old('summary', $article->summary) }}";
+            caption.value = caption.value || "{{ old('caption', $article->caption) }}";
+
+            // Hapus opsi "khusus" dari dropdown supaya tidak bisa dipilih lagi
+            removeKhususOption(spesialKategori);
+            removeKhususOption(statusArticles);
+
+            // Reset hidden values agar tetap dikirim ke backend
+            hiddenSpesialKategori.value = spesialKategori.value;
+            hiddenStatusArticles.value = statusArticles.value;
+        }
+
+        document.querySelectorAll("select option[value='khusus']").forEach(option => {
+            if (kategori.value !== "khusus") {
+                option.remove();
+            }
+        });
+        document.querySelectorAll("select option[value='spesial']").forEach(option => {
+            if (status_articles.value !== "spesial") {
+                option.remove();
+            }
+        });
+    }
+
+
+
+    function removeKhususOption(selectElement) {
+        let options = selectElement?.getElementsByTagName("option");
+        for (let i = options.length - 1; i >= 0; i--) {
+            if (options[i].value === "khusus") {
+                options[i].remove();
+            }
+        }
+    }
 </script>

@@ -37,6 +37,10 @@ class Articles extends Model implements HasMedia
         'fotografer',
         'status_articles',
         'tags',
+        'tgl_publish',
+        'kategori',
+        'super_article',
+        'spesial_kategori',
     ];
 
     // public function tags()
