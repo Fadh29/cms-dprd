@@ -12,7 +12,7 @@
         <div class="max-w-7xl mx-auto sm:px-6 lg:px-8">
             <div class="bg-white dark:bg-gray-800 overflow-hidden shadow-sm sm:rounded-lg">
                 <div class="p-6 text-gray-900 dark:text-gray-100">
-                    <form action="{{ route('articles.update', $article->id) }}" method="post">
+                    <form action="{{ route('articles.update', $article->id) }}" method="post" enctype="multipart/form-data">
                         @csrf
                         <div class="grid grid-cols-2 gap-6">
                             <div>
@@ -146,7 +146,7 @@
                             <div>
                                 <label for="file" class="text-lg font-medium">Upload Image</label>
                                 <input type="file" name="file[]" id="file"
-                                    class="border-gray-300 shadow-sm w-full rounded-lg p-2" multiple>
+                                    class="border-gray-300 shadow-sm w-full rounded-lg p-2">
                             </div>
 
                             <!-- Preview Gambar Lama -->
@@ -234,7 +234,6 @@
             }
         });
     });
-
     document.addEventListener("DOMContentLoaded", function() {
         updateCounter("summary", "summaryCounter", 250);
         updateCounter("caption", "captionCounter", 200);
@@ -322,7 +321,6 @@
         let isKhusus = kategori?.value === "khusus";
         let spesialKategori = document.getElementById("spesial_kategori");
         let statusArticles = document.getElementById("status_articles");
-        let summary = document.getElementById("summary");
         let caption = document.getElementById("caption");
         let hiddenSpesialKategori = document.getElementById("spesial_kategori_hidden");
         let hiddenStatusArticles = document.getElementById("status_articles_hidden");
@@ -334,12 +332,10 @@
 
             spesialKategori.value = "spesial";
             statusArticles.value = "spesial";
-            summary.value = "Konten ini termasuk kategori khusus.";
             caption.value = "Konten ini termasuk kategori khusus.";
 
             spesialKategori.setAttribute("disabled", "true");
             statusArticles.setAttribute("disabled", "true");
-            summary.setAttribute("readonly", "true");
             caption.setAttribute("readonly", "true");
 
             // Simpan nilai agar tetap dikirim ke backend
@@ -350,11 +346,9 @@
 
             spesialKategori.removeAttribute("disabled");
             statusArticles.removeAttribute("disabled");
-            summary.removeAttribute("readonly");
             caption.removeAttribute("readonly");
 
             // Isi value summary dan caption dengan data lama jika bukan kategori "khusus"
-            summary.value = summary.value || "{{ old('summary', $article->summary) }}";
             caption.value = caption.value || "{{ old('caption', $article->caption) }}";
 
             // Hapus opsi "khusus" dari dropdown supaya tidak bisa dipilih lagi
@@ -377,8 +371,6 @@
             }
         });
     }
-
-
 
     function removeKhususOption(selectElement) {
         let options = selectElement?.getElementsByTagName("option");

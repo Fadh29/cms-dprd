@@ -33,7 +33,7 @@ class ArticleController extends Controller implements HasMiddleware
     public function index(Request $request)
     {
         if ($request->ajax()) {
-            $articles = Articles::latest()->select('id', 'title', 'text', 'status_articles', 'author', 'created_at');
+            $articles = Articles::latest()->select('id', 'slug', 'title', 'text', 'status_articles', 'author', 'created_at');
 
             return DataTables::of($articles)
                 ->addIndexColumn()
@@ -233,10 +233,15 @@ class ArticleController extends Controller implements HasMiddleware
     /**
      * Display the specified resource.
      */
-    public function show(string $id)
+    public function show($slug)
     {
-        //
+        // dd($slug); // Debugging: Cek apakah slug diterima dengan benar
+        $article = Articles::where('slug', $slug)->firstOrFail();
+        // dd($article);
+        return view('articles.show', compact('article'));
     }
+
+
 
     public function showKhusus($slug)
     {
@@ -279,7 +284,7 @@ class ArticleController extends Controller implements HasMiddleware
             'text' => 'required|min:20',
             'author' => 'required|min:3',
             'file' => 'nullable|array', // Pastikan `file` berupa array jika lebih dari satu
-            'file.*' => 'nullable|file|mimes:jpg,jpeg,png,pdf|max:2048',
+            'file.*' => 'nullable|file|mimes:jpg,jpeg,png|max:2048',
             'caption' => 'required',
             'fotografer' => 'required',
             'status_articles' => 'required',
@@ -332,7 +337,6 @@ class ArticleController extends Controller implements HasMiddleware
             $article->clearMediaCollection('images');
             foreach ($request->file('file') as $file) {
                 $article->addMedia($file)
-                    ->preservingOriginal()
                     ->toMediaCollection('images', 'public'); // Disimpan langsung ke public/images
             }
         }

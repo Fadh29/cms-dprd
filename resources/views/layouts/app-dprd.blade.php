@@ -10,6 +10,7 @@
     <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css" rel="stylesheet">
 
 
+
     <!-- Fonts -->
     <link rel="preconnect" href="https://fonts.bunny.net">
     <link href="https://fonts.bunny.net/css?family=figtree:400,500,600&display=swap" rel="stylesheet" />
@@ -42,7 +43,13 @@
                 <!-- Baris Atas -->
                 <div class="flex justify-between items-center mb-2">
                     <!-- Informasi Kiri -->
-                    <p class="text-sm">Jumat, 17 Januari 2025 | DPRD.BogorKab.go.id</p>
+                    @php
+                        use Carbon\Carbon;
+                        \Carbon\Carbon::setLocale('id'); // Mengatur locale ke bahasa Indonesia
+                        $tanggal = Carbon::now()->translatedFormat('l, d F Y');
+                    @endphp
+
+                    <p class="text-sm">{{ $tanggal }} | DPRD.BogorKab.go.id</p>
                     <!-- Informasi Kanan -->
                     <div>
                         <a href="#" class="text-sm hover:underline">Tentang Kami</a> |
@@ -54,8 +61,8 @@
                 <div class="flex justify-between items-center">
                     <!-- Logo dan Judul -->
                     <div class="flex items-center">
-                        <img src="assets/Logo_DPRD.webp" alt="Logo DPRD" class="w-20 mr-4" />
-                        <h1 class="text-2xl font-bold">
+                        <img src=" {{ asset('assets/Logo_DPRD.webp') }}" alt="Logo DPRD" class="w-20 mr-4" />
+                        <h1 class="text-base font-bold">
                             DEWAN PERWAKILAN RAKYAT DAERAH<br />
                             <span class="text-green-400">KABUPATEN BOGOR</span>
                         </h1>
@@ -69,9 +76,9 @@
                     </button>
 
                     <!-- Desktop Menu -->
-                    <nav id="menu" class="hidden md:flex md:space-x-6">
+                    <nav id="menu" class="hidden md:flex md:space-x-6 text-xs">
                         <ul class="flex flex-col md:flex-row md:space-x-4">
-                            <li><a href="#" class="hover:underline">BERANDA</a></li>
+                            <li><a href="{{ route('landing.index') }}" class="hover:underline">BERANDA</a></li>
                             <li><a href="#" class="hover:underline">AGENDA</a></li>
                             <li><a href="index-warta.html" class="hover:underline">WARTA</a></li>
                             <li>
@@ -79,12 +86,21 @@
                                     <span class="dropdown-icon">▼</span>
                                 </a>
 
-                                <ul>
-                                    <li><a href="#">Apa & Siapa</a></li>
-                                    <li><a href="#">Daftar Anggota DPRD</a></li>
-                                    <li><a href="#">Sejarah DPRD</a></li>
-                                    <li><a href="#">Tupoksi</a></li>
+                                <ul class="text-white">
+                                    @php
+                                        $khususArticles = App\Models\Articles::where('kategori', 'Khusus')->get();
+                                    @endphp
+
+                                    @foreach ($khususArticles as $article)
+                                        <li>
+                                            <a href="{{ route('landing.profil', $article->slug) }}"
+                                                class="block px-4 py-2 text-white hover:bg-gray-700">
+                                                {{ $article->title }}
+                                            </a>
+                                        </li>
+                                    @endforeach
                                 </ul>
+
                             </li>
                             <li>
                                 <a href="#" class="hover:underline">AKD
@@ -136,7 +152,7 @@
                                 ✕
                             </button>
                             <ul class="space-y-4">
-                                <li><a href="#" class="hover:underline">BERANDA</a></li>
+                                <li><a href="{{ route('landing.index') }}" class="hover:underline">BERANDA</a></li>
                                 <li><a href="#" class="hover:underline">AGENDA</a></li>
                                 <li><a href="index-warta.html" class="hover:underline">WARTA</a></li>
                                 <li>
@@ -146,10 +162,18 @@
                                         <span class="submenu-icon">▼</span>
                                     </button>
                                     <ul class="pl-4 mt-2 space-y-2 hidden submenu">
-                                        <li><a href="#" class="hover:underline">Apa & Siapa</a></li>
-                                        <li><a href="#" class="hover:underline">Daftar Anggota DPRD</a></li>
-                                        <li><a href="#" class="hover:underline">Sejarah DPRD</a></li>
-                                        <li><a href="#" class="hover:underline">Tupoksi</a></li>
+                                        @php
+                                            $khususArticles = App\Models\Articles::where('kategori', 'Khusus')->get();
+                                        @endphp
+
+                                        @foreach ($khususArticles as $article)
+                                            <li>
+                                                <a href="{{ route('landing.profil', $article->slug) }}"
+                                                    class="block px-4 py-2 text-white hover:bg-gray-700">
+                                                    {{ $article->title }}
+                                                </a>
+                                            </li>
+                                        @endforeach
                                     </ul>
                                 </li>
                                 <li>
@@ -341,7 +365,8 @@
                             <div class="flex flex-col items-start space-y-4 md:w-1/3">
                                 <!-- Logo -->
                                 <div class="flex items-center space-x-4">
-                                    <img src="assets/Logo_DPRD.webp" alt="Logo DPRD" class="h-12" />
+                                    <img src="{{ asset('assets/Logo_DPRD.webp') }}" alt="Logo DPRD"
+                                        class="h-12" />
                                     <div>
                                         <h3 class="text-lg font-semibold text-white">
                                             DEWAN PERWAKILAN RAKYAT DAERAH KABUPATEN BOGOR

@@ -279,7 +279,6 @@
         let kategori = document.getElementById("kategori").value;
         let spesialKategori = document.getElementById("spesial_kategori");
         let statusArticles = document.getElementById("status_articles");
-        let summary = document.getElementById("summary");
         let caption = document.getElementById("caption");
         let hiddenSpesialKategori = document.getElementById("spesial_kategori_hidden");
         let hiddenStatusArticles = document.getElementById("status_articles_hidden");
@@ -288,13 +287,11 @@
             // Set value otomatis dan readonly
             spesialKategori.value = "spesial";
             statusArticles.value = "spesial";
-            summary.value = "Konten ini termasuk kategori khusus.";
             caption.value = "Konten ini termasuk kategori khusus.";
 
             // Jadikan readonly
             spesialKategori.setAttribute("disabled", "true");
             statusArticles.setAttribute("disabled", "true");
-            summary.setAttribute("readonly", "true");
             caption.setAttribute("readonly", "true");
 
             // Set value hidden agar tetap dikirim ke backend
@@ -304,7 +301,6 @@
             // Aktifkan kembali jika bukan "khusus"
             spesialKategori.removeAttribute("disabled");
             statusArticles.removeAttribute("disabled");
-            summary.removeAttribute("readonly");
             caption.removeAttribute("readonly");
 
             // Reset nilai dropdown dan hidden fields jika kategori bukan "khusus"
@@ -314,7 +310,6 @@
             hiddenStatusArticles.value = "";
 
             // Reset nilai input fields
-            summary.value = "";
             caption.value = "";
         }
     }

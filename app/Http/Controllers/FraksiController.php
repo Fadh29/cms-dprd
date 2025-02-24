@@ -2,10 +2,13 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Fraksi;
 use Illuminate\Http\Request;
+use Illuminate\Support\Str;
 use Illuminate\Support\Facades\Validator;
 use Illuminate\Routing\Controllers\HasMiddleware;
 use Illuminate\Routing\Controllers\Middleware;
+use Yajra\DataTables\Facades\DataTables;
 
 class FraksiController extends Controller implements HasMiddleware
 {
@@ -22,9 +25,21 @@ class FraksiController extends Controller implements HasMiddleware
     /**
      * Display a listing of the resource.
      */
-    public function index()
+    public function index(Request $request)
     {
-        //
+        if ($request->ajax()) {
+            $fraksi = Fraksi::latest()->select('id', 'nama');
+
+            return DataTables::of($fraksi)
+                ->addIndexColumn()
+                ->editColumn('title', function ($fraksi) {
+                    return \Str::words($fraksi->title, 10, '...');
+                })
+                ->rawColumns(['action'])
+                ->make(true);
+        }
+
+        return view('articles.list');
     }
 
     /**

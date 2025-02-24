@@ -3,6 +3,10 @@
         <a href="{{ route('articles.edit', $article->id) }}"
             class="bg-slate-700 text-sm rounded-md text-white px-3 py-2 hover:bg-slate-600">Edit</a>
     @endcan
+    @can('read articles')
+        <a href="{{ route('articles.show', $article->slug) }}"
+            class="bg-yellow-700 text-sm rounded-md text-white px-3 py-2 hover:bg-slate-600">Show</a>
+    @endcan
     @can('delete articles')
         <a href="javascript:void(0);"
             onclick="openDeleteModal({{ $article->id }}, '{{ $article->name }}')"

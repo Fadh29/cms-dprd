@@ -5,6 +5,7 @@ use App\Http\Controllers\ApaSiapaController;
 use App\Http\Controllers\ArticleController;
 use App\Http\Controllers\DapilController;
 use App\Http\Controllers\GaleriController;
+use App\Http\Controllers\LandingController;
 use App\Http\Controllers\PermissionController;
 use App\Http\Controllers\ProfileController;
 use App\Http\Controllers\RoleController;
@@ -16,9 +17,8 @@ use Illuminate\Support\Facades\Route;
 use App\Models\MstDesa;
 use Illuminate\Http\Request;
 
-Route::get('/dprd', function () {
-    return view('welcome');
-});
+Route::get('/dprd', [LandingController::class, 'index'])->name('landing.index');
+Route::get('/profil/{slug}', [LandingController::class, 'profil'])->name('landing.profil');
 
 Route::get('/dashboard', function () {
     return view('dashboard');
@@ -44,6 +44,7 @@ Route::middleware('auth')->group(function () {
     Route::delete('/roles/{id}', [RoleController::class, 'destroy'])->name('roles.destroy');
 
     Route::get('/articles', [ArticleController::class, 'index'])->name('articles.list');
+    Route::get('/article/{slug}', [ArticleController::class, 'show'])->name('articles.show');
     Route::get('/khusus', [ArticleController::class, 'indexKhusus'])->name('articles.khusus');
     Route::get('/khusus/{slug}', [ArticleController::class, 'showKhusus'])->name('articles.showKhusus');
     Route::get('/articles/create', [ArticleController::class, 'create'])->name('articles.create');

@@ -50,10 +50,10 @@ class Articles extends Model implements HasMedia
     //     return $this->belongsTo(Tags::class, 'tags_id');
     // }
 
-    public function tags()
-    {
-        return $this->belongsToMany(Tags::class, 'article_tag');
-    }
+    // public function tags()
+    // {
+    //     return $this->belongsToMany(Tags::class, 'article_tag');
+    // }
 
     protected static function boot()
     {
@@ -61,6 +61,12 @@ class Articles extends Model implements HasMedia
         static::saving(function ($article) {
             $article->slug = Str::slug($article->title);
         });
+    }
+
+    public function registerMediaCollections(): void
+    {
+        $this->addMediaCollection('images')
+            ->useDisk('public');
     }
 
     // public function isKhusus()
