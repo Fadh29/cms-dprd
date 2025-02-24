@@ -65,6 +65,12 @@ class ArticleController extends Controller implements HasMiddleware
         return view('articles.list');
     }
 
+    public function indexKhusus()
+    {
+        $articles = Articles::where('kategori', 'khusus')->select('title', 'super_article')->get();
+        return view('articles.indexKhusus', compact('articles'));
+    }
+
 
     // public function index(Request $request)
     // {
@@ -158,7 +164,6 @@ class ArticleController extends Controller implements HasMiddleware
             'text' => 'required|min:20',
             'author' => 'required|min:3',
             'file.*' => 'nullable|file|mimes:jpg,jpeg,png|max:2048',
-            'summary' => 'required',
             'caption' => 'required',
             'fotografer' => 'required',
             'status_articles' => 'required',
@@ -179,7 +184,6 @@ class ArticleController extends Controller implements HasMiddleware
             'status_articles.required' => 'Pilih Status Publish Konten.',
             'text.required' => 'Isi Konten harus diisi.',
             'text.min' => 'Isi Konten minimal 20 karakter.',
-            'summary.required' => 'Ringakasan Konten harus diisi.',
             'caption.required' => 'Caption Konten harus diisi.',
             'file.*.mimes' => 'File harus berupa gambar (jpg, jpeg, png).',
             'file.*.max' => 'Ukuran file maksimal 2MB.',
@@ -189,9 +193,9 @@ class ArticleController extends Controller implements HasMiddleware
             // dd($request);
             $article = new Articles();
             $article->title = $request->title;
+            $article->slug = Str::slug($request->title);
             $article->text = $request->text;
             $article->author = $request->author;
-            $article->summary = $request->summary;
             $article->caption = $request->caption;
             $article->fotografer = $request->fotografer;
             $article->status_articles = $request->status_articles;
@@ -234,6 +238,13 @@ class ArticleController extends Controller implements HasMiddleware
         //
     }
 
+    public function showKhusus($slug)
+    {
+        $article = Articles::where('slug', $slug)->firstOrFail();
+        return view('articles.showKhusus', compact('article'));
+    }
+
+
     /**
      * Show the form for editing the specified resource.
      */
@@ -269,7 +280,6 @@ class ArticleController extends Controller implements HasMiddleware
             'author' => 'required|min:3',
             'file' => 'nullable|array', // Pastikan `file` berupa array jika lebih dari satu
             'file.*' => 'nullable|file|mimes:jpg,jpeg,png,pdf|max:2048',
-            'summary' => 'required',
             'caption' => 'required',
             'fotografer' => 'required',
             'status_articles' => 'required',
@@ -290,7 +300,6 @@ class ArticleController extends Controller implements HasMiddleware
             'status_articles.required' => 'Pilih Status Publish Konten.',
             'text.required' => 'Isi Konten harus diisi.',
             'text.min' => 'Isi Konten minimal 20 karakter.',
-            'summary.required' => 'Ringakasan Konten harus diisi.',
             'caption.required' => 'Caption Konten harus diisi.',
             'file.*.mimes' => 'File harus berupa gambar (jpg, jpeg, png).',
             'file.*.max' => 'Ukuran file maksimal 2MB.',
@@ -305,9 +314,9 @@ class ArticleController extends Controller implements HasMiddleware
         // Update data artikel
         $article->update([
             'title' => $request->title,
+            'slug' => Str::slug($request->title),
             'text' => $request->text,
             'author' => $request->author,
-            'summary' => $request->summary,
             'caption' => $request->caption,
             'fotografer' => $request->fotografer,
             'status_articles' => $request->status_articles,

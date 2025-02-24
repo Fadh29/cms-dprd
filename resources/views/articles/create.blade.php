@@ -39,7 +39,7 @@
                             </div>
 
                             <div>
-                                <label for="caption_image" class="text-lg font-medium">Caption Gambar</label>
+                                <label for="caption_image" class="text-lg font-medium">Sumber</label>
                                 <input value="{{ old('fotografer') }}" name="fotografer"
                                     placeholder="Masukkan Nama Fotografer" type="text"
                                     class="border-gray-300 shadow-sm w-full rounded-lg p-2">
@@ -80,7 +80,7 @@
                                     <option value="terpopuler"
                                         {{ old('spesial_kategori') == 'terpopuler' ? 'selected' : '' }}>Terpopuler
                                     </option>
-                                    <option value="spesial"
+                                    <option value="spesial" hidden
                                         {{ old('spesial_kategori') == 'spesial' ? 'selected' : '' }}>Spesial</option>
                                 </select>
                                 <input type="hidden" name="spesial_kategori" id="spesial_kategori_hidden"
@@ -95,7 +95,7 @@
                                     <option value="validasi"
                                         {{ old('status_articles') == 'validasi' ? 'selected' : '' }}>Perlu Validasi
                                     </option>
-                                    <option value="spesial"
+                                    <option value="spesial" hidden
                                         {{ old('status_articles') == 'spesial' ? 'selected' : '' }}>Spesial</option>
                                 </select>
                                 <input type="hidden" name="status_articles" id="status_articles_hidden"
@@ -117,7 +117,7 @@
                                     class="border-gray-300 shadow-sm w-full rounded-lg p-2" rows="10">{{ old('text') }}</textarea>
                             </div> --}}
 
-                            <div class="col-span-2 relative">
+                            {{-- <div class="col-span-2 relative">
                                 <label for="summary" class="text-lg font-medium">Ringkasan/Summary</label>
                                 <div class="relative">
                                     <textarea name="summary" id="summary" placeholder="Masukkan Ringkasan/Summary Artikel"
@@ -126,7 +126,7 @@
                                     <span id="summaryCounter"
                                         class="absolute bottom-2 right-3 text-gray-400 text-sm bg-white px-1">0/250</span>
                                 </div>
-                            </div>
+                            </div> --}}
 
 
                             <div class="col-span-2 relative">
@@ -307,20 +307,18 @@
             summary.removeAttribute("readonly");
             caption.removeAttribute("readonly");
 
-            // spesialKategori.value = "{{ old('spesial_kategori') }}";
-            // statusArticles.value = "{{ old('status_articles') }}";
-            hiddenSpesialKategori.value = spesialKategori.value;
-            hiddenStatusArticles.value = statusArticles.value;
-            summary.value = "{{ old('summary') }}";
-            caption.value = "{{ old('caption') }}";
+            // Reset nilai dropdown dan hidden fields jika kategori bukan "khusus"
+            spesialKategori.value = "";
+            statusArticles.value = "";
+            hiddenSpesialKategori.value = "";
+            hiddenStatusArticles.value = "";
 
-            // Reset nilai jika kategori berubah
-            // hiddenSpesialKategori.value = "";
-            // hiddenStatusArticles.value = "";
+            // Reset nilai input fields
             summary.value = "";
             caption.value = "";
         }
     }
+
     document.getElementById("spesial_kategori").addEventListener("change", function() {
         document.getElementById("spesial_kategori_hidden").value = this.value;
     });
@@ -328,6 +326,7 @@
     document.getElementById("status_articles").addEventListener("change", function() {
         document.getElementById("status_articles_hidden").value = this.value;
     });
+
     window.onload = function() {
         toggleReadonly();
     };

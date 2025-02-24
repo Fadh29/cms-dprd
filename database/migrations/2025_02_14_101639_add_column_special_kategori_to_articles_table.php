@@ -14,11 +14,6 @@ return new class extends Migration
         Schema::table('articles', function (Blueprint $table) {
             // Add the new column 'spesial_kategori' as nullable
             $table->string('spesial_kategori')->nullable();
-        });
-
-        // Rename the column and change the type in a separate statement
-        Schema::table('articles', function (Blueprint $table) {
-            // Rename 'tupoksi' to 'super_article' and change the type to LONGTEXT
             $table->renameColumn('tupoksi', 'super_article');
             $table->longText('super_article')->nullable()->change();
         });
@@ -29,8 +24,16 @@ return new class extends Migration
      */
     public function down(): void
     {
+        // Rename the 'super_article' column back to 'tupoksi'
         Schema::table('articles', function (Blueprint $table) {
-            //
+            $table->renameColumn('super_article', 'tupoksi');
+            // If you want to change the type back to its original type, you can do it here
+            $table->string('tupoksi')->nullable()->change(); // Assuming original type was string
+        });
+
+        // Drop the 'spesial_kategori' column
+        Schema::table('articles', function (Blueprint $table) {
+            $table->dropColumn('spesial_kategori');
         });
     }
 };

@@ -119,7 +119,7 @@
                                     value="{{ old('text', $article->text ?? '') }}">
                             </div>
 
-                            <div class="col-span-2 relative">
+                            {{-- <div class="col-span-2 relative">
                                 <label for="summary" class="text-lg font-medium">Ringkasan/Summary</label>
                                 <div class="relative">
                                     <textarea name="summary" id="summary" placeholder="Masukkan Summary Artikel"
@@ -128,7 +128,7 @@
                                     <span id="summaryCounter"
                                         class="absolute bottom-2 right-3 text-gray-400 text-sm bg-white px-1">0/250</span>
                                 </div>
-                            </div>
+                            </div> --}}
 
                             <div class="col-span-2 relative">
                                 <label for="caption" class="text-lg font-medium">Caption</label>

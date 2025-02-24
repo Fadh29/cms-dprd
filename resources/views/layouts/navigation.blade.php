@@ -80,18 +80,94 @@
 
                             <x-slot name="content">
 
-                                    <x-dropdown-link :href="route('apa_siapa.list')">
-                                        {{ __('Apa & Siapa') }}
-                                    </x-dropdown-link>
-                                    <x-dropdown-link :href="route('tupoksi.create')">
+                                <x-dropdown-link :href="route('apa_siapa.list')">
+                                    {{ __('Apa & Siapa') }}
+                                </x-dropdown-link>
+                                {{-- <x-dropdown-link :href="route('tupoksi.create')">
                                         {{ __('Tupoksi') }}
                                     </x-dropdown-link>
                                     <x-dropdown-link :href="route('tata_tertib.create')">
                                         {{ __('Tata Tertib') }}
+                                    </x-dropdown-link> --}}
+                                {{-- <x-dropdown-link :href="route('articles.khusus')">
+                                    {{ __('Khusus') }}
+                                </x-dropdown-link> --}}
+                                @php
+                                    $khususArticles = App\Models\Articles::where('kategori', 'Khusus')->get();
+                                @endphp
+
+                                @foreach ($khususArticles as $article)
+                                    <x-dropdown-link :href="route('articles.showKhusus', $article->slug)">
+                                        {{ $article->title }}
                                     </x-dropdown-link>
-                                    {{-- <x-dropdown-link :href="route('yurisprudensi.list')">
+                                @endforeach
+                                {{-- <x-dropdown-link :href="route('yurisprudensi.list')">
                                         {{ __('Yurisprudensi') }}
                                     </x-dropdown-link> --}}
+                            </x-slot>
+                        </x-dropdown>
+                    </div>
+                @endcan
+                @can('read galeri')
+                    <!-- Dropdown Dokumen -->
+                    <div class="hidden sm:flex sm:items-center sm:ms-6">
+                        <x-dropdown align="left" width="48">
+                            <x-slot name="trigger">
+                                <button
+                                    class="inline-flex items-center text-sm leading-4 font-medium rounded-md text-gray-500 dark:text-gray-400 bg-white dark:bg-gray-800 hover:text-gray-700 dark:hover:text-gray-300 focus:outline-none transition ease-in-out duration-150">
+                                    <div>{{ __('Galeri') }}</div>
+
+                                    <div class="ms-1">
+                                        <svg class="fill-current h-4 w-4" xmlns="http://www.w3.org/2000/svg"
+                                            viewBox="0 0 20 20">
+                                            <path fill-rule="evenodd"
+                                                d="M5.293 7.293a1 1 0 011.414 0L10 10.586l3.293-3.293a1 1 0 111.414 1.414l-4 4a1 1 0 01-1.414 0l-4-4a1 1 0 010-1.414z"
+                                                clip-rule="evenodd" />
+                                        </svg>
+                                    </div>
+                                </button>
+                            </x-slot>
+
+                            <x-slot name="content">
+
+                                <x-dropdown-link :href="route('foto.list')">
+                                    {{ __('Foto') }}
+                                </x-dropdown-link>
+                                <x-dropdown-link :href="route('video.list')">
+                                    {{ __('Video') }}
+                                </x-dropdown-link>
+                            </x-slot>
+                        </x-dropdown>
+                    </div>
+                @endcan
+                @can('read akd')
+                    <!-- Dropdown Dokumen -->
+                    <div class="hidden sm:flex sm:items-center sm:ms-6">
+                        <x-dropdown align="left" width="48">
+                            <x-slot name="trigger">
+                                <button
+                                    class="inline-flex items-center text-sm leading-4 font-medium rounded-md text-gray-500 dark:text-gray-400 bg-white dark:bg-gray-800 hover:text-gray-700 dark:hover:text-gray-300 focus:outline-none transition ease-in-out duration-150">
+                                    <div>{{ __('AKD') }}</div>
+
+                                    <div class="ms-1">
+                                        <svg class="fill-current h-4 w-4" xmlns="http://www.w3.org/2000/svg"
+                                            viewBox="0 0 20 20">
+                                            <path fill-rule="evenodd"
+                                                d="M5.293 7.293a1 1 0 011.414 0L10 10.586l3.293-3.293a1 1 0 111.414 1.414l-4 4a1 1 0 01-1.414 0l-4-4a1 1 0 010-1.414z"
+                                                clip-rule="evenodd" />
+                                        </svg>
+                                    </div>
+                                </button>
+                            </x-slot>
+
+                            <x-slot name="content">
+
+                                <x-dropdown-link :href="route('dapil.list')">
+                                    {{ __('Daerah Pilih') }}
+                                </x-dropdown-link>
+                                {{-- <x-dropdown-link :href="route('video.list')">
+                                    {{ __('Video') }}
+                                </x-dropdown-link> --}}
                             </x-slot>
                         </x-dropdown>
                     </div>

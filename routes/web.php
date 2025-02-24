@@ -3,6 +3,8 @@
 use App\Http\Controllers\AgendaController;
 use App\Http\Controllers\ApaSiapaController;
 use App\Http\Controllers\ArticleController;
+use App\Http\Controllers\DapilController;
+use App\Http\Controllers\GaleriController;
 use App\Http\Controllers\PermissionController;
 use App\Http\Controllers\ProfileController;
 use App\Http\Controllers\RoleController;
@@ -11,6 +13,8 @@ use App\Http\Controllers\TataTertibController;
 use App\Http\Controllers\TupoksiController;
 use App\Http\Controllers\UserController;
 use Illuminate\Support\Facades\Route;
+use App\Models\MstDesa;
+use Illuminate\Http\Request;
 
 Route::get('/dprd', function () {
     return view('welcome');
@@ -40,6 +44,8 @@ Route::middleware('auth')->group(function () {
     Route::delete('/roles/{id}', [RoleController::class, 'destroy'])->name('roles.destroy');
 
     Route::get('/articles', [ArticleController::class, 'index'])->name('articles.list');
+    Route::get('/khusus', [ArticleController::class, 'indexKhusus'])->name('articles.khusus');
+    Route::get('/khusus/{slug}', [ArticleController::class, 'showKhusus'])->name('articles.showKhusus');
     Route::get('/articles/create', [ArticleController::class, 'create'])->name('articles.create');
     Route::post('/articles', [ArticleController::class, 'store'])->name('articles.store');
     Route::get('/articles/{id}/edit', [ArticleController::class, 'edit'])->name('articles.edit');
@@ -81,6 +87,34 @@ Route::middleware('auth')->group(function () {
 
     Route::get('/tata-tertib/create', [TataTertibController::class, 'create'])->name('tata_tertib.create');
     Route::post('/tata-tertib', [TataTertibController::class, 'store'])->name('tata_tertib.store');
+
+    Route::get('/foto', [GaleriController::class, 'indexFoto'])->name('foto.list');
+    Route::get('/video', [GaleriController::class, 'indexVideo'])->name('video.list');
+    Route::get('/video/{slug}', [GaleriController::class, 'showVideo'])->name('galeri.showVideo');
+    // Route::get('/khusus/{slug}', [GaleriController::class, 'showKhusus'])->name('articles.showKhusus');
+    Route::get('/foto/create', [GaleriController::class, 'createFoto'])->name('foto.create');
+    Route::get('/videos/create', [GaleriController::class, 'createVideo'])->name('video.create');
+    Route::post('/foto', [GaleriController::class, 'storeFoto'])->name('foto.store');
+    Route::post('/foto/update-status', [GaleriController::class, 'updateStatus'])->name('foto.updateStatus');
+    Route::post('/video', [GaleriController::class, 'storeVideo'])->name('video.store');
+    Route::get('/foto/{id}/edit', [GaleriController::class, 'editFoto'])->name('foto.edit');
+    Route::get('/video/{id}/edit', [GaleriController::class, 'editVideo'])->name('video.edit');
+    Route::post('/foto/{id}', [GaleriController::class, 'updateFoto'])->name('foto.update');
+    Route::post('/video/{id}', [GaleriController::class, 'updateVideo'])->name('video.update');
+    Route::delete('/foto/{id}', [GaleriController::class, 'destroyFoto'])->name('foto.destroy');
+    Route::delete('/video/{id}', [GaleriController::class, 'destroyVideo'])->name('video.destroy');
+
+    Route::get('/dapil', [DapilController::class, 'index'])->name('dapil.list');
+    Route::get('/api/desa', function (Request $request) {
+        $desa = MstDesa::where('id_kecamatan', $request->kecamatan_id)->get();
+        return response()->json($desa);
+    });
+    Route::get('/dapil/create', [DapilController::class, 'create'])->name('dapil.create');
+    Route::post('/dapil', [DapilController::class, 'store'])->name('dapil.store');
+    Route::get('/dapil/{dapil}/edit', [DapilController::class, 'edit'])->name('dapil.edit');
+    Route::post('/dapil/{dapil}', [DapilController::class, 'update'])->name('dapil.update');
+    // Route::post('/dapil/{id}', [DapilController::class, 'update'])->name('dapil.update');
+    Route::delete('/dapil/{id}', [DapilController::class, 'destroy'])->name('dapil.destroy');
 });
 
 require __DIR__ . '/auth.php';
