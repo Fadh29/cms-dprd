@@ -32,18 +32,32 @@
                                     type="text" class="border-gray-300 shadow-sm w-full rounded-lg p-2">
                             </div>
 
-                            <div>
+                            {{-- <div>
                                 <label for="author" class="text-lg font-medium">Penulis</label>
                                 <input value="{{ old('author') }}" name="author" placeholder="Masukkan Nama Penulis"
                                     type="text" class="border-gray-300 shadow-sm w-full rounded-lg p-2">
+                            </div> --}}
+
+                            <div>
+                                <label for="author" class="text-lg font-medium">Penulis</label>
+                                <input value="SETWANBOGORKAB" name="author"
+                                    type="text" class="border-gray-300 shadow-sm w-full rounded-lg p-2 bg-gray-100"
+                                    readonly>
                             </div>
 
                             <div>
                                 <label for="caption_image" class="text-lg font-medium">Sumber</label>
+                                <input value="Media Center Sekretariat DPRD Kabupaten Bogor" name="fotografer"
+                                    placeholder="Masukkan Nama Fotografer" type="text"
+                                    class="border-gray-300 shadow-sm w-full rounded-lg p-2 bg-gray-100" readonly>
+                            </div>
+                            {{-- <div>
+                                <label for="caption_image" class="text-lg font-medium">Sumber</label>
                                 <input value="{{ old('fotografer') }}" name="fotografer"
                                     placeholder="Masukkan Nama Fotografer" type="text"
                                     class="border-gray-300 shadow-sm w-full rounded-lg p-2">
-                            </div>
+                            </div> --}}
+
                             <div>
                                 <label for="tags" class="text-lg font-medium">Tags/Kata Kunci</label>
                                 <input id="tags" name="tags" placeholder="Tags" type="text"

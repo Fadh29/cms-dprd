@@ -38,6 +38,7 @@ class Articles extends Model implements HasMedia
         'caption',
         'fotografer',
         'status_articles',
+        'status_tampil',
         'tags',
         'tgl_publish',
         'kategori',

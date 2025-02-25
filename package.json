@@ -16,6 +16,10 @@
         "vite": "^5.0"
     },
     "dependencies": {
+        "@fortawesome/fontawesome-svg-core": "^6.7.2",
+        "@fortawesome/free-brands-svg-icons": "^6.7.2",
+        "@fortawesome/free-regular-svg-icons": "^6.7.2",
+        "@fortawesome/free-solid-svg-icons": "^6.7.2",
         "@tailwindcss/vite": "^4.0.4",
         "@yaireo/tagify": "^4.33.2",
         "datatables.net-bs5": "^2.2.2",

@@ -33,15 +33,18 @@ class ArticleController extends Controller implements HasMiddleware
     public function index(Request $request)
     {
         if ($request->ajax()) {
-            $articles = Articles::latest()->select('id', 'slug', 'title', 'text', 'status_articles', 'author', 'created_at');
+            $articles = Articles::latest()
+                ->select('id', 'slug', 'title', 'text', 'status_articles', 'spesial_kategori', 'status_tampil', 'created_at')
+                ->orderBy('status_tampil', 'desc') // Status tampil = 1 akan berada di atas
+                ->orderBy('created_at', 'desc');
 
             return DataTables::of($articles)
                 ->addIndexColumn()
                 ->editColumn('title', function ($article) {
-                    return \Str::words($article->title, 10, '...');
+                    return Str::words($article->title, 10, '...');
                 })
                 ->editColumn('text', function ($article) {
-                    return \Str::limit(strip_tags(html_entity_decode($article->text)), 150, '...');
+                    return Str::limit(strip_tags(html_entity_decode($article->text)), 150, '...');
                 })
                 ->editColumn('status_articles', function ($article) {
                     $status = [
@@ -52,13 +55,26 @@ class ArticleController extends Controller implements HasMiddleware
                     ];
                     return '<span class="px-3 py-1 rounded-full text-sm font-medium" style="background-color: ' . $status[$article->status_articles]['bg'] . '; color: ' . $status[$article->status_articles]['text'] . ';">' . $article->status_articles . '</span>';
                 })
+                ->editColumn('spesial_kategori', function ($article) {
+                    $status = [
+                        'terkini' => ['bg' => '#f5f5dc', 'text' => '#8b4513'],
+                        'terpopuler' => ['bg' => '#e6e6fa', 'text' => '#4b0082'],
+                    ];
+                    return '<span class="px-3 py-1 rounded-full text-sm font-medium" style="background-color: ' . $status[$article->spesial_kategori]['bg'] . '; color: ' . $status[$article->spesial_kategori]['text'] . ';">' . $article->spesial_kategori . '</span>';
+                })
+                ->editColumn('tampilkan', function ($article) {
+                    if ($article->status_articles === 'publish') {
+                        return '<input type="checkbox" class="toggle-status" data-id="' . $article->id . '" ' . ($article->status_tampil ? 'checked' : '') . '>';
+                    }
+                    return '';
+                })
                 ->editColumn('created_at', function ($article) {
                     return \Carbon\Carbon::parse($article->created_at)->format('d M, Y');
                 })
                 ->addColumn('action', function ($article) {
                     return view('articles.partials.actions', compact('article'))->render();
                 })
-                ->rawColumns(['status_articles', 'action'])
+                ->rawColumns(['status_articles', 'spesial_kategori', 'tampilkan', 'action'])
                 ->make(true);
         }
 
@@ -71,6 +87,13 @@ class ArticleController extends Controller implements HasMiddleware
         return view('articles.indexKhusus', compact('articles'));
     }
 
+    public function searchByTag($tag)
+    {
+        // Cari artikel yang mengandung tag tersebut
+        $articles = Articles::whereJsonContains('tags', $tag)->latest()->paginate(10);
+
+        return view('articles.index', compact('articles', 'tag'));
+    }
 
     // public function index(Request $request)
     // {
@@ -163,7 +186,7 @@ class ArticleController extends Controller implements HasMiddleware
             'title' => 'required|min:3',
             'text' => 'required|min:20',
             'author' => 'required|min:3',
-            'file.*' => 'nullable|file|mimes:jpg,jpeg,png|max:2048',
+            'file.*' => 'nullable|file|mimes:jpg,jpeg,png,webp|max:2048',
             'caption' => 'required',
             'fotografer' => 'required',
             'status_articles' => 'required',
@@ -185,9 +208,24 @@ class ArticleController extends Controller implements HasMiddleware
             'text.required' => 'Isi Konten harus diisi.',
             'text.min' => 'Isi Konten minimal 20 karakter.',
             'caption.required' => 'Caption Konten harus diisi.',
-            'file.*.mimes' => 'File harus berupa gambar (jpg, jpeg, png).',
+            'file.*.mimes' => 'File harus berupa gambar (jpg, jpeg, png, webp).',
             'file.*.max' => 'Ukuran file maksimal 2MB.',
         ]);
+
+        if ($validator->fails()) {
+            return redirect()->back()->withErrors($validator)->withInput();
+        }
+
+        // **Pastikan slug unik dengan cek di database**
+        $slug = Str::slug($request->title);
+        $originalSlug = $slug;
+        $count = 1;
+
+        // Gunakan perulangan untuk mendapatkan slug yang benar-benar unik
+        while (Articles::where('slug', $slug)->exists()) {
+            $slug = "{$originalSlug}-" . $count;
+            $count++;
+        }
 
         if ($validator->passes()) {
             // dd($request);
@@ -214,7 +252,11 @@ class ArticleController extends Controller implements HasMiddleware
                 $article->tags = json_encode([]); // Pastikan tetap dalam format JSON
             }
 
-            $article->save();
+            try {
+                $article->save();
+            } catch (\Exception $e) {
+                return redirect()->back()->withErrors(['slug' => 'Slug sudah ada, silakan ubah judul.'])->withInput();
+            }
 
             // Proses file
             if ($request->hasFile('file')) {
@@ -284,7 +326,7 @@ class ArticleController extends Controller implements HasMiddleware
             'text' => 'required|min:20',
             'author' => 'required|min:3',
             'file' => 'nullable|array', // Pastikan `file` berupa array jika lebih dari satu
-            'file.*' => 'nullable|file|mimes:jpg,jpeg,png|max:2048',
+            'file.*' => 'nullable|file|mimes:jpg,jpeg,png,webp|max:2048',
             'caption' => 'required',
             'fotografer' => 'required',
             'status_articles' => 'required',
@@ -306,7 +348,7 @@ class ArticleController extends Controller implements HasMiddleware
             'text.required' => 'Isi Konten harus diisi.',
             'text.min' => 'Isi Konten minimal 20 karakter.',
             'caption.required' => 'Caption Konten harus diisi.',
-            'file.*.mimes' => 'File harus berupa gambar (jpg, jpeg, png).',
+            'file.*.mimes' => 'File harus berupa gambar (jpg, jpeg, png, webp).',
             'file.*.max' => 'Ukuran file maksimal 2MB.',
         ]);
         // dd($article->getMedia('images')->first()->getPath());
@@ -354,6 +396,32 @@ class ArticleController extends Controller implements HasMiddleware
 
         return redirect()->route('articles.list')->with('success', 'Artikel berhasil diperbarui.');
     }
+
+    public function updateStatus(Request $request, $id)
+    {
+        try {
+            $article = Articles::findOrFail($id);
+
+            if ($request->status == 1) {
+                $countActive = Articles::where('status_tampil', 1)->count();
+                if ($countActive >= 3) {
+                    return response()->json([
+                        'success' => false,
+                        'message' => 'Warta ditampilkan melebihi batas maksimum. (Max 7)'
+                    ], 400);
+                }
+            }
+
+            $article->status_tampil = $request->status;
+            $article->save();
+
+            return response()->json(['success' => true, 'message' => 'Status berhasil diperbarui']);
+        } catch (\Exception $e) {
+            return response()->json(['success' => false, 'message' => 'Terjadi kesalahan'], 500);
+        }
+    }
+
+
 
     /**
      * Remove the specified resource from storage.

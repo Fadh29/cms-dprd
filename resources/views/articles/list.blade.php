@@ -14,6 +14,16 @@
     <div class="py-12">
         <div class="max-w-7xl mx-auto sm:px-6 lg:px-8">
             <x-message></x-message>
+            <div id="errorModal"
+                class="fixed inset-0 z-50 flex items-center justify-center hidden bg-black bg-opacity-50">
+                <div class="bg-white p-6 rounded-lg shadow-lg max-w-md w-full">
+                    <h2 class="text-lg font-bold text-red-600">Terjadi Kesalahan</h2>
+                    <p id="errorMessage" class="mt-2 text-gray-700"></p>
+                    <div class="mt-4 text-right">
+                        <button id="closeErrorModal" class="px-4 py-2 bg-red-600 text-white rounded">Tutup</button>
+                    </div>
+                </div>
+            </div>
             <div class="overflow-x-auto">
                 <table id="articles-table" class="w-full table-auto">
                     <thead class="bg-gray-500 text-white">
@@ -22,8 +32,9 @@
                             <th class="px-6 py-4 text-center">Judul</th>
                             <th class="px-6 py-4 text-center">Deskripsi</th>
                             <th class="px-6 py-4 text-center">Status</th>
-                            <th class="px-6 py-4 text-center">Author</th>
+                            <th class="px-6 py-4 text-center">Status Konten</th>
                             <th class="px-6 py-4 text-center">Hari/ Tanggal Unggahan</th>
+                            <th class="px-6 py-4 text-center">Tampilkan</th>
                             <th class="px-4 py-2 border-b w-32 min-w-[200px]">Action</th>
                         </tr>
                     </thead>
@@ -79,13 +90,20 @@
                             className: "text-center"
                         },
                         {
-                            data: 'author',
-                            name: 'author',
+                            data: 'spesial_kategori',
+                            name: 'spesial_kategori',
                             className: "text-center"
                         },
                         {
                             data: 'created_at',
                             name: 'created_at',
+                            className: "text-center"
+                        },
+                        {
+                            data: 'tampilkan',
+                            name: 'tampilkan',
+                            orderable: false,
+                            searchable: false,
                             className: "text-center"
                         },
                         {
@@ -95,6 +113,10 @@
                             searchable: false,
                             className: "text-center"
                         },
+                    ],
+                    order: [
+                        [4, 'desc'],
+                        [5, 'desc']
                     ],
                     columnDefs: [{
                         width: "200px",
@@ -113,10 +135,10 @@
                     },
                     dom: '<"flex flex-row justify-between items-center gap-4 mb-4"lf>rt<"flex flex-row justify-between items-center mt-4 gap-4"ip>',
                     drawCallback: function() {
-                        $('select').addClass('border-gray-700 rounded-md p-2');
-                        $('table').addClass('w-full border-collapse border border-gray-700');
+                        $('select').addClass('border-gray-950 rounded-md p-2');
+                        $('table').addClass('w-full border-collapse border border-gray-950');
                         $('th, td').addClass('px-4 py-2 border');
-                        $('input[type="search"]').addClass('border-gray-700 rounded-md p-2 ml-2');
+                        $('input[type="search"]').addClass('border-gray-950 rounded-md p-2 ml-2');
 
                         // Custom styling for pagination
                         $('.dataTables_paginate .paginate_button').addClass(
@@ -126,6 +148,48 @@
                             'bg-gray-500 text-white');
                     }
                 });
+            });
+
+            $(document).on('change', '.toggle-status', function() {
+                let checkbox = $(this); // Simpan referensi checkbox
+                let id = checkbox.data('id');
+                let status = checkbox.prop('checked') ? 1 : 0;
+
+                $.ajax({
+                    url: "/articles/" + id + "/update-status",
+                    type: "POST",
+                    headers: {
+                        'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+                    },
+                    data: {
+                        status: status
+                    },
+                    success: function(response) {
+                        console.log("Success:", response);
+                        if (response.success) {
+                            $('#articles-table').DataTable().ajax.reload(null,
+                            false); // Reload tabel tanpa refresh halaman
+                        }
+                    },
+                    error: function(xhr) {
+                        let response = JSON.parse(xhr.responseText);
+                        console.error("Error Response:", response.message);
+
+                        if (xhr.status === 400) { // Batas maksimal 7 artikel
+                            $("#errorMessage").text(response.message); // Set pesan error di modal
+                            $("#errorModal").removeClass("hidden"); // Tampilkan modal
+
+                            checkbox.prop('checked', !status); // Kembalikan checkbox ke posisi sebelumnya
+                        } else {
+                            alert("Terjadi kesalahan, coba lagi.");
+                        }
+                    }
+                });
+            });
+
+            // Tutup modal saat tombol ditutup ditekan
+            $("#closeErrorModal").click(function() {
+                $("#errorModal").addClass("hidden");
             });
 
             function openDeleteModal(id) {

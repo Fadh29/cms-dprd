@@ -19,6 +19,8 @@ use Illuminate\Http\Request;
 
 Route::get('/dprd', [LandingController::class, 'index'])->name('landing.index');
 Route::get('/profil/{slug}', [LandingController::class, 'profil'])->name('landing.profil');
+Route::get('/article/{slug}', [LandingController::class, 'showWarta'])->name('landing.showWarta');
+
 
 Route::get('/dashboard', function () {
     return view('dashboard');
@@ -44,6 +46,7 @@ Route::middleware('auth')->group(function () {
     Route::delete('/roles/{id}', [RoleController::class, 'destroy'])->name('roles.destroy');
 
     Route::get('/articles', [ArticleController::class, 'index'])->name('articles.list');
+    Route::get('/articles/tag/{tags}', [ArticleController::class, 'searchByTag'])->name('articles.byTag');
     Route::get('/article/{slug}', [ArticleController::class, 'show'])->name('articles.show');
     Route::get('/khusus', [ArticleController::class, 'indexKhusus'])->name('articles.khusus');
     Route::get('/khusus/{slug}', [ArticleController::class, 'showKhusus'])->name('articles.showKhusus');
@@ -51,6 +54,7 @@ Route::middleware('auth')->group(function () {
     Route::post('/articles', [ArticleController::class, 'store'])->name('articles.store');
     Route::get('/articles/{id}/edit', [ArticleController::class, 'edit'])->name('articles.edit');
     Route::post('/articles/{id}', [ArticleController::class, 'update'])->name('articles.update');
+    Route::post('/articles/{id}/update-status', [ArticleController::class, 'updateStatus'])->name('articles.updateStatus');
     Route::delete('/articles/{id}', [ArticleController::class, 'destroy'])->name('articles.destroy');
 
     Route::get('/users', [UserController::class, 'index'])->name('users.list');

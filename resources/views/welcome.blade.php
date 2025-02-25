@@ -50,185 +50,46 @@
                         <div class="space-y-0">
                             <!-- Artikel 1 -->
 
-                            <div class="bg-white rounded-md flex flex-col p-4 mt-0">
-                                <!-- Bagian Judul & Tanggal -->
-                                <div class="flex flex-col">
-                                    <span
-                                        class="text-lg font-bold text-black hover:underline hover:text-black font-sans">Bapemperda
-                                        DPRD Kabupaten Bogor Gelar Rapat Penyusunan Naskah Akademik Raperda</span>
-                                    <span class="text-black text-sm mt-1">Jumat, 24 Januari 2025</span>
-                                </div>
+                            @foreach ($wartaTampil as $item)
+                                @php
+                                    $media = $item->hasMedia('images')
+                                        ? $item->getFirstMediaUrl('images')
+                                        : asset('assets/1.jpg');
+                                @endphp
+                                <div class="bg-white rounded-md flex flex-col p-4 mt-0">
+                                    <!-- Bagian Judul & Tanggal -->
+                                    <div class="flex flex-col">
+                                        <span
+                                            class="text-lg font-bold text-black hover:underline hover:text-black font-sans">
+                                            {{ $item->title }}
+                                        </span>
+                                        <span class="text-black text-sm mt-1">
+                                            {{ \Carbon\Carbon::parse($item->tgl_publish)->locale('id')->translatedFormat('l, d F Y') }}
+                                        </span>
+                                    </div>
 
-                                <!-- Bagian Gambar & Deskripsi -->
-                                <div class="flex flex-col md:flex-row gap-4 mt-2 items-start">
-                                    <!-- Gambar tetap di kiri & ukurannya pas -->
-                                    <img src="https://i0.wp.com/setwan.bogorkab.go.id/wp-content/uploads/2025/01/paripurna-13-jan-25-1-scaled.jpg?resize=251%2C250&amp;ssl=1"
-                                        alt="Ketua DPRD Kabupaten Bogor, H. Asep Mulyadi, S.H., dan Pj Wali Kabupaten Bogor A. Koswara menerima kunjungan kerja dari 16 orang anggota Public Accounts Committee (PAC) Malaysia, pada Kamis, 16 Januari 2025, di Gedung DPRD Kabupaten Bogor."
-                                        class="w-32 h-[102px] object-cover rounded-md" />
+                                    <!-- Bagian Gambar & Deskripsi -->
+                                    <div class="flex flex-col md:flex-row gap-4 mt-2 items-start">
+                                        <!-- Gambar -->
+                                        <img src="{{ $media }}" alt="Warta DPRD"
+                                            class="w-32 h-[102px] object-cover rounded-md" />
 
-                                    <!-- Deskripsi tetap di kanan dan memiliki ruang cukup -->
-                                    <div class="flex-1 min-w-0">
-                                        <!-- Deskripsi dengan batasan baris -->
-                                        <p
-                                            class="text-gray-700 line-clamp-5 md:line-clamp-5 sm:line-clamp-5 lg:line-clamp-3 text-ellipsis">
-                                            HumasDPRD – Pansus Raperda 4 DPRD Kabupaten Bogor meninjau dua lokasi rencana
-                                            calon Kantor Badan Penanggulangan Bencana Daerah (BPBD) Kabupaten Bogor, di
-                                            Jalan Serang dan Jalan Banten, Bandung, Kamis, 23 Januari 2025. Peninjauan itu
-                                            dihadiri oleh berbagai pihak terkait, dan membahas rencana pengembangan kantor
-                                            BPBD untuk meningkatkan kesiapsiagaan terhadap bencana di wilayah tersebut.
-                                            Peninjauan ini menunjukkan komitmen pemerintah Kabupaten Bogor dalam memperkuat
-                                            infrastruktur penanggulangan bencana.
-                                        </p>
+                                        <!-- Deskripsi -->
+                                        <div class="flex-1 min-w-0">
+                                            <p
+                                                class="text-gray-700 line-clamp-5 md:line-clamp-5 sm:line-clamp-5 lg:line-clamp-3 text-ellipsis">
+                                                {{ Str::limit(strip_tags($item->text), 150, '...') }}
+                                            </p>
 
-                                        <!-- Tombol Baca Selengkapnya -->
-                                        <a href="#" class="text-blue-600 mt-2 block md:hidden">Baca Selengkapnya</a>
-                                        <a href="#" class="text-blue-600 mt-2 hidden md:block">Baca Selengkapnya</a>
+                                            <!-- Tombol Baca Selengkapnya -->
+                                            <a href="#" class="text-blue-600 mt-2 block md:hidden">Baca
+                                                Selengkapnya</a>
+                                            <a href="#" class="text-blue-600 mt-2 hidden md:block">Baca
+                                                Selengkapnya</a>
+                                        </div>
                                     </div>
                                 </div>
-                            </div>
-
-                            <!-- Artikel 2 -->
-                            <div class="bg-white rounded-md flex flex-col p-4 border-t border-gray-300 my-0">
-                                <!-- Bagian Judul & Tanggal -->
-                                <div class="flex flex-col">
-                                    <span
-                                        class="text-lg font-bold text-black hover:underline hover:text-black font-sans">Bapemperda
-                                        DPRD Kabupaten Bogor Gelar Rapat Penyusunan Naskah Akademik Raperda</span>
-                                    <span class="text-black text-sm mt-1">Jumat, 24 Januari 2025</span>
-                                </div>
-
-                                <!-- Bagian Gambar & Deskripsi -->
-                                <div class="flex flex-col md:flex-row gap-4 mt-2 items-start">
-                                    <!-- Gambar tetap di kiri & ukurannya pas -->
-                                    <img src="https://i0.wp.com/setwan.bogorkab.go.id/wp-content/uploads/2025/01/BP.-2.jpeg?resize=251%2C250&amp;ssl=1"
-                                        alt="Ketua DPRD Kabupaten Bogor, H. Asep Mulyadi, S.H., dan Pj Wali Kabupaten Bogor A. Koswara menerima kunjungan kerja dari 16 orang anggota Public Accounts Committee (PAC) Malaysia, pada Kamis, 16 Januari 2025, di Gedung DPRD Kabupaten Bogor."
-                                        class="w-32 h-[102px] object-cover rounded-md" />
-
-                                    <!-- Deskripsi tetap di kanan dan memiliki ruang cukup -->
-                                    <div class="flex-1 min-w-0">
-                                        <!-- Deskripsi dengan batasan baris -->
-                                        <p
-                                            class="text-gray-700 line-clamp-5 md:line-clamp-5 sm:line-clamp-5 lg:line-clamp-3 text-ellipsis">
-                                            HumasDPRD – Cibinong – Badan Pembentukan Peraturan Daerah (BAPEMPERDA) DPRD
-                                            Kabupaten Bogor telah menggelar rapat kerja bersama Alat Kelengkapan DPRD (AKD)
-                                            Pengusul. Peninjauan itu dihadiri oleh berbagai pihak terkait, dan membahas
-                                            rencana pengembangan kantor BPBD untuk meningkatkan kesiapsiagaan terhadap
-                                            bencana di wilayah tersebut. Peninjauan ini menunjukkan komitmen pemerintah
-                                            Kabupaten Bogor dalam memperkuat infrastruktur penanggulangan bencana.
-                                        </p>
-
-                                        <!-- Tombol Baca Selengkapnya -->
-                                        <a href="#" class="text-blue-600 mt-2 block md:hidden">Baca Selengkapnya</a>
-                                        <a href="#" class="text-blue-600 mt-2 hidden md:block">Baca Selengkapnya</a>
-                                    </div>
-                                </div>
-                            </div>
-
-                            <div class="bg-white rounded-md flex flex-col p-4 border-t border-gray-300 my-0">
-                                <!-- Bagian Judul & Tanggal -->
-                                <div class="flex flex-col">
-                                    <span
-                                        class="text-lg font-bold text-black hover:underline hover:text-black font-sans">Rapat
-                                        Paripurna DPRD Kabupaten Bogor, 13 Januari 2025</span>
-                                    <span class="text-black text-sm mt-1">Selasa, 14 Januari 2025</span>
-                                </div>
-
-                                <!-- Bagian Gambar & Deskripsi -->
-                                <div class="flex flex-col md:flex-row gap-4 mt-2 items-start">
-                                    <!-- Gambar tetap di kiri & ukurannya pas -->
-                                    <img src="https://i0.wp.com/setwan.bogorkab.go.id/wp-content/uploads/2025/01/dapil-5.jpeg?resize=150%2C150&amp;ssl=1 150w"
-                                        alt="Ketua DPRD Kabupaten Bogor, H. Asep Mulyadi, S.H., dan Pj Wali Kabupaten Bogor A. Koswara menerima kunjungan kerja dari 16 orang anggota Public Accounts Committee (PAC) Malaysia, pada Kamis, 16 Januari 2025, di Gedung DPRD Kabupaten Bogor."
-                                        class="w-32 h-[102px] object-cover rounded-md" />
-
-                                    <!-- Deskripsi tetap di kanan dan memiliki ruang cukup -->
-                                    <div class="flex-1 min-w-0">
-                                        <!-- Deskripsi dengan batasan baris -->
-                                        <p
-                                            class="text-gray-700 line-clamp-5 md:line-clamp-5 sm:line-clamp-5 lg:line-clamp-3 text-ellipsis">
-                                            Cibinong- DPRD Kabupaten Bogor pada hari Senin, 13 januari 2025 melaksanakan
-                                            Rapat Paripurna DPRD dalam rangka:1. Pembacaan Struktur Fraksi Partai Peninjauan
-                                            itu dihadiri oleh berbagai pihak terkait, dan membahas rencana pengembangan
-                                            kantor BPBD untuk meningkatkan kesiapsiagaan terhadap bencana di wilayah
-                                            tersebut. Peninjauan ini menunjukkan komitmen pemerintah Kabupaten Bogor dalam
-                                            memperkuat infrastruktur penanggulangan bencana.
-                                        </p>
-
-                                        <!-- Tombol Baca Selengkapnya -->
-                                        <a href="#" class="text-blue-600 mt-2 block md:hidden">Baca Selengkapnya</a>
-                                        <a href="#" class="text-blue-600 mt-2 hidden md:block">Baca Selengkapnya</a>
-                                    </div>
-                                </div>
-                            </div>
-
-                            <div class="bg-white rounded-md flex flex-col p-4 border-t border-gray-300 my-0">
-                                <!-- Bagian Judul & Tanggal -->
-                                <div class="flex flex-col">
-                                    <span
-                                        class="text-lg font-bold text-black hover:underline hover:text-black font-sans">Pembangunan
-                                        Infrastruktur Jalan Kabupaten Bogor, 5 Maret 2025</span>
-                                    <span class="text-black text-sm mt-1">Kamis, 6 Maret 2025</span>
-                                </div>
-
-                                <!-- Bagian Gambar & Deskripsi -->
-                                <div class="flex flex-col md:flex-row gap-4 mt-2 items-start">
-                                    <!-- Gambar tetap di kiri & ukurannya pas -->
-                                    <img src="https://i0.wp.com/setwan.bogorkab.go.id/wp-content/uploads/2022/03/demo-3-scaled.jpg?resize=251%2C250&amp;ssl=1"
-                                        alt="Ketua DPRD Kabupaten Bogor, H. Asep Mulyadi, S.H., dan Pj Wali Kabupaten Bogor A. Koswara menerima kunjungan kerja dari 16 orang anggota Public Accounts Committee (PAC) Malaysia, pada Kamis, 16 Januari 2025, di Gedung DPRD Kabupaten Bogor."
-                                        class="w-32 h-[102px] object-cover rounded-md" />
-
-                                    <!-- Deskripsi tetap di kanan dan memiliki ruang cukup -->
-                                    <div class="flex-1 min-w-0">
-                                        <!-- Deskripsi dengan batasan baris -->
-                                        <p
-                                            class="text-gray-700 line-clamp-5 md:line-clamp-5 sm:line-clamp-5 lg:line-clamp-3 text-ellipsis">
-                                            Cibinong- Pemerintah Kabupaten Bogor memulai pembangunan jalan di beberapa
-                                            daerah yang sebelumnya sulit dijangkau. Proyek ini bertujuan untuk memperlancar
-                                            akses transportasi antar kecamatan dan meningkatkan perekonomian lokal.
-                                            Diharapkan proyek ini selesai tepat waktu dan memberikan manfaat jangka panjang
-                                            bagi masyarakat.
-                                        </p>
-
-                                        <!-- Tombol Baca Selengkapnya -->
-                                        <a href="#" class="text-blue-600 mt-2 block md:hidden">Baca Selengkapnya</a>
-                                        <a href="#" class="text-blue-600 mt-2 hidden md:block">Baca Selengkapnya</a>
-                                    </div>
-                                </div>
-                            </div>
-
-                            <div class="bg-white rounded-md flex flex-col p-4 border-t border-gray-300 my-0">
-                                <!-- Bagian Judul & Tanggal -->
-                                <div class="flex flex-col">
-                                    <span
-                                        class="text-lg font-bold text-black hover:underline hover:text-black font-sans">Festival
-                                        Seni Budaya Kabupaten Bogor, 20 Februari 2025</span>
-                                    <span class="text-black text-sm mt-1">Rabu, 21 Februari 2025</span>
-                                </div>
-
-                                <!-- Bagian Gambar & Deskripsi -->
-                                <div class="flex flex-col md:flex-row gap-4 mt-2 items-start">
-                                    <!-- Gambar tetap di kiri & ukurannya pas -->
-                                    <img src="https://i0.wp.com/setwan.bogorkab.go.id/wp-content/uploads/2025/01/dapil-5.jpeg?resize=150%2C150&amp;ssl=1 150w"
-                                        alt="Ketua DPRD Kabupaten Bogor, H. Asep Mulyadi, S.H., dan Pj Wali Kabupaten Bogor A. Koswara menerima kunjungan kerja dari 16 orang anggota Public Accounts Committee (PAC) Malaysia, pada Kamis, 16 Januari 2025, di Gedung DPRD Kabupaten Bogor."
-                                        class="w-32 h-[102px] object-cover rounded-md" />
-
-                                    <!-- Deskripsi tetap di kanan dan memiliki ruang cukup -->
-                                    <div class="flex-1 min-w-0">
-                                        <!-- Deskripsi dengan batasan baris -->
-                                        <p
-                                            class="text-gray-700 line-clamp-5 md:line-clamp-5 sm:line-clamp-5 lg:line-clamp-3 text-ellipsis">
-                                            Cibinong- Festival Seni Budaya Kabupaten Bogor kembali diadakan pada 20 Februari
-                                            2025. Acara ini menampilkan berbagai pertunjukan seni tradisional, mulai dari
-                                            tari-tarian daerah hingga pameran kerajinan tangan, yang menonjolkan kekayaan
-                                            budaya Kabupaten Bogor. Event ini dihadiri oleh masyarakat luas dan menjadi
-                                            ajang promosi budaya lokal.
-                                        </p>
-
-                                        <!-- Tombol Baca Selengkapnya -->
-                                        <a href="#" class="text-blue-600 mt-2 block md:hidden">Baca Selengkapnya</a>
-                                        <a href="#" class="text-blue-600 mt-2 hidden md:block">Baca Selengkapnya</a>
-                                    </div>
-                                </div>
-                            </div>
+                            @endforeach
                         </div>
                     </div>
 
@@ -242,49 +103,17 @@
                                 <i class="fa-regular fa-calendar-days ml-1"></i>
                             </div>
                             <!-- <div class="modtitel border-b-2 border-gray-400 pb-2 inline-block">
-                          <span class="teks text-2xl font-bold">Agenda</span>
-                          <i class="fa-regular fa-calendar-days ml-1"></i>
-                        </div>                               -->
+                                                                                                  <span class="teks text-2xl font-bold">Agenda</span>
+                                                                                                  <i class="fa-regular fa-calendar-days ml-1"></i>
+                                                                                                </div>                               -->
                             <ul class="mt-2 text-black">
-                                <li><a href="https://dprd.bogorkab.go.id/agenda/agenda-kegiatan-kamis-16-januari-2025"
-                                        class="hover:underline">Agenda Kegiatan Kamis 16 Januari 2025</a></li>
-                                <li class="mt-2"><a
-                                        href="https://dprd.bogorkab.go.id/agenda/agenda-kegiatan-jumat-17-januari-2025"
-                                        class="hover:underline border-t border-gray-300 my-0">Agenda Kegiatan Jumat 17
-                                        Januari 2025</a></li>
-                                <li class="mt-2"><a
-                                        href="https://dprd.bogorkab.go.id/agenda/agenda-kegiatan-senin-20-januari-2025"
-                                        class="hover:underline border-t border-gray-300 my-0">Agenda Kegiatan Senin 20
-                                        Januari 2025</a></li>
-                                <li class="mt-2"><a
-                                        href="https://dprd.bogorkab.go.id/agenda/agenda-kegiatan-selasa-22-januari-2025"
-                                        class="hover:underline border-t border-gray-300 my-0">Agenda Kegiatan Selasa 22
-                                        Januari 2025</a></li>
-                                <li class="mt-2"><a
-                                        href="https://dprd.bogorkab.go.id/agenda/agenda-kegiatan-rabu-23-januari-2025"
-                                        class="hover:underline border-t border-gray-300 my-0">Agenda Kegiatan Rabu 23
-                                        Januari 2025</a></li>
-                                <li class="mt-2"><a
-                                        href="https://dprd.bogorkab.go.id/agenda/agenda-kegiatan-kamis-24-januari-2025"
-                                        class="hover:underline border-t border-gray-300 my-0">Agenda Kegiatan Kamis 24
-                                        Januari 2025</a></li>
-                                <li class="mt-2"><a
-                                        href="https://dprd.bogorkab.go.id/agenda/agenda-kegiatan-jumat-25-januari-2025"
-                                        class="hover:underline border-t border-gray-300 my-0">Agenda Kegiatan Jumat 25
-                                        Januari 2025</a></li>
-                                <li class="mt-2"><a
-                                        href="https://dprd.bogorkab.go.id/agenda/agenda-kegiatan-senin-27-januari-2025"
-                                        class="hover:underline border-t border-gray-300 my-0">Agenda Kegiatan Senin 27
-                                        Januari 2025</a></li>
-                                <li class="mt-2"><a
-                                        href="https://dprd.bogorkab.go.id/agenda/agenda-kegiatan-selasa-28-januari-2025"
-                                        class="hover:underline border-t border-gray-300 my-0">Agenda Kegiatan Selasa 28
-                                        Januari 2025</a></li>
-                                <li class="mt-2"><a
-                                        href="https://dprd.bogorkab.go.id/agenda/agenda-kegiatan-rabu-29-januari-2025"
-                                        class="hover:underline border-t border-gray-300 my-0">Agenda Kegiatan Rabu 29
-                                        Januari 2025</a></li>
+                                @foreach ($agenda as $item)
+                                    <li class="mb-1">Agenda Kegiatan
+                                        {{ \Carbon\Carbon::parse($item->tanggal_kegiatan)->locale('id')->translatedFormat('l, d F Y') }}
+                                    </li>
+                                @endforeach
                             </ul>
+
                         </div>
 
                         <!-- Warta Section -->
@@ -296,47 +125,9 @@
                                 <i class="fa-solid fa-circle-info ml-1 text-xs"></i>
                             </div>
                             <ul class="mt-2 text-black">
-                                <li><a href="https://dprd.bogorkab.go.id/berita/berita-16-januari-2025"
-                                        class="hover:underline">Penyampaian Laporan Tahunan</a></li>
-                                <li class="mt-2"><a href="https://dprd.bogorkab.go.id/berita/berita-17-januari-2025"
-                                        class="hover:underline border-t border-gray-300 my-0">Pelantikan Anggota Baru</a>
-                                </li>
-                                <li class="mt-2"><a href="https://dprd.bogorkab.go.id/berita/berita-18-januari-2025"
-                                        class="hover:underline border-t border-gray-300 my-0">Evaluasi Proyek
-                                        Infrastruktur</a></li>
-                                <li class="mt-2"><a href="https://dprd.bogorkab.go.id/berita/berita-19-januari-2025"
-                                        class="hover:underline border-t border-gray-300 my-0">Diskusi Ekonomi Lokal</a>
-                                </li>
-                                <li class="mt-2"><a href="https://dprd.bogorkab.go.id/berita/berita-20-januari-2025"
-                                        class="hover:underline border-t border-gray-300 my-0">Kerjasama dengan Pemerintah
-                                        Pusat</a></li>
-                                <li class="mt-2"><a href="https://dprd.bogorkab.go.id/berita/berita-21-januari-2025"
-                                        class="hover:underline border-t border-gray-300 my-0">Program Pendidikan Baru</a>
-                                </li>
-                                <li class="mt-2"><a href="https://dprd.bogorkab.go.id/berita/berita-22-januari-2025"
-                                        class="hover:underline border-t border-gray-300 my-0">Rencana Pembangunan
-                                        Kawasan</a></li>
-                                <li class="mt-2"><a href="https://dprd.bogorkab.go.id/berita/berita-23-januari-2025"
-                                        class="hover:underline border-t border-gray-300 my-0">Pembukaan Lomba Kesenian</a>
-                                </li>
-                                <li class="mt-2"><a href="https://dprd.bogorkab.go.id/berita/berita-24-januari-2025"
-                                        class="hover:underline border-t border-gray-300 my-0">Peningkatan Infrastruktur
-                                        Jalan</a></li>
-                                <li class="mt-2"><a href="https://dprd.bogorkab.go.id/berita/berita-25-januari-2025"
-                                        class="hover:underline border-t border-gray-300 my-0">Forum Diskusi Masyarakat</a>
-                                </li>
-                                <li class="mt-2"><a href="https://dprd.bogorkab.go.id/berita/berita-26-januari-2025"
-                                        class="hover:underline border-t border-gray-300 my-0">Evaluasi Proyek Kesehatan</a>
-                                </li>
-                                <li class="mt-2"><a href="https://dprd.bogorkab.go.id/berita/berita-27-januari-2025"
-                                        class="hover:underline border-t border-gray-300 my-0">Kerjasama Antar Daerah</a>
-                                </li>
-                                <li class="mt-2"><a href="https://dprd.bogorkab.go.id/berita/berita-28-januari-2025"
-                                        class="hover:underline border-t border-gray-300 my-0">Laporan Keuangan
-                                        Pemerintah</a></li>
-                                <li class="mt-2"><a href="https://dprd.bogorkab.go.id/berita/berita-29-januari-2025"
-                                        class="hover:underline border-t border-gray-300 my-0">Pertemuan dengan Organisasi
-                                        Masyarakat</a></li>
+                                @foreach ($warta as $item)
+                                    <li class="mb-1">{{ $item->title }}</li>
+                                @endforeach
                             </ul>
                         </div>
 
@@ -348,26 +139,11 @@
                                 <i class="fa-solid fa-circle-info ml-1 text-xs"></i>
                             </div>
                             <ul class="mt-2 text-black">
-                                <li class="mt-2"><a href="https://dprd.bogorkab.go.id/siapa/siapa-17-januari-2025"
-                                        class="hover:underline">Dialog dengan Komisi III DPR RI</a></li>
-                                <li class="mt-2"><a href="https://dprd.bogorkab.go.id/siapa/siapa-18-januari-2025"
-                                        class="hover:underline border-t border-gray-300 my-0sss">Pertemuan dengan Dinas
-                                        Kesehatan</a></li>
-                                <li class="mt-2"><a href="https://dprd.bogorkab.go.id/siapa/siapa-20-januari-2025"
-                                        class="hover:underline border-t border-gray-300 my-0sss">Seminar Peningkatan
-                                        Infrastruktur</a></li>
-                                <li class="mt-2"><a href="https://dprd.bogorkab.go.id/siapa/siapa-21-januari-2025"
-                                        class="hover:underline border-t border-gray-300 my-0sss">Pemberian Penghargaan
-                                        kepada Pejabat Publik</a></li>
-                                <li class="mt-2"><a href="https://dprd.bogorkab.go.id/siapa/siapa-22-januari-2025"
-                                        class="hover:underline border-t border-gray-300 my-0sss">Pendidikan Karakter untuk
-                                        Pemuda</a></li>
-                                <li class="mt-2"><a href="https://dprd.bogorkab.go.id/siapa/siapa-23-januari-2025"
-                                        class="hover:underline border-t border-gray-300 my-0sss">Partisipasi dalam Pameran
-                                        Ekonomi</a></li>
-                                <li class="mt-2"><a href="https://dprd.bogorkab.go.id/siapa/siapa-24-januari-2025"
-                                        class="hover:underline border-t border-gray-300 my-0sss">Rapat Kerja dengan
-                                        Kementerian Pekerjaan Umum</a></li>
+                                @foreach ($apaSiapa as $item)
+                                    <li class="mb-1">Tamu Kunjungan Kerja
+                                        {{ \Carbon\Carbon::parse($item->tanggal_kegiatan_mulai)->locale('id')->translatedFormat('l, d F Y') }}
+                                    </li>
+                                @endforeach
                             </ul>
                         </div>
                     </div>
@@ -382,65 +158,30 @@
                         <span class="text-lg font-bold text-black">Terkini</span>
                         <!-- <span>Selengkapnya</span> -->
                     </div>
-                    <div class="content space-y-4">
-                        <div class="bg-white rounded-md flex py-4">
-                            <!-- Gambar di kiri dengan ukuran lebih besar dan jarak -->
-                            <img src="https://i0.wp.com/setwan.bogorkab.go.id/wp-content/uploads/2025/01/paripurna-13-jan-25-1-scaled.jpg?resize=251%2C250&amp;ssl=1"
-                                alt="Ketua DPRD Kabupaten Bogor, H. Asep Mulyadi, S.H., dan Pj Wali Kabupaten Bogor A. Koswara menerima kunjungan kerja dari 16 orang anggota Public Accounts Committee (PAC) Malaysia, pada Kamis, 16 Januari 2025, di Gedung DPRD Kabupaten Bogor."
-                                class="w-36 h-24 object-cover rounded-md mr-4" />
+                    @foreach ($wartaTerkini as $item)
+                        @php
+                            $mediaTerkini = $item->hasMedia('images')
+                                ? $item->getFirstMediaUrl('images')
+                                : asset('assets/1.jpg');
+                        @endphp
+                        <div class="content space-y-4">
+                            <div class="bg-white rounded-md flex py-4">
+                                <!-- Gambar di kiri dengan ukuran lebih besar dan jarak -->
+                                <img src="{{ $mediaTerkini }}" alt="Warta DPRD"
+                                    class="w-36 h-24 object-cover rounded-md mr-4" />
 
-                            <!-- Judul dan Tanggal di kanan -->
-                            <div class="flex flex-col justify-between h-24">
-                                <span
-                                    class="text-sm text-black font-semibold hover:underline hover:text-black font-sans line-clamp-2">
-                                    Bapemperda DPRD Kabupaten Bogor Gelar Rapat Penyusunan Naskah Akademik Raperda
-                                </span>
-                                <span class="tanggal text-sm text-gray-500">05 December 2024</span>
+                                <!-- Judul dan Tanggal di kanan -->
+                                <div class="flex flex-col justify-between h-24">
+                                    <span
+                                        class="text-sm text-black font-semibold hover:underline hover:text-black font-sans line-clamp-2">
+                                        {{ $item->title }}
+                                    </span>
+                                    <span class="tanggal text-sm text-gray-500">
+                                        {{ \Carbon\Carbon::parse($item->tgl_publish)->locale('id')->translatedFormat('l, d F Y') }}</span>
+                                </div>
                             </div>
                         </div>
-
-                        <div class="bg-white rounded-md flex py-4 items-start border-t border-gray-300">
-                            <img src="https://i0.wp.com/setwan.bogorkab.go.id/wp-content/uploads/2025/01/paripurna-13-jan-25-1-scaled.jpg?resize=251%2C250&amp;ssl=1"
-                                alt="Ketua DPRD Kabupaten Bogor, H. Asep Mulyadi, S.H., dan Pj Wali Kabupaten Bogor A. Koswara menerima kunjungan kerja dari 16 orang anggota Public Accounts Committee (PAC) Malaysia, pada Kamis, 16 Januari 2025, di Gedung DPRD Kabupaten Bogor."
-                                class="w-36 h-24 object-cover rounded-md mr-4" />
-
-                            <div class="flex flex-col justify-between h-24">
-                                <span
-                                    class="text-sm text-black font-semibold hover:underline hover:text-black font-sans line-clamp-2">
-                                    Bapemperda DPRD Kabupaten Bogor Gelar Rapat Penyusunan Naskah Akademik Raperda
-                                </span>
-                                <span class="tanggal text-sm text-gray-500">05 December 2024</span>
-                            </div>
-                        </div>
-
-                        <div class="bg-white rounded-md flex py-4 items-start border-t border-gray-300">
-                            <img src="https://i0.wp.com/setwan.bogorkab.go.id/wp-content/uploads/2025/01/paripurna-13-jan-25-1-scaled.jpg?resize=251%2C250&amp;ssl=1"
-                                alt="Ketua DPRD Kabupaten Bogor, H. Asep Mulyadi, S.H., dan Pj Wali Kabupaten Bogor A. Koswara menerima kunjungan kerja dari 16 orang anggota Public Accounts Committee (PAC) Malaysia, pada Kamis, 16 Januari 2025, di Gedung DPRD Kabupaten Bogor."
-                                class="w-36 h-24 object-cover rounded-md mr-4" />
-
-                            <div class="flex flex-col justify-between h-24">
-                                <span
-                                    class="text-sm text-black font-semibold hover:underline hover:text-black font-sans line-clamp-2">
-                                    Bapemperda DPRD Kabupaten Bogor Gelar Rapat Penyusunan Naskah Akademik Raperda
-                                </span>
-                                <span class="tanggal text-sm text-gray-500">05 December 2024</span>
-                            </div>
-                        </div>
-
-                        <div class="bg-white rounded-md flex py-4 items-start border-t border-gray-300">
-                            <img src="https://i0.wp.com/setwan.bogorkab.go.id/wp-content/uploads/2025/01/paripurna-13-jan-25-1-scaled.jpg?resize=251%2C250&amp;ssl=1"
-                                alt="Ketua DPRD Kabupaten Bogor, H. Asep Mulyadi, S.H., dan Pj Wali Kabupaten Bogor A. Koswara menerima kunjungan kerja dari 16 orang anggota Public Accounts Committee (PAC) Malaysia, pada Kamis, 16 Januari 2025, di Gedung DPRD Kabupaten Bogor."
-                                class="w-36 h-24 object-cover rounded-md mr-4" />
-
-                            <div class="flex flex-col justify-between h-24">
-                                <span
-                                    class="text-sm text-black font-semibold hover:underline hover:text-black font-sans line-clamp-2">
-                                    Bapemperda DPRD Kabupaten Bogor Gelar Rapat Penyusunan Naskah Akademik Raperda
-                                </span>
-                                <span class="tanggal text-sm text-gray-500">05 December 2024</span>
-                            </div>
-                        </div>
-                    </div>
+                    @endforeach
                 </div>
 
                 <!-- Section: Terpopuler -->
@@ -449,51 +190,30 @@
                         <span class="text-lg font-bold text-black">Terpopuler</span>
                         <!-- <span>Selengkapnya</span> -->
                     </div>
-                    <div class="content space-y-4">
-                        <div class="bg-white rounded-md flex py-4">
-                            <!-- Gambar di kiri dengan ukuran lebih besar dan jarak -->
-                            <img src="https://i0.wp.com/setwan.bogorkab.go.id/wp-content/uploads/2025/01/paripurna-13-jan-25-1-scaled.jpg?resize=251%2C250&amp;ssl=1"
-                                alt="Ketua DPRD Kabupaten Bogor, H. Asep Mulyadi, S.H., dan Pj Wali Kabupaten Bogor A. Koswara menerima kunjungan kerja dari 16 orang anggota Public Accounts Committee (PAC) Malaysia, pada Kamis, 16 Januari 2025, di Gedung DPRD Kabupaten Bogor."
-                                class="w-36 h-24 object-cover rounded-md mr-4" />
+                    @foreach ($wartaTerpopuler as $item)
+                        @php
+                            $mediaTerpopuler = $item->hasMedia('images')
+                                ? $item->getFirstMediaUrl('images')
+                                : asset('assets/1.jpg');
+                        @endphp
+                        <div class="content space-y-4">
+                            <div class="bg-white rounded-md flex py-4">
+                                <!-- Gambar di kiri dengan ukuran lebih besar dan jarak -->
+                                <img src="{{ $mediaTerpopuler }}" alt="Warta DPRD"
+                                    class="w-36 h-24 object-cover rounded-md mr-4" />
 
-                            <!-- Judul dan Tanggal di kanan -->
-                            <div class="flex flex-col justify-between h-24">
-                                <span
-                                    class="text-sm text-black font-semibold hover:underline hover:text-black font-sans line-clamp-2">
-                                    Bapemperda DPRD Kabupaten Bogor Gelar Rapat Penyusunan Naskah Akademik Raperda
-                                </span>
-                                <span class="tanggal text-sm text-gray-500">05 December 2024</span>
+                                <!-- Judul dan Tanggal di kanan -->
+                                <div class="flex flex-col justify-between h-24">
+                                    <span
+                                        class="text-sm text-black font-semibold hover:underline hover:text-black font-sans line-clamp-2">
+                                        {{ $item->title }}
+                                    </span>
+                                    <span class="tanggal text-sm text-gray-500">
+                                        {{ \Carbon\Carbon::parse($item->tgl_publish)->locale('id')->translatedFormat('l, d F Y') }}</span>
+                                </div>
                             </div>
                         </div>
-
-                        <div class="bg-white rounded-md flex py-4 items-start border-t border-gray-300">
-                            <img src="https://i0.wp.com/setwan.bogorkab.go.id/wp-content/uploads/2025/01/paripurna-13-jan-25-1-scaled.jpg?resize=251%2C250&amp;ssl=1"
-                                alt="Ketua DPRD Kabupaten Bogor, H. Asep Mulyadi, S.H., dan Pj Wali Kabupaten Bogor A. Koswara menerima kunjungan kerja dari 16 orang anggota Public Accounts Committee (PAC) Malaysia, pada Kamis, 16 Januari 2025, di Gedung DPRD Kabupaten Bogor."
-                                class="w-36 h-24 object-cover rounded-md mr-4" />
-
-                            <div class="flex flex-col justify-between h-24">
-                                <span
-                                    class="text-sm text-black font-semibold hover:underline hover:text-black font-sans line-clamp-2">
-                                    Bapemperda DPRD Kabupaten Bogor Gelar Rapat Penyusunan Naskah Akademik Raperda
-                                </span>
-                                <span class="tanggal text-sm text-gray-500">05 December 2024</span>
-                            </div>
-                        </div>
-
-                        <div class="bg-white rounded-md flex py-4 items-start border-t border-gray-300">
-                            <img src="https://i0.wp.com/setwan.bogorkab.go.id/wp-content/uploads/2025/01/paripurna-13-jan-25-1-scaled.jpg?resize=251%2C250&amp;ssl=1"
-                                alt="Ketua DPRD Kabupaten Bogor, H. Asep Mulyadi, S.H., dan Pj Wali Kabupaten Bogor A. Koswara menerima kunjungan kerja dari 16 orang anggota Public Accounts Committee (PAC) Malaysia, pada Kamis, 16 Januari 2025, di Gedung DPRD Kabupaten Bogor."
-                                class="w-36 h-24 object-cover rounded-md mr-4" />
-
-                            <div class="flex flex-col justify-between h-24">
-                                <span
-                                    class="text-sm text-black font-semibold hover:underline hover:text-black font-sans line-clamp-2">
-                                    Bapemperda DPRD Kabupaten Bogor Gelar Rapat Penyusunan Naskah Akademik Raperda
-                                </span>
-                                <span class="tanggal text-sm text-gray-500">05 December 2024</span>
-                            </div>
-                        </div>
-                    </div>
+                    @endforeach
                 </div>
 
                 <!-- Section: Widget Kominfo -->

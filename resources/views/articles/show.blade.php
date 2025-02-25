@@ -20,7 +20,7 @@
                             <span class="tabel">
                                 <span class="trow">
                                     <span class="mr-2">
-                                        <a href="index.html" title="Beranda">
+                                        <a href="{{ route('landing.index') }}" title="Beranda">
                                             <i class="fa-solid fa-house"></i>
                                         </a>
                                     </span>
@@ -28,7 +28,7 @@
                                         <i class="fa-solid fa-angle-right"></i>
                                     </span>
                                     <span>
-                                        <a href="index-warta.html">
+                                        <a href="{{ route('landing.index') }}">
                                             <span class="teks">Warta</span>
                                         </a>
                                     </span>
@@ -38,7 +38,7 @@
                         <!-- Header -->
                         <h1
                             class="text-center font-bold text-gray-900 text-2xl lg:text-3xl lg:line-clamp-5 md:line-clamp-4 sm:line-clamp-4">
-                            Bapemperda DPRD Kabupaten Bogor Gelar Rapat Penyusunan Naskah Akademik Raperda
+                            {{ $article->title }}
                         </h1>
 
                         <!-- Isi Warta -->
@@ -49,35 +49,42 @@
                                 <!-- Header Warta -->
                                 <div class="flex items-start space-x-3 mt-4">
                                     <!-- Logo -->
-                                    <img src="assets/Logo_DPRD.webp" alt="logo dprd" class="w-12 h-12" />
+                                    <img src="{{ asset('assets/Logo_DPRD.webp') }}" alt="logo dprd" class="w-12 h-12" />
 
                                     <!-- Editor dan Tanggal -->
                                     <div class="flex flex-col">
-                                        <span class="text-sm font-semibold text-black">Editor DPRD Kabupaten
-                                            Bogor</span>
+                                        <span class="text-sm font-semibold text-black">{{ $article->author }}</span>
                                         <div class="border-t border-gray-400 my-1"></div>
                                         <!-- Jarak garis diperkecil -->
-                                        <span class="text-sm text-gray-600">Jumat, 24 Januari 2025</span>
+                                        <span class="text-sm text-gray-600">
+                                            {{ \Carbon\Carbon::parse($article->tgl_publish)->translatedFormat('l, d F Y') }}
+                                        </span>
                                     </div>
                                 </div>
 
                                 <!-- Foto Warta -->
-                                <div class="relative flex items-start space-x-2 mt-4">
-                                    <img src="https://i0.wp.com/setwan.bogorkab.go.id/wp-content/uploads/2025/01/BP.-2.jpeg?resize=833%2C474&amp;ssl=1"
-                                        alt="Warta DPRD" class="w-full h-auto block mx-auto" />
-                                    <div
-                                        class="fotografer absolute bottom-2 right-2 text-xs font-medium italic text-gray-300">
-                                        Indra/Humpro DPRD Kabupaten Bogor.
-                                    </div>
+                                <div class="relative flex justify-center mt-4">
+                                    @if ($article->getMedia('images')->isNotEmpty())
+                                        @foreach ($article->getMedia('images') as $image)
+                                            <div class="relative">
+                                                <img src="{{ $image->getFullUrl() }}" alt="Warta DPRD"
+                                                    class="w-[640px] h-[360px] object-cover rounded-md shadow-md">
+                                                <div
+                                                    class="absolute bottom-2 right-2 text-white px-2 py-1 text-xs font-medium italic rounded">
+                                                    {{-- class="absolute bottom-2 right-2 bg-black bg-opacity-50 text-white px-2 py-1 text-xs font-medium italic rounded"> --}}
+                                                    {{ $article->fotografer }}
+                                                </div>
+                                            </div>
+                                        @endforeach
+                                    @else
+                                        <p class="text-gray-500">Belum ada gambar yang diunggah.</p>
+                                    @endif
                                 </div>
 
                                 <!-- Caption Foto -->
                                 <div>
                                     <p class="text-base text-black text-justify">
-                                        BAPEMPERDA DPRD Kabupaten Bogor menggelar rapat kerja bersama AKD dan Tenaga
-                                        Ahli untuk persiapan penyusunan naskah akademik tiga RAPERDA inisiatif, termasuk
-                                        tentang hak penyandang disabilitas, perlindungan sumber daya air, dan
-                                        pengelolaan sampah.
+                                        {{ $article->caption }}
                                     </p>
                                 </div>
 
@@ -87,25 +94,25 @@
                                 <!-- Isi Warta -->
                                 <div>
                                     <p class="text-lg text-black leading-[150%] mb-6 text-justify">
-                                        <b>Cibinong</b> – Badan Pembentukan Peraturan Daerah (BAPEMPERDA) DPRD Kabupaten
-                                        Bogor telah menggelar rapat kerja bersama Alat Kelengkapan DPRD (AKD) Pengusul
-                                        Rancangan Peraturan Daerah dan Tenaga Ahli di Ruang Rapat Mayor R. Oking Djaja
-                                        Atmaja (Ruang Serbaguna) DPRD Kabupaten Bogor, Senin, 20/1/2025.
-
-                                        Adapun maksud serta tujuan diselenggarakannya rapat kerja tersebut dalam rangka
-                                        persiapan penyusunan naskah akademik Rancangan Peraturan Daerah (RAPERDA)
-                                        Inisiatif DPRD. RAPERDA inisiatif DPRD tersebut meliputi antara lain :
-
-                                        Rancangan Peraturan Daerah (RAPERDA) tentang pelaksanaan penghormatan,
-                                        perlindungan dan pemenuhan hak penyandang Disabilitas.
-                                        Rancangan Peraturan Daerah (RAPERDA) tentang Perlindungan dan Pengelolaan Sumber
-                                        Daya Air, dan
-                                        Rancangan Peraturan Daerah (RAPERDA) tentang Perubahan atas Peraturan Daerah
-                                        Kabupaten Bogor Nomor 2 Tahun 2014 tentang Pengelolaan Sampah.
-                                        Dalam rapat tersebut disepakati agar Tenaga Ahli segera menyusun naskah akademik
-                                        masing-masing Raperda, untuk selanjutnya akan menjadi dasar penyusunan Raperda.
+                                        {!! nl2br($article->text) !!}
                                     </p>
                                 </div>
+
+                                <!-- Tags -->
+                                @if (!empty($article->tags))
+                                    <div class="mt-4">
+                                        <h3 class="font-semibold text-gray-700 mb-2">Tags:</h3>
+                                        <div class="flex flex-wrap gap-2">
+                                            @foreach (json_decode($article->tags) as $tag)
+                                                <a href="{{ route('articles.byTag', ['tags' => $tag]) }}"
+                                                    class="px-3 py-1 bg-gray-200 text-gray-700 rounded-md text-sm hover:bg-gray-300 transition">
+                                                    #{{ $tag }}
+                                                </a>
+                                            @endforeach
+                                        </div>
+                                    </div>
+                                @endif
+
                             </div>
 
                             <!-- Bagian SHARE dan KOMENTAR -->
