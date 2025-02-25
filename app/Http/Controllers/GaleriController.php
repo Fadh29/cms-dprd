@@ -61,7 +61,7 @@ class GaleriController extends Controller implements HasMiddleware
         $validator = Validator::make($request->all(), [
             'judul' => 'required|min:3',
             'deskripsi' => 'required|min:20',
-            'file.*' => 'nullable|file|mimes:jpg,jpeg,png|max:2048',
+            'file.*' => 'nullable|file|mimes:jpg,jpeg,png,webp|max:2048',
             'status_foto' => 'required',
             // 'url' => 'required',
             'tags' => 'nullable|json',
@@ -74,7 +74,7 @@ class GaleriController extends Controller implements HasMiddleware
             'deskripsi.required' => 'Deskripsi harus diisi.',
             'deskripsi.min' => 'Deskripsi minimal harus 20 karakter.',
             'status_foto.min' => 'Status Foto Harus Dipilih.',
-            'file.*.mimes' => 'File harus memiliki format JPG, JPEG, atau PNG.',
+            'file.*.mimes' => 'File harus memiliki format JPG, JPEG, webp, atau PNG.',
             'file.*.max' => 'Ukuran file tidak boleh lebih dari 2MB.',
             'status_foto.required' => 'Pilih Status Publish Foto.',
             // 'url.required' => 'URL harus diisi.',
@@ -122,39 +122,60 @@ class GaleriController extends Controller implements HasMiddleware
         }
     }
 
+    // public function updateStatus(Request $request)
+    // {
+    //     // Find the gallery item by ID
+    //     $foto = Galeri::findOrFail($request->id);
+
+    //     // Get the current status of the file
+    //     $statusFile = $foto->status_file;
+
+    //     // Define the maximum number of items that can be displayed based on the file status
+    //     $batasMaksimum = ($statusFile == 1) ? 4 : 3; // Foto maksimal 4, Video maksimal 3
+
+    //     // Check if the request is to activate the item
+    //     if ($request->status_tampil == 1) {
+    //         // Count the number of active items with the same status_file
+    //         $jumlahTampil = Galeri::where('status_tampil', 1)
+    //             ->where('status_file', $statusFile)
+    //             ->count();
+
+    //         // If the limit is reached, return an error response
+    //         if ($jumlahTampil >= $batasMaksimum) {
+    //             return response()->json([
+    //                 'success' => false,
+    //                 'message' => 'Batas maksimum tercapai. Foto maksimal 4, Video maksimal 3.'
+    //             ], 400);
+    //         }
+    //     }
+
+    //     // Update the status of the item
+    //     $foto->update([
+    //         'status_tampil' => $request->status_tampil
+    //     ]);
+
+    //     // Return a success response
+    //     return response()->json([
+    //         'success' => true,
+    //         'message' => 'Status berhasil diperbarui.'
+    //     ]);
+    // }
+
     public function updateStatus(Request $request)
     {
-        $foto = Galeri::findOrFail($request->id);
+        $item = Galeri::find($request->id);
 
-        // Ambil nilai status_file dari foto yang sedang diupdate
-        $statusFile = $foto->status_file;
-
-        // Tentukan batas maksimum berdasarkan status_file
-        $batasMaksimum = ($statusFile == 1) ? 2 : 1; // Sesuaikan batasnya
-
-        // Hitung jumlah foto lain yang sudah ditampilkan dengan status_file yang sama
-        $jumlahTampil = Galeri::where('status_tampil', 1)
-            ->where('status_file', $statusFile) // Pastikan hanya menghitung yang memiliki status_file yang sama
-            ->where('id', '!=', $foto->id) // Hindari menghitung dirinya sendiri
-            ->count();
-
-        // Jika status akan diaktifkan dan total menjadi lebih dari batas maksimum, tolak perubahan
-        if ($request->status_tampil == 1 && $jumlahTampil >= $batasMaksimum) {
-            return response()->json([
-                'success' => false,
-                'message' => 'Foto yang ditampilkan melebihi batas maksimum untuk kategori ini.'
-            ], 400);
+        if (!$item) {
+            return response()->json(['success' => false, 'error' => 'Data tidak ditemukan']);
         }
 
-        // Update status tampil
-        $foto->status_tampil = $request->status_tampil;
-        $foto->save();
+        $item->status_tampil = $request->status_tampil;
+        $item->save();
 
-        return response()->json([
-            'success' => true,
-            'message' => 'Status berhasil diperbarui.'
-        ]);
+        return response()->json(['success' => true, 'status_tampil' => $item->status_tampil]);
     }
+
+
 
     public function storeVideo(Request $request)
     {
@@ -260,7 +281,7 @@ class GaleriController extends Controller implements HasMiddleware
         $validator = Validator::make($request->all(), [
             'judul' => 'required|min:3',
             'deskripsi' => 'required|min:20',
-            'file.*' => 'nullable|file|mimes:jpg,jpeg,png|max:2048',
+            'file.*' => 'nullable|file|mimes:jpg,jpeg,png,webp|max:2048',
             'status_foto' => 'required',
             // 'url' => 'required',
             'tags' => 'nullable|json',
@@ -273,7 +294,7 @@ class GaleriController extends Controller implements HasMiddleware
             'deskripsi.required' => 'Deskripsi harus diisi.',
             'deskripsi.min' => 'Deskripsi minimal harus 20 karakter.',
             'status_foto.min' => 'Status Foto Harus Dipilih.',
-            'file.*.mimes' => 'File harus memiliki format JPG, JPEG, atau PNG.',
+            'file.*.mimes' => 'File harus memiliki format JPG, JPEG, webp, atau PNG.',
             'file.*.max' => 'Ukuran file tidak boleh lebih dari 2MB.',
             'status_foto.required' => 'Pilih Status Publish Foto.',
             // 'url.required' => 'URL harus diisi.',

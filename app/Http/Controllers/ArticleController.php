@@ -404,7 +404,7 @@ class ArticleController extends Controller implements HasMiddleware
 
             if ($request->status == 1) {
                 $countActive = Articles::where('status_tampil', 1)->count();
-                if ($countActive >= 3) {
+                if ($countActive >= 6) {
                     return response()->json([
                         'success' => false,
                         'message' => 'Warta ditampilkan melebihi batas maksimum. (Max 7)'
