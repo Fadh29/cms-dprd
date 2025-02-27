@@ -1,0 +1,402 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+
+/*  */
+@layer utilities {
+    .line-clamp-5 {
+      display: -webkit-box;
+      -webkit-line-clamp: 5;
+      -webkit-box-orient: vertical;
+      overflow: hidden;
+    }
+}
+
+@media (max-width: 1274px) {
+    #hamburger {
+        display: block;
+    }
+
+    #menu {
+        display: none;
+    }
+}
+
+@media (min-width: 1275px) {
+    #hamburger {
+        display: none;
+    }
+
+    #menu {
+        display: flex;
+    }
+}
+
+.table-format {
+    border-collapse: collapse;
+    width: 100%;
+    font-family: Arial, sans-serif;
+}
+
+.table-format th {
+    background-color: #f2f2f2;
+    color: #333;
+    text-align: left;
+    padding: 10px;
+    font-size: 18px;
+}
+
+.table-format td {
+    padding: 10px;
+    border-bottom: 1px solid #ddd;
+}
+
+.table-format a {
+    text-decoration: none;
+    color: #007bff;
+    font-size: 16px;
+}
+
+.table-format a:hover {
+    text-decoration: underline;
+    color: #0056b3;
+}
+
+.agenda-container {
+    font-family: Arial, sans-serif;
+    margin: 20px;
+}
+
+.section {
+    margin-bottom: 30px;
+}
+
+.section-title {
+    font-size: 20px;
+    font-weight: bold;
+    color: #333;
+    margin-bottom: 10px;
+}
+
+.list {
+    list-style-type: none;
+    padding: 0;
+    margin: 0;
+}
+
+.list li {
+    margin-bottom: 8px;
+}
+
+.list a {
+    text-decoration: none;
+    color: #007BFF;
+    transition: color 0.2s;
+}
+
+.list a:hover {
+    color: #0056b3;
+}
+
+.hspace {
+    padding: 20px;
+}
+
+.modtitel .teks {
+    font-size: 24px;
+    font-weight: bold;
+    color: #333;
+    text-align: center;
+}
+
+.fraksi-list {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    gap: 20px;
+    margin-top: 20px;
+}
+
+.fraksiling {
+    display: block;
+    text-align: center;
+    transition: transform 0.3s ease;
+}
+
+.fraksiling:hover {
+    transform: scale(1.05);
+}
+
+.imej {
+    border-radius: 8px;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+}
+
+/* Footer Styling */
+#footer1 {
+    background-color: #292929;
+    padding: 20px 0;
+}
+
+.wrapall {
+    display: flex;
+    flex-direction: column;
+    margin: 0 auto;
+    max-width: 1200px;
+}
+
+.row {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: space-between;
+}
+
+.cell {
+    padding: 10px;
+    color: #fff;
+}
+
+.ul1 {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+}
+
+.ul1 > li {
+    font-weight: bold;
+    margin-bottom: 10px;
+}
+
+.ul1 > li > a {
+    text-decoration: none;
+    color: #fff;
+}
+
+.ul2 {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+    margin-left: 20px;
+}
+
+.ul2 > li {
+    margin-bottom: 5px;
+}
+
+.ul2 > li > a {
+    text-decoration: none;
+    color: #ccc;
+}
+
+.ul2 > li > a:hover {
+    color: #fff;
+}
+
+/* Hide scrollbar for the sidebar */
+#sidebar {
+    overflow-y: auto; /* Mengaktifkan scroll vertikal */
+    scrollbar-width: thin; /* Untuk browser Firefox */
+    scrollbar-color: #c4c4c4 transparent; /* Warna scrollbar di Firefox */
+}
+
+/* Styling scrollbar untuk browser berbasis Webkit (Chrome, Edge, Safari) */
+#sidebar::-webkit-scrollbar {
+    width: 8px; /* Lebar scrollbar */
+}
+
+#sidebar::-webkit-scrollbar-thumb {
+    background-color: #c4c4c4; /* Warna thumb scrollbar */
+    border-radius: 4px; /* Membuat ujung scrollbar bulat */
+}
+
+#sidebar::-webkit-scrollbar-thumb:hover {
+    background-color: #9e9e9e; /* Warna thumb saat hover */
+}
+
+#sidebar::-webkit-scrollbar-track {
+    background-color: transparent; /* Warna track scrollbar */
+}
+
+@media (min-width: 1440px) {
+    #sidebar {
+        transform: translateX(-100%); /* Pastikan sidebar default tertutup di desktop */
+    }
+}
+
+/* General Styles for Submenus */
+nav ul li {
+    position: relative;
+}
+
+nav ul li .dropdown-icon {
+    display: inline-block;
+    margin-left: 5px;
+    font-size: 12px;
+    transition: transform 0.3s ease-in-out; /* Smooth rotation */
+}
+
+nav ul li:hover .dropdown-icon {
+    transform: rotate(180deg); /* Arrow points upwards */
+}
+
+nav ul li ul {
+    display: none; /* Hide sub-menu by default */
+    position: absolute;
+    background-color: rgba(17, 51, 85, 0.95); /* Sub-menu background */
+    padding: 0;
+    margin: 0;
+    list-style: none;
+    box-shadow: 0px 4px 6px rgba(0, 0, 0, 0.1);
+    border-radius: 4px;
+    z-index: 1000;
+}
+
+nav ul li:hover ul {
+    display: block; /* Show sub-menu on hover */
+}
+
+nav ul li ul li {
+    width: 200px;
+}
+
+nav ul li ul li a {
+    display: block;
+    padding: 10px 15px;
+    text-decoration: none;
+    color: white;
+    font-size: 14px;
+    transition: background-color 0.3s;
+}
+
+nav ul li ul li a:hover {
+    background-color: rgba(255, 255, 255, 0.2);
+}
+
+/* Specific Styles for "Tentang" Submenu */
+nav ul li:nth-child(1):hover ul {
+    left: 0;
+}
+
+/* Specific Styles for "Galeri" Submenu */
+nav ul li:nth-child(4):hover ul {
+    left: 0;
+}
+
+/* Hamburger Menu Styles */
+#menu-toggle {
+    cursor: pointer;
+}
+
+#mobile-menu {
+    display: none;
+}
+
+/* Utility Classes */
+.hidden {
+    display: none;
+}
+
+header {
+    transition: all 0.3s ease-in-out;
+  }
+  
+  header.shrink {
+    padding: 250px 0; /* Mengurangi padding agar header mengecil */
+  }
+  
+  header .shrink img {
+    width: 250px; /* Mengecilkan ukuran logo */
+  }
+  
+  header .shrink h1 {
+    font-size: 1.5rem; /* Mengecilkan ukuran teks */
+  }
+
+  .titelmod {
+    margin-bottom: 12px;
+    border-top: solid 1px #8ac;
+    border-bottom: solid 1px #8ac;
+    border-left: solid 4px #379;
+    background: #cde;
+    text-align: left;
+}
+.titelmod span {
+    display: inline-block;
+    padding: 7px 10px;
+    background: #fff;
+    text-transform: uppercase;
+    font-size: 87.5%;
+    font-weight: 600;
+    color: #135;
+}
+  
+#foto .modtitel {
+    text-transform: uppercase;
+    font-size: 87.5%;
+    font-weight: 600;
+    color: #135;
+    height: 1px;
+    padding-top: 30px;
+    margin-bottom: 10px;
+    border-bottom: solid 1px #468;
+}
+
+.titelpage {
+    /* background: #cde; */
+    color: #135;
+    text-align: left;
+    padding-left: 16px;
+    /* padding: 1px 0 9px 13px; */
+    margin-bottom: 5px;
+    border-bottom: solid 1px #8ac;
+    border-left: solid 4px #379;
+    font-weight: 700;
+    text-transform: uppercase;
+    /* font-size: 112.5%; */
+}
+
+#detil .fotografer {
+    text-align: right;
+    font-size: 68.8%;
+    font-weight: 500;
+    font-style: italic;
+    padding-top: 5px;
+}
+
+#detil h1 {
+    font-size: 200%;
+    font-weight: 700;
+    letter-spacing: -0.025em;
+    color: #111;
+}
+
+@media (max-width: 600px) {
+    #detil h1 {
+        font-size: 150%;
+    }
+}
+
+.mb20res {
+    margin-bottom: 20px;
+}
+
+
+  /* .custom-img {
+    @apply w-[300px] h-[200px] object-cover rounded-md;
+  }
+   */
+@layer components {
+    .slider-items {
+      transition: transform 1s ease-in-out;
+    }
+  
+    .widget-kominfo {
+      margin-top: 1rem;
+      padding: 2rem;
+      background-color: #f8f8f8;
+      border-radius: 8px;
+      box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+    }
+  }
+  
