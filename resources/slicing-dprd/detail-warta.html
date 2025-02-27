@@ -1,0 +1,688 @@
+<!--ini detail untuk warta-->
+
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>DPRD Kabupaten Bogor</title>
+    <link href="./styles/output.css" rel="stylesheet" />
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css" rel="stylesheet">
+  </head>
+
+  <body class="bg-gray-100 text-gray-800">
+    <!-- Header -->
+    <header id="header"
+      class="bg-[rgba(17,51,85,0.9)] text-white py-4 fixed w-full bg-opacity-80 z-50 transition-all duration-300"
+    >
+      <div class="container mx-auto px-4 sm:px-16">
+        <!-- Baris Atas -->
+        <div class="flex justify-between items-center mb-2">
+          <!-- Informasi Kiri -->
+          <p class="text-sm">Jumat, 17 Januari 2025 | DPRD.BogorKab.go.id</p>
+          <!-- Informasi Kanan -->
+          <div>
+            <a href="#" class="text-sm hover:underline">Tentang Kami</a> |
+            <a href="#" class="text-sm hover:underline">Kontak Kami</a>
+          </div>
+        </div>
+
+        <!-- Logo dan Navbar -->
+        <div class="flex justify-between items-center">
+          <!-- Logo dan Judul -->
+          <div class="flex items-center">
+            <img
+              src="assets/Logo_DPRD.webp"
+              alt="Logo DPRD"
+              class="w-20 mr-4"
+            />
+            <h1 class="text-2xl font-bold">
+              DEWAN PERWAKILAN RAKYAT DAERAH<br />
+              <span class="text-green-400">KABUPATEN BOGOR</span>
+            </h1>
+          </div>
+
+          <!-- Hamburger Button -->
+          <button id="hamburger" class="md:hidden focus:outline-none">
+            <span class="block w-6 h-1 bg-white mb-1"></span>
+            <span class="block w-6 h-1 bg-white mb-1"></span>
+            <span class="block w-6 h-1 bg-white"></span>
+          </button>
+
+          <!-- Desktop Menu -->
+          <nav id="menu" class="hidden md:flex md:space-x-6">
+            <ul class="flex flex-col md:flex-row md:space-x-4">
+                <li><a href="index.html" class="hover:underline">BERANDA</a></li>
+                <li><a href="#" class="hover:underline">AGENDA</a></li>
+                <li><a href="index-warta.html" class="hover:underline">WARTA</a></li>
+                <li>
+                    <a href="#" class="hover:underline">PROFIL
+                        <span class="dropdown-icon">▼</span>
+                    </a>
+
+                    <ul>
+                        <li><a href="#">Apa & Siapa</a></li>
+                        <li><a href="#">Daftar Anggota DPRD</a></li>
+                        <li><a href="#">Sejarah DPRD</a></li>
+                        <li><a href="#">Tupoksi</a></li>
+                    </ul>
+                </li>
+                <li>
+                    <a href="#" class="hover:underline">AKD
+                        <span class="dropdown-icon">▼</span>
+                    </a>
+                    <ul>
+                        <li><a href="#">Pimpinan</a></li>
+                        <li><a href="#">Badan Musyawarah</a></li>
+                        <li><a href="#">Badan Anggaran</a></li>
+                    </ul>
+                </li>
+                <li>
+                    <a href="#" class="hover:underline">FRAKSI
+                        <span class="dropdown-icon">▼</span>
+                    </a>
+                    <ul>
+                        <li><a href="#">Partai Golongan Karya</a></li>
+                        <li><a href="#">Partai Keadilan Sejahtera</a></li>
+                        <li><a href="#">Partai Solidaritas Indonesia</a></li>
+                    </ul>
+                </li>
+                <li><a href="#" class="hover:underline">SEKRETARIAT
+                        <span class="dropdown-icon">▼</span>
+                    </a>
+                    <ul>
+                        <li><a href="#">Sejarah Lembaga</a></li>
+                        <li><a href="#">Tugas Pokok Fungsi</a></li>
+                        <li><a href="#">Visi Misi</a></li>
+                    </ul>
+                </li>
+                <li><a href="#" class="hover:underline">JDIH</a></li>
+                <li><a href="#" class="hover:underline">GALERI
+                        <span class="dropdown-icon">▼</span>
+                    </a>
+                    <ul>
+                        <li><a href="#">Foto</a></li>
+                        <li><a href="#">Video</a></li>
+                    </ul>
+                </li>
+                <li><a href="#" class="hover:underline">CARI</a></li>
+            </ul>
+        </nav>
+
+          <!-- Mobile Menu -->
+          <div id="sidebar"
+            class="fixed left-0 top-0 w-64 h-full bg-[rgba(17,51,85,0.9)] text-white transform -translate-x-full transition-transform">
+            <div class="p-6">
+                <button id="closeSidebar" class="text-white mb-4 focus:outline-none">
+                    ✕
+                </button>
+                <ul class="space-y-4">
+                    <li><a href="index.html" class="hover:underline">BERANDA</a></li>
+                    <li><a href="#" class="hover:underline">AGENDA</a></li>
+                    <li><a href="index-warta.html" class="hover:underline">WARTA</a></li>
+                    <li>
+                        <button
+                            class="w-full text-left flex justify-between items-center hover:underline submenu-toggle focus:outline-none">
+                            PROFIL
+                            <span class="submenu-icon">▼</span>
+                        </button>
+                        <ul class="pl-4 mt-2 space-y-2 hidden submenu">
+                            <li><a href="#" class="hover:underline">Apa & Siapa</a></li>
+                            <li><a href="#" class="hover:underline">Daftar Anggota DPRD</a></li>
+                            <li><a href="#" class="hover:underline">Sejarah DPRD</a></li>
+                            <li><a href="#" class="hover:underline">Tupoksi</a></li>
+                        </ul>
+                    </li>
+                    <li>
+                        <button
+                            class="w-full text-left flex justify-between items-center hover:underline submenu-toggle focus:outline-none">
+                            AKD
+                            <span class="submenu-icon">▼</span>
+                        </button>
+                        <ul class="pl-4 mt-2 space-y-2 hidden submenu">
+                            <li><a href="#" class="hover:underline">Pimpinan</a></li>
+                            <li><a href="#" class="hover:underline">Badan Musyawarah</a></li>
+                            <li><a href="#" class="hover:underline">Badan Anggaran</a></li>
+                        </ul>
+                    </li>
+                    <li>
+                        <button
+                            class="w-full text-left flex justify-between items-center hover:underline submenu-toggle focus:outline-none">
+                            FRAKSI
+                            <span class="submenu-icon">▼</span>
+                        </button>
+                        <ul class="pl-4 mt-2 space-y-2 hidden submenu">
+                            <li><a href="#" class="hover:underline">Partai Golongan Karya</a></li>
+                            <li><a href="#" class="hover:underline">Partai Keadilan Sejahtera</a></li>
+                            <li><a href="#" class="hover:underline">Partai Solidaritas Indonesia</a></li>
+                        </ul>
+                    </li>
+                    <li>
+                        <button
+                            class="w-full text-left flex justify-between items-center hover:underline submenu-toggle focus:outline-none">
+                            SEKRETARIAT
+                            <span class="submenu-icon">▼</span>
+                        </button>
+                        <ul class="pl-4 mt-2 space-y-2 hidden submenu">
+                            <li><a href="#" class="hover:underline">Sejarah Lembaga</a></li>
+                            <li><a href="#" class="hover:underline">Tugas Pokok Fungsi</a></li>
+                            <li><a href="#" class="hover:underline">Visi Misi</a></li>
+                        </ul>
+                    </li>
+                    <li><a href="#" class="hover:underline">JDIH</a></li>
+                    <li>
+                        <button
+                            class="w-full text-left flex justify-between items-center hover:underline submenu-toggle focus:outline-none">
+                            GALERI
+                            <span class="submenu-icon">▼</span>
+                        </button>
+                        <ul class="pl-4 mt-2 space-y-2 hidden submenu">
+                            <li><a href="#" class="hover:underline">Foto</a></li>
+                            <li><a href="#" class="hover:underline">Video</a></li>
+                        </ul>
+                    </li>
+                    <li><a href="#" class="hover:underline">CARI</a></li>
+                </ul>
+            </div>
+        </div>
+      </div>
+    </header>
+
+    <!-- Hero Section -->
+    <section
+      class="bg-cover bg-center h-[500px]"
+      style="
+        background-image: url('assets/Gedung-DPRD-Kabupaten-Bogor-2878005838.webp');
+      "
+    >
+      <div
+        class="bg-black bg-opacity-50 h-full flex items-center justify-center"
+      >
+        <div class="text-center text-white px-4">
+          <h1 class="text-4xl font-bold">DPRD Kabupaten Bogor</h1>
+        </div>
+      </div>
+    </section>
+
+    <br />
+
+    <section class="container mx-auto px-16 py-8 bg-white">
+      <div class="grid grid-cols-12 gap-6">
+        <!-- Bagian 1: Slider Section (5 kolom) -->
+        <div class="lg:col-span-9 col-span-12">
+            <!-- Grid Layout -->
+            <div class="bg-white p-6">
+              <!-- Kolom Kiri -->
+              <div class="flex flex-col gap-6">
+                <div class="bc border-b border-[#8ac] pb-2">
+                    <span class="tabel">
+                        <span class="trow">
+                            <span class="mr-2">
+                                <a href="index.html" title="Beranda">
+                                    <i class="fa-solid fa-house"></i>
+                                </a>
+                            </span>
+                            <span class="mr-2">
+                                <i class="fa-solid fa-angle-right"></i>
+                            </span>
+                            <span>
+                                <a href="index-warta.html">
+                                    <span class="teks">Warta</span>
+                                </a>
+                            </span>
+                        </span>
+                    </span>
+                </div>
+                <!-- Header -->
+                <h1 class="text-center font-bold text-gray-900 text-2xl lg:text-3xl lg:line-clamp-5 md:line-clamp-4 sm:line-clamp-4">
+                  Bapemperda DPRD Kabupaten Bogor Gelar Rapat Penyusunan Naskah Akademik Raperda
+                </h1>
+
+                <!-- Isi Warta -->
+                <div class="flex flex-col gap-6">
+
+                  <!-- Warta 1 -->
+                  <div class="space-y-6">
+                    <!-- Header Warta -->
+                    <div class="flex items-start space-x-3 mt-4">
+                      <!-- Logo -->
+                      <img src="assets/Logo_DPRD.webp" alt="logo dprd" class="w-12 h-12" />
+
+                      <!-- Editor dan Tanggal -->
+                      <div class="flex flex-col">
+                        <span class="text-sm font-semibold text-black">Editor DPRD Kabupaten Bogor</span>
+                        <div class="border-t border-gray-400 my-1"></div> <!-- Jarak garis diperkecil -->
+                        <span class="text-sm text-gray-600">Jumat, 24 Januari 2025</span>
+                      </div>
+                    </div>
+
+                    <!-- Foto Warta -->
+                    <div class="relative flex items-start space-x-2 mt-4">
+                      <img
+                        src="https://i0.wp.com/setwan.bogorkab.go.id/wp-content/uploads/2025/01/BP.-2.jpeg?resize=833%2C474&amp;ssl=1"
+                        alt="Warta DPRD"
+                        class="w-full h-auto block mx-auto"
+                      />
+                      <div class="fotografer absolute bottom-2 right-2 text-xs font-medium italic text-gray-300">
+                        Indra/Humpro DPRD Kabupaten Bogor.
+                      </div>
+                    </div>
+
+                    <!-- Caption Foto -->
+                    <div>
+                      <p class="text-base text-black text-justify">
+                        BAPEMPERDA DPRD Kabupaten Bogor menggelar rapat kerja bersama AKD dan Tenaga Ahli untuk persiapan penyusunan naskah akademik tiga RAPERDA inisiatif, termasuk tentang hak penyandang disabilitas, perlindungan sumber daya air, dan pengelolaan sampah.
+                      </p>
+                    </div>
+
+                    <!-- Garis Pembatas -->
+                    <div class="border-t-2 border-gray-600 my-4"></div>
+
+                    <!-- Isi Warta -->
+                    <div>
+                      <p class="text-lg text-black leading-[150%] mb-6 text-justify">
+                        <b>Cibinong</b> – Badan Pembentukan Peraturan Daerah (BAPEMPERDA) DPRD Kabupaten Bogor telah menggelar rapat kerja bersama Alat Kelengkapan DPRD (AKD) Pengusul Rancangan Peraturan Daerah dan Tenaga Ahli di Ruang Rapat Mayor R. Oking Djaja Atmaja (Ruang Serbaguna) DPRD Kabupaten Bogor, Senin, 20/1/2025.
+
+                        Adapun maksud serta tujuan diselenggarakannya rapat kerja tersebut dalam rangka persiapan penyusunan naskah akademik Rancangan Peraturan Daerah (RAPERDA) Inisiatif DPRD. RAPERDA inisiatif DPRD tersebut meliputi antara lain :
+
+                        Rancangan Peraturan Daerah (RAPERDA) tentang pelaksanaan penghormatan, perlindungan dan pemenuhan hak penyandang Disabilitas.
+                        Rancangan Peraturan Daerah (RAPERDA) tentang Perlindungan dan Pengelolaan Sumber Daya Air, dan
+                        Rancangan Peraturan Daerah (RAPERDA) tentang Perubahan atas Peraturan Daerah Kabupaten Bogor Nomor 2 Tahun 2014 tentang Pengelolaan Sampah.
+                        Dalam rapat tersebut disepakati agar Tenaga Ahli segera menyusun naskah akademik masing-masing Raperda, untuk selanjutnya akan menjadi dasar penyusunan Raperda.
+                      </p>
+                    </div>
+                  </div>
+
+                  <!-- Bagian SHARE dan KOMENTAR -->
+                  <div class="mt-0">
+                    <!-- Bagikan ke Media Sosial -->
+                    <div class="sermod text-left font-bold">
+                      BAGIKAN
+                    </div>
+                    <span class="tabel tglser">
+                      <span class="trow">
+                        <span class="tcell bokser">
+                          <div class="addthis_inline_share_toolbox"></div>
+                        </span>
+                      </span>
+                    </span>
+                    <div class="sermod text-left font-bold mt-4">
+                      BERI KOMENTAR
+                    </div>
+                    <div class="fb-comments fb_iframe_widget fb_iframe_widget_fluid_desktop" data-href="https://dprd.bandung.go.id/warta/pemkot-revitalisasi-kantor-kewilayahan-kang-asmul-titip-agar-layanan-makin-optimal" data-width="100%" data-numposts="5" style="width: 100%;" fb-xfbml-state="rendered" fb-iframe-plugin-query="app_id=&amp;container_width=795&amp;height=100&amp;href=https%3A%2F%2Fdprd.bandung.go.id%2Fwarta%2Fpemkot-revitalisasi-kantor-kewilayahan-kang-asmul-titip-agar-layanan-makin-optimal&amp;locale=en_US&amp;numposts=5&amp;sdk=joey&amp;version=v2.11&amp;width=">
+                      <span style="vertical-align: bottom; width: 100%; height: 209px;">
+                        <iframe name="f1210a8bb696acfe3" width="1000px" height="100px" data-testid="fb:comments Facebook Social Plugin" title="fb:comments Facebook Social Plugin" frameborder="0" allowtransparency="true" allowfullscreen="true" scrolling="no" allow="encrypted-media" src="https://www.facebook.com/v2.11/plugins/comments.php?app_id=&amp;channel=https%3A%2F%2Fstaticxx.facebook.com%2Fx%2Fconnect%2Fxd_arbiter%2F%3Fversion%3D46%23cb%3Dff2ab9b39e0b71fdb%26domain%3Ddprd.bandung.go.id%26is_canvas%3Dfalse%26origin%3Dhttps%253A%252F%252Fdprd.bandung.go.id%252Ffa081fe098b919c34%26relation%3Dparent.parent&amp;container_width=795&amp;height=100&amp;href=https%3A%2F%2Fdprd.bandung.go.id%2Fwarta%2Fpemkot-revitalisasi-kantor-kewilayahan-kang-asmul-titip-agar-layanan-makin-optimal&amp;locale=en_US&amp;numposts=5&amp;sdk=joey&amp;version=v2.11&amp;width=" style="border: none; visibility: visible; width: 100%; height: 209px;" class=""></iframe>
+                      </span>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+
+        <!-- Bagian 2: Terkini (4 kolom) -->
+        <div class="lg:col-span-3 col-span-12">
+          <!-- Section: Terkini -->
+          <div class="terkini-section rounded-lg border-b mb-6">
+            <div class="titelmod flex justify-between items-center w-full">
+              <span class="text-lg font-bold text-black">Terkini</span>
+              <!-- <span>Selengkapnya</span> -->
+            </div>
+            <div class="content space-y-4">
+              <div class="bg-white rounded-md flex py-4">
+                <!-- Gambar di kiri dengan ukuran lebih besar dan jarak -->
+                <img
+                  src="https://i0.wp.com/setwan.bogorkab.go.id/wp-content/uploads/2025/01/paripurna-13-jan-25-1-scaled.jpg?resize=251%2C250&amp;ssl=1"
+                  alt="Ketua DPRD Kabupaten Bogor, H. Asep Mulyadi, S.H., dan Pj Wali Kabupaten Bogor A. Koswara menerima kunjungan kerja dari 16 orang anggota Public Accounts Committee (PAC) Malaysia, pada Kamis, 16 Januari 2025, di Gedung DPRD Kabupaten Bogor."
+                  class="w-36 h-24 object-cover rounded-md mr-4"
+                />
+
+                <!-- Judul dan Tanggal di kanan -->
+                <div class="flex flex-col">
+                  <span class="text-sm text-black font-semibold hover:underline hover:text-black font-sans line-clamp-2">
+                    Bapemperda DPRD Kabupaten Bogor Gelar Rapat Penyusunan Naskah Akademik Raperda
+                  </span>
+                  <span class="tanggal text-sm text-gray-500 mt-1">05 December 2024</span>
+                </div>
+              </div>
+
+              <div class="bg-white rounded-md flex py-4 border-t border-gray-300 my-0">
+                <!-- Gambar di kiri dengan ukuran lebih besar dan jarak -->
+                <img
+                  src="https://i0.wp.com/setwan.bogorkab.go.id/wp-content/uploads/2025/01/paripurna-13-jan-25-1-scaled.jpg?resize=251%2C250&amp;ssl=1"
+                  alt="Ketua DPRD Kabupaten Bogor, H. Asep Mulyadi, S.H., dan Pj Wali Kabupaten Bogor A. Koswara menerima kunjungan kerja dari 16 orang anggota Public Accounts Committee (PAC) Malaysia, pada Kamis, 16 Januari 2025, di Gedung DPRD Kabupaten Bogor."
+                  class="w-36 h-24 object-cover rounded-md mr-4"
+                />
+
+                <!-- Judul dan Tanggal di kanan -->
+                <div class="flex flex-col">
+                  <span class="text-sm text-black font-semibold hover:underline hover:text-black font-sans line-clamp-2">
+                    Bapemperda DPRD Kabupaten Bogor Gelar Rapat Penyusunan Naskah Akademik Raperda
+                  </span>
+                  <span class="tanggal text-sm text-gray-500 mt-1">05 December 2024</span>
+                </div>
+              </div>
+
+              <div class="bg-white rounded-md flex py-4 border-t border-gray-300 my-0">
+                <!-- Gambar di kiri dengan ukuran lebih besar dan jarak -->
+                <img
+                  src="https://i0.wp.com/setwan.bogorkab.go.id/wp-content/uploads/2025/01/paripurna-13-jan-25-1-scaled.jpg?resize=251%2C250&amp;ssl=1"
+                  alt="Ketua DPRD Kabupaten Bogor, H. Asep Mulyadi, S.H., dan Pj Wali Kabupaten Bogor A. Koswara menerima kunjungan kerja dari 16 orang anggota Public Accounts Committee (PAC) Malaysia, pada Kamis, 16 Januari 2025, di Gedung DPRD Kabupaten Bogor."
+                  class="w-36 h-24 object-cover rounded-md mr-4"
+                />
+
+                <!-- Judul dan Tanggal di kanan -->
+                <div class="flex flex-col">
+                  <span class="text-sm text-black font-semibold hover:underline hover:text-black font-sans line-clamp-2">
+                    Bapemperda DPRD Kabupaten Bogor Gelar Rapat Penyusunan Naskah Akademik Raperda
+                  </span>
+                  <span class="tanggal text-sm text-gray-500 mt-1">05 December 2024</span>
+                </div>
+              </div>
+
+              <div class="bg-white rounded-md flex py-4 items-start border-t border-gray-300 my-0">
+                <!-- Gambar di kiri dengan ukuran lebih besar dan jarak -->
+                <img
+                  src="https://i0.wp.com/setwan.bogorkab.go.id/wp-content/uploads/2025/01/paripurna-13-jan-25-1-scaled.jpg?resize=251%2C250&amp;ssl=1"
+                  alt="Ketua DPRD Kabupaten Bogor, H. Asep Mulyadi, S.H., dan Pj Wali Kabupaten Bogor A. Koswara menerima kunjungan kerja dari 16 orang anggota Public Accounts Committee (PAC) Malaysia, pada Kamis, 16 Januari 2025, di Gedung DPRD Kabupaten Bogor."
+                  class="w-36 h-24 object-cover rounded-md mr-4"
+                />
+
+                <!-- Judul dan Tanggal di kanan -->
+                <div class="flex flex-col">
+                  <span class="text-sm text-black font-semibold hover:underline hover:text-black font-sans line-clamp-2">
+                    Bapemperda DPRD Kabupaten Bogor Gelar Rapat Penyusunan Naskah Akademik Raperda
+                  </span>
+                  <span class="tanggal text-sm text-gray-500 mt-1">05 December 2024</span>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <!-- Section: Terpopuler -->
+          <div class="terpopuler-section rounded-lg border-b mb-6">
+            <div class="titelmod flex justify-between items-center w-full">
+              <span class="text-lg font-bold text-black">Terpopuler</span>
+              <!-- <span>Selengkapnya</span> -->
+            </div>
+            <div class="content space-y-4">
+              <div class="bg-white rounded-md flex py-4">
+                <!-- Gambar di kiri dengan ukuran lebih besar dan jarak -->
+                <img
+                  src="https://i0.wp.com/setwan.bogorkab.go.id/wp-content/uploads/2025/01/paripurna-13-jan-25-1-scaled.jpg?resize=251%2C250&amp;ssl=1"
+                  alt="Ketua DPRD Kabupaten Bogor, H. Asep Mulyadi, S.H., dan Pj Wali Kabupaten Bogor A. Koswara menerima kunjungan kerja dari 16 orang anggota Public Accounts Committee (PAC) Malaysia, pada Kamis, 16 Januari 2025, di Gedung DPRD Kabupaten Bogor."
+                  class="w-36 h-24 object-cover rounded-md mr-4"
+                />
+
+                <!-- Judul dan Tanggal di kanan -->
+                <div class="flex flex-col">
+                  <span class="text-sm text-black font-semibold hover:underline hover:text-black font-sans line-clamp-2">
+                    Bapemperda DPRD Kabupaten Bogor Gelar Rapat Penyusunan Naskah Akademik Raperda
+                  </span>
+                  <span class="tanggal text-sm text-gray-500 mt-1">05 December 2024</span>
+                </div>
+              </div>
+
+              <div class="bg-white rounded-md flex py-4 border-t border-gray-300 my-0">
+                <!-- Gambar di kiri dengan ukuran lebih besar dan jarak -->
+                <img
+                  src="https://i0.wp.com/setwan.bogorkab.go.id/wp-content/uploads/2025/01/paripurna-13-jan-25-1-scaled.jpg?resize=251%2C250&amp;ssl=1"
+                  alt="Ketua DPRD Kabupaten Bogor, H. Asep Mulyadi, S.H., dan Pj Wali Kabupaten Bogor A. Koswara menerima kunjungan kerja dari 16 orang anggota Public Accounts Committee (PAC) Malaysia, pada Kamis, 16 Januari 2025, di Gedung DPRD Kabupaten Bogor."
+                  class="w-36 h-24 object-cover rounded-md mr-4"
+                />
+
+                <!-- Judul dan Tanggal di kanan -->
+                <div class="flex flex-col">
+                  <span class="text-sm text-black font-semibold hover:underline hover:text-black font-sans line-clamp-2">
+                    Bapemperda DPRD Kabupaten Bogor Gelar Rapat Penyusunan Naskah Akademik Raperda
+                  </span>
+                  <span class="tanggal text-sm text-gray-500 mt-1">05 December 2024</span>
+                </div>
+              </div>
+
+              <div class="bg-white rounded-md flex py-4 items-start border-t border-gray-300 my-0">
+                <!-- Gambar di kiri dengan ukuran lebih besar dan jarak -->
+                <img
+                  src="https://i0.wp.com/setwan.bogorkab.go.id/wp-content/uploads/2025/01/paripurna-13-jan-25-1-scaled.jpg?resize=251%2C250&amp;ssl=1"
+                  alt="Ketua DPRD Kabupaten Bogor, H. Asep Mulyadi, S.H., dan Pj Wali Kabupaten Bogor A. Koswara menerima kunjungan kerja dari 16 orang anggota Public Accounts Committee (PAC) Malaysia, pada Kamis, 16 Januari 2025, di Gedung DPRD Kabupaten Bogor."
+                  class="w-36 h-24 object-cover rounded-md mr-4"
+                />
+
+                <!-- Judul dan Tanggal di kanan -->
+                <div class="flex flex-col">
+                  <span class="text-sm text-black font-semibold hover:underline hover:text-black font-sans line-clamp-2">
+                    Bapemperda DPRD Kabupaten Bogor Gelar Rapat Penyusunan Naskah Akademik Raperda
+                  </span>
+                  <span class="tanggal text-sm text-gray-500 mt-1">05 December 2024</span>
+                </div>
+              </div>
+
+              <div class="bg-white rounded-md flex py-4 items-start border-t border-gray-300 my-0">
+                <!-- Gambar di kiri dengan ukuran lebih besar dan jarak -->
+                <img
+                  src="https://i0.wp.com/setwan.bogorkab.go.id/wp-content/uploads/2025/01/paripurna-13-jan-25-1-scaled.jpg?resize=251%2C250&amp;ssl=1"
+                  alt="Ketua DPRD Kabupaten Bogor, H. Asep Mulyadi, S.H., dan Pj Wali Kabupaten Bogor A. Koswara menerima kunjungan kerja dari 16 orang anggota Public Accounts Committee (PAC) Malaysia, pada Kamis, 16 Januari 2025, di Gedung DPRD Kabupaten Bogor."
+                  class="w-36 h-24 object-cover rounded-md mr-4"
+                />
+
+                <!-- Judul dan Tanggal di kanan -->
+                <div class="flex flex-col">
+                  <span class="text-sm text-black font-semibold hover:underline hover:text-black font-sans line-clamp-2">
+                    Bapemperda DPRD Kabupaten Bogor Gelar Rapat Penyusunan Naskah Akademik Raperda
+                  </span>
+                  <span class="tanggal text-sm text-gray-500 mt-1">05 December 2024</span>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <!-- Section: Widget Kominfo -->
+          <div
+            class="widget-kominfo-section w-full rounded-lg border-b mb-6"
+          >
+          <div class="flex items-center justify-center mb-4">
+            <div class="flex-grow border-t border-gray-700"></div>
+            <span class="px-4 text-lg font-bold text-black">Artikel</span>
+            <div class="flex-grow border-t border-gray-700"></div>
+          </div>
+            <script src="https://widget.kominfo.go.id/gpr-widget-kominfo.min.js"></script>
+            <ul id="gpr-kominfo-widget-list" class="content space-y-4">
+              <li class="item border-b pb-3">
+                <div class="flex justify-between text-sm"></div>
+              </li>
+              <!-- Add more items as needed -->
+            </ul>
+          </div>
+
+          <!-- Section: Images -->
+          <div class="images-section grid grid-cols-1 gap-4">
+            <img
+              class="w-full rounded"
+              src="assets/banner-bogorkabupaten.png"
+              alt="siaplur"
+            />
+            <img
+              class="w-full rounded"
+              src="assets/banner-pengaduan.png"
+              alt="podcast"
+            />
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- Container utama dengan latar putih -->
+
+    <footer class="bg-gray-800 text-white py-4">
+      <div class="container mx-auto">
+        <!-- Footer 1 -->
+        <div id="footer1" style="padding: 20px;">
+            <div class="wrapall">
+              <div class="vspace">
+                <div class="wrapper">
+                  <div class="row" style="display: flex; flex-wrap: wrap; gap: 20px;">
+                    <!-- Profil DPRD -->
+                    <div class="tl-6" style="flex: 1; min-width: 250px;">
+                      <div class="cell">
+                        <ul class="ul1" style="list-style-type: disc; padding-left: 20px;">
+                            <a href="https://dprd.bandung.go.id/profil" style="font-weight: bold;">Profil DPRD</a>
+                            <ul class="ul2" style="list-style-type: circle;">
+                              <li><a href="https://dprd.bandung.go.id/apa-siapa">Apa &amp; Siapa</a></li>
+                              <li><a href="https://dprd.bandung.go.id/profil/daftar-anggota">Daftar Anggota DPRD</a></li>
+                              <li><a href="https://dprd.bandung.go.id/profil/sejarah-dprd-kota-bandung">Sejarah DPRD</a></li>
+                              <li><a href="https://dprd.bandung.go.id/profil/kedudukan-tugas-pokok-serta-hak-dan-kewajiban">Tupoksi</a></li>
+                              <li><a href="https://dprd.bandung.go.id/profil/tata-tertib-dewan">Tata Tertib Dewan</a></li>
+                            </ul>
+                        </ul>
+                      </div>
+                    </div>
+
+                    <!-- Alat Kelengkapan Dewan -->
+                    <div class="tl-6" style="flex: 1; min-width: 250px;">
+                      <div class="cell">
+                        <ul class="ul1" style="list-style-type: disc; padding-left: 20px;">
+                            <a href="https://dprd.bandung.go.id/alat-kelengkapan-dewan" style="font-weight: bold;">Alat Kelengkapan Dewan</a>
+                            <ul class="ul2" style="list-style-type: circle;">
+                              <li><a href="https://dprd.bandung.go.id/alat-kelengkapan-dewan/pimpinan-dprd">Pimpinan</a></li>
+                              <li><a href="https://dprd.bandung.go.id/alat-kelengkapan-dewan/badan-musyawarah">Badan Musyawarah</a></li>
+                              <li><a href="https://dprd.bandung.go.id/alat-kelengkapan-dewan/badan-anggaran">Badan Anggaran</a></li>
+                              <li><a href="https://dprd.bandung.go.id/alat-kelengkapan-dewan/badan-kehormatan">Badan Kehormatan</a></li>
+                              <li><a href="https://dprd.bandung.go.id/alat-kelengkapan-dewan/badan-pembentukan-perda">Badan Pembentukan Perda</a></li>
+                            </ul>
+                        </ul>
+                      </div>
+                    </div>
+
+                    <!-- Komisi-Komisi -->
+                    <div class="tl-5" style="flex: 1; min-width: 250px;">
+                      <div class="cell">
+                        <ul class="ul1" style="list-style-type: disc; padding-left: 20px;">
+                            <a href="https://dprd.bandung.go.id/alat-kelengkapan-dewan/komisi" style="font-weight: bold;">Komisi-Komisi</a>
+                            <ul class="ul2" style="list-style-type: circle;">
+                              <li><a href="https://dprd.bandung.go.id/alat-kelengkapan-dewan/komisi-1">Komisi I</a></li>
+                              <li><a href="https://dprd.bandung.go.id/alat-kelengkapan-dewan/komisi-2">Komisi II</a></li>
+                              <li><a href="https://dprd.bandung.go.id/alat-kelengkapan-dewan/komisi-3">Komisi III</a></li>
+                              <li><a href="https://dprd.bandung.go.id/alat-kelengkapan-dewan/komisi-4">Komisi IV</a></li>
+                            </ul>
+                        </ul>
+                      </div>
+                    </div>
+
+                    <!-- Fraksi-Fraksi -->
+                    <div class="tl-7" style="flex: 1; min-width: 250px;">
+                      <div class="cell">
+                        <ul class="ul1" style="list-style-type: disc; padding-left: 20px;">
+                            <a href="https://dprd.bandung.go.id/fraksi" style="font-weight: bold;">Fraksi-Fraksi</a>
+                            <ul class="ul2" style="list-style-type: circle;">
+                              <li><a href="https://dprd.bandung.go.id/fraksi/partai-keadilan-sejahtera">Partai Keadilan Sejahtera</a></li>
+                              <li><a href="https://dprd.bandung.go.id/fraksi/partai-gerakan-indonesia-raya">Partai Gerakan Indonesia Raya</a></li>
+                              <li><a href="https://dprd.bandung.go.id/fraksi/partai-golongan-karya">Partai Golongan Karya</a></li>
+                              <li><a href="https://dprd.bandung.go.id/fraksi/partai-demokrasi-indonesia-perjuangan">Partai Demokrasi Indonesia Perjuangan</a></li>
+                              <li><a href="https://dprd.bandung.go.id/fraksi/partai-nasional-demokrat">Partai Nasional Demokrat</a></li>
+                              <li><a href="https://dprd.bandung.go.id/fraksi/partai-kebangkitan-bangsa">Partai Kebangkitan Bangsa</a></li>
+                              <li><a href="https://dprd.bandung.go.id/fraksi/partai-solidaritas-indonesia">Partai Solidaritas Indonesia</a></li>
+                            </ul>
+                        </ul>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+
+        <!-- Footer 2 -->
+        <section class="section-before-footer bg-[rgba(17,51,85,0.9)] text-white mt-12 px-20">
+  <div class="container mx-auto py-10">
+    <div class="flex flex-col md:flex-row items-start justify-between space-y-8 md:space-y-0">
+      <!-- Bagian Kiri dengan Logo dan Informasi Situs Web -->
+      <div class="flex flex-col items-start space-y-4 md:w-1/3">
+        <!-- Logo -->
+        <div class="flex items-center space-x-4">
+          <img src="assets/Logo_DPRD.webp" alt="Logo DPRD" class="h-12" />
+          <div>
+            <h3 class="text-lg font-semibold text-white">
+              DEWAN PERWAKILAN RAKYAT DAERAH KABUPATEN BOGOR
+            </h3>
+          </div>
+        </div>
+        <!-- Informasi Situs Web -->
+        <div class="text-sm">
+          <p>
+            <strong
+              >Situs web resmi Dewan Perwakilan Rakyat Daerah Kabupaten Bogor</strong
+            >, menyajikan informasi seputar aktifitas Dewan, Profil, Fraksi
+            Partai, Komisi, Badan DPRD.
+          </p>
+          <p>Jl. Segar, Tengah, Kec. Cibinong, Kabupaten Bogor, Jawa Barat 16914</p>
+          <p>(022) 87243095 (Humas)</p>
+        </div>
+      </div>
+
+      <!-- Bagian Informasi Lainnya dan Portal Informasi -->
+      <div class="info-container flex flex-wrap gap-8">
+        <!-- Informasi Lainnya -->
+        <div class="informasi-lainnya">
+          <h5 class="font-semibold mt-4">Informasi Lainnya:</h5>
+          <ul class="list-disc pl-5">
+            <li><a href="#">Sejarah Lembaga</a></li>
+            <li><a href="#">Tugas Pokok & Fungsi</a></li>
+            <li><a href="#">Visi Misi</a></li>
+            <li><a href="#">Struktur Organisasi</a></li>
+            <li><a href="#">Pejabat Struktural</a></li>
+          </ul>
+        </div>
+
+        <!-- Portal Informasi -->
+        <div class="portal-informasi">
+          <h5 class="font-semibold mt-4">Portal Informasi:</h5>
+          <ul class="list-disc pl-5">
+            <li><a href="#">Presiden Republik Indonesia</a></li>
+            <li>
+              <a href="#">Dewan Perwakilan Rakyat Republik Indonesia</a>
+            </li>
+            <li>
+              <a href="#">Kementrian Dalam Negeri Republik Indonesia</a>
+            </li>
+            <li><a href="#">Pemerintah Provinsi Jawa Barat</a></li>
+          </ul>
+        </div>
+      </div>
+
+      <!-- Bagian Statistik Pengunjung -->
+      <div class="text-sm md:w-1/6">
+        <h4 class="font-semibold mb-4">Statistik Pengunjung</h4>
+        <div class="space-y-2">
+          <div class="flex justify-between">
+            <span>Online:</span>
+            <span class="font-medium">40</span>
+          </div>
+          <div class="flex justify-between">
+            <span>Hari ini:</span>
+            <span class="font-medium">364</span>
+          </div>
+          <div class="flex justify-between">
+            <span>Kemarin:</span>
+            <span class="font-medium">377</span>
+          </div>
+          <div class="flex justify-between">
+            <span>Minggu ini:</span>
+            <span class="font-medium">3.190</span>
+          </div>
+          <div class="flex justify-between">
+            <span>Bulan ini:</span>
+            <span class="font-medium">4.981</span>
+          </div>
+          <div class="flex justify-between">
+            <span>Total:</span>
+            <span class="font-medium">57.151</span>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+    <!-- Include JS -->
+    <script src="./scripts/app.js"></script>
+  </body>
+</html>
